@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  chromadb:
+    image: docker.io/chromadb/chroma:latest
+    container_name: reductor_chromadb
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./storage/chroma:/chroma/chroma:Z
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=FALSE

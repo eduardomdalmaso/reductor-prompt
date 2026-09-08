@@ -1,0 +1,53 @@
+# ==========================================
+# ReductorPrompt - .gitignore
+# ==========================================
+
+# 1. Arquivos de Ambiente e Chaves de API (Segurança)
+.env
+.env.*
+!.env.example
+
+# 2. Pasta de Livros e Documentos Brutos
+database/*
+!database/.gitkeep
+
+# 3. Armazenamento Persistente e Banco Vetorial (ChromaDB)
+storage/*
+!storage/.gitkeep
+*.sqlite
+*.sqlite3
+*.db
+*.chroma
+
+# 4. Cache e Artefatos do Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# 5. Ambientes Virtuais e Miniconda
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# 6. Logs e Arquivos Temporários
+*.log
+logs/
+temp/
+tmp/
+
+# 7. Configurações de IDE e SO
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
