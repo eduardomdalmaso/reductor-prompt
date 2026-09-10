@@ -138,19 +138,56 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
         self.collection.delete(where={"book_id": {"$eq": book_id}})
 
     def list_indexed_books(self) -> List[Dict[str, Any]]:
-        all_data = self.collection.get(include=["metadatas"])
-        metas = all_data.get("metadatas", [])
-        
+        # 1. Tenta carregar do catálogo persistente de metadados se existir
+        catalog_path = os.path.join(settings.STORAGE_DIR, "indexed_books.json")
+        if os.path.exists(catalog_path):
+            try:
+                import json
+                with open(catalog_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    books = data.get("books", {})
+                    if books:
+                        return [
+                            {
+                                "book_id": b.get("id", b_id),
+                                "title": b.get("title", "Desconhecido"),
+                                "chunks_count": b.get("total_chunks", 0)
+                            }
+                            for b_id, b in books.items()
+                        ]
+            except Exception:
+                pass
+
+        # 2. Paginação segura em lotes no ChromaDB para não estourar variáveis do SQLite
         books_map = {}
-        for m in metas:
-            b_id = m.get("book_id")
-            if b_id and b_id not in books_map:
-                books_map[b_id] = {
-                    "book_id": b_id,
-                    "title": m.get("book_title", "Desconhecido"),
-                    "chunks_count": 0
-                }
-            if b_id:
-                books_map[b_id]["chunks_count"] += 1
-                
+        batch_size = 500
+        offset = 0
+        total_count = self.collection.count()
+
+        while offset < total_count:
+            try:
+                batch = self.collection.get(
+                    limit=batch_size,
+                    offset=offset,
+                    include=["metadatas"]
+                )
+                metas = batch.get("metadatas", [])
+                if not metas:
+                    break
+
+                for m in metas:
+                    b_id = m.get("book_id")
+                    if b_id and b_id not in books_map:
+                        books_map[b_id] = {
+                            "book_id": b_id,
+                            "title": m.get("book_title", "Desconhecido"),
+                            "chunks_count": 0
+                        }
+                    if b_id:
+                        books_map[b_id]["chunks_count"] += 1
+
+                offset += batch_size
+            except Exception:
+                break
+
         return list(books_map.values())

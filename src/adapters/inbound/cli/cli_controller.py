@@ -81,9 +81,11 @@ def ask(
     book: Optional[str] = typer.Option(None, "--book", "-b", help="Filtrar busca por título de livro específico"),
     max_tokens: int = typer.Option(1500, "--max-tokens", "-m", help="Limite máximo de tokens do contexto"),
     only_context: bool = typer.Option(False, "--only-context", "-c", help="Retorna apenas o contexto enxuto"),
+    deep: bool = typer.Option(False, "--deep", "-d", help="Ativa modo de raciocínio profundo com Chain-of-Thought e Self-Reflection"),
+    fast: bool = typer.Option(False, "--fast", help="Desativa expansão de query para resposta ultrarrápida direta"),
     provider: Optional[str] = typer.Option(None, "--provider", "-P", help="Provedor LLM: 'gemini' ou 'ollama'")
 ):
-    """Faz uma pergunta ao agente consumindo o mínimo de tokens."""
+    """Faz uma pergunta ao agente consumindo o mínimo de tokens e máxima precisão semântica."""
     console.print(Panel.fit(f"[bold cyan]🔍 Pergunta:[/bold cyan] {query}"))
     
     loader, embedding_port, vector_store, book_repo, llm_port = get_dependencies(provider)
@@ -103,7 +105,9 @@ def ask(
             query=query,
             book_filter=book,
             max_tokens=max_tokens,
-            only_context=only_context
+            only_context=only_context,
+            deep_reasoning=deep,
+            enable_rewriting=not fast
         )
 
     # Exibe Resposta

@@ -83,16 +83,63 @@ class PromptCompressorService:
             sources=sources_list
         )
 
-    def build_qa_prompt(self, query: str, compressed_context: CompressedContext) -> Tuple[str, str]:
-        """Gera o System Instruction e o User Prompt ultra-enxuto para Perguntas e Respostas."""
-        system_instruction = (
-            "Você é um consultor especialista em engenharia de software, arquitetura e análise técnica. "
-            "Responda à pergunta do usuário de forma precisa, concisa e altamente embasada no CONTEXTO DOS LIVROS fornecido. "
-            "Diretrizes:\n"
-            "1. Cite os livros e capítulos/páginas de onde as conclusões foram extraídas sempre que relevante.\n"
-            "2. Seja direto e evite enrolação para economizar tokens.\n"
-            "3. Se o contexto não contiver a resposta, informe educadamente o que foi possível encontrar nos livros indexados."
-        )
+    @staticmethod
+    def fuse_chunks_rrf(chunk_batches: List[List[ScoredChunk]], rrf_k: int = 60) -> List[ScoredChunk]:
+        """
+        Funde múltiplos conjuntos de resultados de busca vetorial usando Reciprocal Rank Fusion (RRF).
+        Padrão ouro de Information Retrieval (IR) para combinar consultas multi-query.
+        """
+        rrf_scores: Dict[str, float] = {}
+        chunk_map: Dict[str, ScoredChunk] = {}
+
+        for batch in chunk_batches:
+            for rank, sc in enumerate(batch, 1):
+                chunk_id = sc.chunk.id
+                chunk_map[chunk_id] = sc
+                # Fórmula RRF: score = sum(1 / (k + rank))
+                score_increment = 1.0 / (rrf_k + rank)
+                rrf_scores[chunk_id] = rrf_scores.get(chunk_id, 0.0) + score_increment
+
+        # Normaliza e atualiza os scores finais
+        if not rrf_scores:
+            return []
+
+        max_rrf = max(rrf_scores.values())
+        fused_chunks = []
+        for chunk_id, total_rrf in sorted(rrf_scores.items(), key=lambda item: item[1], reverse=True):
+            orig_sc = chunk_map[chunk_id]
+            normalized_score = min(1.0, max(orig_sc.score, total_rrf / max_rrf))
+            fused_chunks.append(ScoredChunk(chunk=orig_sc.chunk, score=normalized_score))
+
+        return fused_chunks
+
+    def build_qa_prompt(
+        self, 
+        query: str, 
+        compressed_context: CompressedContext,
+        deep_reasoning: bool = False
+    ) -> Tuple[str, str]:
+        """Gera o System Instruction e o User Prompt com suporte a Chain-of-Thought e Self-Reflection."""
+        if deep_reasoning:
+            system_instruction = (
+                "Você é um Arquiteto Principal de Software e Pesquisador de IA especialista. "
+                "Sua missão é responder à dúvida do usuário com profundidade analítica, utilizando a metodologia "
+                "de Chain-of-Thought (Cadeia de Raciocínio) e Auto-Reflexão baseada EXCLUSIVAMENTE nos livros fornecidos.\n\n"
+                "Estrutura da Resposta:\n"
+                "1. 🧠 Análise dos Fundamentos e Conceitos-Chave (Explicação teórica com base nas fontes)\n"
+                "2. ⚙️ Aplicação Prática, Padrões e Arquitetura (Exemplos de código e trade-offs)\n"
+                "3. 🔍 Auto-Validação e Integridade (Garantir que cada afirmação decorre estritamente dos trechos)\n"
+                "4. 📖 Citações Exatas (Nome do Livro, Capítulo e Página)"
+            )
+        else:
+            system_instruction = (
+                "Você é um consultor especialista em engenharia de software, arquitetura e análise técnica. "
+                "Responda à pergunta do usuário de forma precisa, concisa e altamente embasada no CONTEXTO DOS LIVROS fornecido. "
+                "Diretrizes:\n"
+                "1. Cite os livros e capítulos/páginas de onde as conclusões foram extraídas sempre que relevante.\n"
+                "2. Seja direto e evite enrolação para economizar tokens.\n"
+                "3. Se o contexto não contiver a resposta, informe educadamente o que foi possível encontrar nos livros indexados."
+            )
 
         user_prompt = (
             f"CONTEXTO EXTRAÍDO DOS LIVROS:\n"

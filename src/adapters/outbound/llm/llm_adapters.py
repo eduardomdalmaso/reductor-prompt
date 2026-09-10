@@ -119,6 +119,12 @@ class OllamaLLMAdapter(ILLMPort):
             raise LLMProviderException("Ollama", f"Erro na comunicação com Ollama: {str(e)}")
 
 
+class MockLLMAdapter(ILLMPort):
+    """Adaptador Mock para testes e benchmarks de Information Retrieval."""
+    def generate_response(self, system_instruction: str, prompt: str, temperature: float = 0.1) -> str:
+        return "[MOCK RESPONSE] Resposta baseada no contexto com sucesso."
+
+
 class LLMFactory:
     """Factory para instanciar o provedor LLM configurado."""
     
@@ -129,6 +135,8 @@ class LLMFactory:
             return OllamaLLMAdapter()
         elif prov == "gemini":
             return GeminiLLMAdapter()
+        elif prov == "mock":
+            return MockLLMAdapter()
         else:
             logger.warning(f"Provedor desconhecido '{prov}'. Usando Gemini.")
             return GeminiLLMAdapter()
