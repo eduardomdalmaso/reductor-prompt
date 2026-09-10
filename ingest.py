@@ -12,6 +12,6 @@ if __name__ == "__main__":
     # Redireciona para o comando ingest
     if len(sys.argv) == 1:
         sys.argv.append("ingest")
-    elif sys.argv[1] not in ["ingest", "ask", "analyze", "list"]:
+    elif sys.argv[1] not in ["ingest", "ask", "analyze", "list", "fetch", "--help", "-h"]:
         sys.argv.insert(1, "ingest")
     app()

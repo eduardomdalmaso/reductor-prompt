@@ -31,7 +31,10 @@ class ChunkingService:
     def count_tokens(text: str) -> int:
         """Conta ou estima com precisão o número de tokens do texto."""
         if _ENCODER:
-            return len(_ENCODER.encode(text))
+            try:
+                return len(_ENCODER.encode(text, disallowed_special=()))
+            except Exception:
+                pass
         # Estimativa aproximada (1 token ~= 4 caracteres ou 0.75 palavras)
         return int(len(text.split()) * 1.3)
 

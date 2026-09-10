@@ -51,23 +51,42 @@ class TextAndMarkdownLoader(IDocumentLoaderPort):
 
 
 class PDFDocumentLoader(IDocumentLoaderPort):
-    """Carregador para arquivos PDF."""
+    """Carregador de alta performance para arquivos PDF com PyMuPDF e fallback para pypdf."""
     
     def can_load(self, file_path: str) -> bool:
         return Path(file_path).suffix.lower() == '.pdf'
 
     def load(self, file_path: str) -> List[Dict[str, Any]]:
+        # 1. Tenta extração de alta velocidade via PyMuPDF
+        try:
+            import pymupdf
+            doc = pymupdf.open(file_path)
+            docs = []
+            for idx, page in enumerate(doc):
+                text = page.get_text() or ""
+                cleaned = sanitize_text(text)
+                cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+                if len(cleaned) > 20:
+                    docs.append({
+                        "text": cleaned,
+                        "page_number": idx + 1,
+                        "chapter": f"Página {idx + 1}"
+                    })
+            if docs:
+                return docs
+        except Exception:
+            pass
+
+        # 2. Fallback resiliente via pypdf
         try:
             reader = PdfReader(file_path)
             docs = []
-            
             for idx, page in enumerate(reader.pages):
                 try:
                     text = page.extract_text() or ""
                 except Exception:
                     continue
                 if text:
-                    # Limpeza e sanitização UTF-8
                     cleaned = sanitize_text(text)
                     cleaned = re.sub(r'\s+', ' ', cleaned).strip()
                     if len(cleaned) > 20:

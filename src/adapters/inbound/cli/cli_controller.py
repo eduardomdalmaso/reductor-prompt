@@ -200,3 +200,15 @@ def list_books():
         table.add_row(b["book_id"][:12] + "...", b["title"], str(b["chunks_count"]))
 
     console.print(table)
+
+
+@app.command(name="fetch")
+def fetch(
+    urls: str = typer.Argument(..., help="Uma ou mais URLs separadas por vírgula (GitHub tree, blob ou links diretos)"),
+    workers: int = typer.Option(6, "--workers", "-w", help="Número de threads concorrentes para download"),
+    ingest_after: bool = typer.Option(False, "--ingest", "-i", help="Dispara a ingestão vetorial automaticamente após o download")
+):
+    """Baixa dinamicamente livros de repositórios GitHub ou links diretos com deduplicação."""
+    from scripts.fetch_books import run_pipeline
+    url_list = [u.strip() for u in urls.split(",") if u.strip()]
+    run_pipeline(url_list, max_workers=workers, trigger_ingest=ingest_after)
