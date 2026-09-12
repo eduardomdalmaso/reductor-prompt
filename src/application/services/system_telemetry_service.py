@@ -260,4 +260,24 @@ class SystemTelemetryService:
             return entries[-limit:]
 
 
+    def export_queries(self, format_type: str = "json") -> str:
+        """Exporta todas as consultas do banco SQLite em CSV ou JSON."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM queries ORDER BY created_at DESC")
+            rows = [dict(r) for r in cursor.fetchall()]
+
+        if format_type.lower() == "csv":
+            import io
+            import csv
+            output = io.StringIO()
+            if rows:
+                writer = csv.DictWriter(output, fieldnames=list(rows[0].keys()))
+                writer.writeheader()
+                writer.writerows(rows)
+            return output.getvalue()
+        else:
+            return json.dumps(rows, indent=2, ensure_ascii=False)
+
+
 telemetry_service = SystemTelemetryService()

@@ -1,17 +1,47 @@
 import React from 'react';
-import { BarChart3, TrendingDown, DollarSign, Activity, Clock, ShieldCheck, Zap } from 'lucide-react';
+import { BarChart3, TrendingDown, DollarSign, Activity, Clock, ShieldCheck, Zap, Download, FileSpreadsheet, FileJson } from 'lucide-react';
 import { SystemMetrics } from '../../domain/entities';
 import { TokenSavingsWidget } from '../components/TokenSavingsWidget';
+import { TokenChart } from '../components/TokenChart';
 
 interface MetricsDashboardViewProps {
   metrics: SystemMetrics | null;
 }
 
 export const MetricsDashboardView: React.FC<MetricsDashboardViewProps> = ({ metrics }) => {
+  const handleExport = (format: 'csv' | 'json') => {
+    window.open(`/api/v1/queries/export?format=${format}`, '_blank');
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* Top Action Bar with Export */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+        <button
+          onClick={() => handleExport('csv')}
+          className="btn btn-secondary"
+          style={{ padding: '8px 14px', fontSize: '0.8rem' }}
+        >
+          <FileSpreadsheet size={15} color="var(--accent-emerald)" />
+          Exportar CSV (Excel)
+        </button>
+        <button
+          onClick={() => handleExport('json')}
+          className="btn btn-secondary"
+          style={{ padding: '8px 14px', fontSize: '0.8rem' }}
+        >
+          <FileJson size={15} color="var(--accent-secondary)" />
+          Exportar JSON
+        </button>
+      </div>
+
       {/* Top Widgets */}
       <TokenSavingsWidget metrics={metrics} />
+
+      {/* Visual Dynamic Sparkline / Bar Charts */}
+      {metrics?.recent_queries && metrics.recent_queries.length > 0 && (
+        <TokenChart queries={metrics.recent_queries} />
+      )}
 
       {/* Reduction Ratio Comparison Card */}
       <div className="glass-panel" style={{ padding: '24px' }}>
@@ -45,7 +75,7 @@ export const MetricsDashboardView: React.FC<MetricsDashboardViewProps> = ({ metr
       {/* Query History Table */}
       <div className="glass-panel" style={{ padding: '24px' }}>
         <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Clock size={18} color="var(--accent-secondary)" /> Histórico Recente de Consultas e Reduções
+          <Clock size={18} color="var(--accent-secondary)" /> Histórico Persistido de Consultas no SQLite
         </h3>
 
         {metrics?.recent_queries && metrics.recent_queries.length > 0 ? (

@@ -130,11 +130,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span>{item.label}</span>
               </div>
               <span style={{
-                fontSize: '0.7rem',
-                padding: '2px 7px',
+                fontSize: '0.75rem',
+                padding: '3px 8px',
                 borderRadius: '6px',
-                background: isActive ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.06)',
-                color: isActive ? '#ffffff' : 'var(--text-muted)',
+                background: isActive ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.08)',
+                color: isActive ? '#ffffff' : 'var(--text-secondary)',
                 fontWeight: 600
               }}>
                 {item.badge}

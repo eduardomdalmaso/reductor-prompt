@@ -138,10 +138,10 @@ export const BooksCatalogView: React.FC<BooksCatalogViewProps> = ({
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                   <span style={{
-                    fontSize: '0.65rem',
-                    padding: '2px 8px',
+                    fontSize: '0.75rem',
+                    padding: '3px 9px',
                     borderRadius: '6px',
-                    background: 'rgba(99, 102, 241, 0.15)',
+                    background: 'rgba(99, 102, 241, 0.18)',
                     color: 'var(--text-accent)',
                     fontWeight: 700
                   }}>

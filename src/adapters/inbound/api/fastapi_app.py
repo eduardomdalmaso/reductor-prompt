@@ -252,6 +252,20 @@ def get_metrics():
     return telemetry_service.get_metrics()
 
 
+@app.get("/api/v1/queries/export")
+def export_queries(format: str = Query(default="json", regex="^(json|csv)$")):
+    """Exporta o histórico de consultas persistido no SQLite para download em CSV ou JSON."""
+    from fastapi.responses import Response
+    content = telemetry_service.export_queries(format_type=format)
+    media_type = "text/csv" if format == "csv" else "application/json"
+    filename = f"reductor_queries_{int(time.time())}.{format}"
+    return Response(
+        content=content,
+        media_type=media_type,
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
 @app.get("/api/v1/logs")
 def get_logs(limit: int = Query(default=100, le=500), level: Optional[str] = None):
     """Retorna o histórico de logs recentes do sistema."""

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, Sparkles, Filter, Sliders, CheckCircle, Zap, ShieldAlert } from 'lucide-react';
 import { Book, QueryResult, LLMRuntimeState } from '../../domain/entities';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
+import { SkeletonLoader } from '../components/SkeletonLoader';
+import { StorageClient } from '../../infrastructure/storageClient';
 
 interface QueryPlaygroundViewProps {
   books: Book[];
@@ -24,10 +26,26 @@ export const QueryPlaygroundView: React.FC<QueryPlaygroundViewProps> = ({
   isQuerying,
   queryResult
 }) => {
+  const initialPrefs = StorageClient.getPreferences();
   const [query, setQuery] = useState('');
-  const [selectedBook, setSelectedBook] = useState('');
-  const [maxTokens, setMaxTokens] = useState(1500);
-  const [queryMode, setQueryMode] = useState<'standard' | 'fast' | 'only_context'>('standard');
+  const [selectedBook, setSelectedBook] = useState(initialPrefs.selectedBook || '');
+  const [maxTokens, setMaxTokens] = useState(initialPrefs.maxTokens || 1500);
+  const [queryMode, setQueryMode] = useState<'standard' | 'fast' | 'only_context'>(initialPrefs.queryMode || 'standard');
+
+  const handleBookChange = (b: string) => {
+    setSelectedBook(b);
+    StorageClient.savePreferences({ selectedBook: b });
+  };
+
+  const handleTokensChange = (val: number) => {
+    setMaxTokens(val);
+    StorageClient.savePreferences({ maxTokens: val });
+  };
+
+  const handleModeChange = (mode: 'standard' | 'fast' | 'only_context') => {
+    setQueryMode(mode);
+    StorageClient.savePreferences({ queryMode: mode });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +116,7 @@ export const QueryPlaygroundView: React.FC<QueryPlaygroundViewProps> = ({
               <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
                 <Filter size={13} /> Filtrar por Livro (Opcional):
               </label>
-              <select value={selectedBook} onChange={(e) => setSelectedBook(e.target.value)}>
+              <select value={selectedBook} onChange={(e) => handleBookChange(e.target.value)}>
                 <option value="">Todos os Livros ({books.length})</option>
                 {books.map((b, idx) => (
                   <option key={`${b.id || b.book_id || idx}-${b.title}`} value={b.title}>
@@ -113,7 +131,7 @@ export const QueryPlaygroundView: React.FC<QueryPlaygroundViewProps> = ({
               <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
                 <Zap size={13} /> Modo de Execução:
               </label>
-              <select value={queryMode} onChange={(e: any) => setQueryMode(e.target.value)}>
+              <select value={queryMode} onChange={(e: any) => handleModeChange(e.target.value)}>
                 <option value="standard">Padrão (Multi-Query + Síntese LLM)</option>
                 <option value="fast">Rápido (Busca Direta + LLM)</option>
                 <option value="only_context">Apenas Contexto Enxuto (Zero LLM)</option>
@@ -132,7 +150,7 @@ export const QueryPlaygroundView: React.FC<QueryPlaygroundViewProps> = ({
                 max="4000"
                 step="250"
                 value={maxTokens}
-                onChange={(e) => setMaxTokens(Number(e.target.value))}
+                onChange={(e) => handleTokensChange(Number(e.target.value))}
                 style={{ padding: 0, height: '6px' }}
               />
             </div>
@@ -172,8 +190,11 @@ export const QueryPlaygroundView: React.FC<QueryPlaygroundViewProps> = ({
         </form>
       </div>
 
+      {/* Loading Skeleton */}
+      {isQuerying && <SkeletonLoader />}
+
       {/* Result Panel */}
-      {queryResult && (
+      {!isQuerying && queryResult && (
         <div className="glass-panel" style={{ padding: '28px' }}>
           {/* Header Stats Bar */}
           <div style={{
