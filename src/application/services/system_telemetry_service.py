@@ -45,10 +45,17 @@ class SystemTelemetryService:
         )
 
     def _get_connection(self) -> sqlite3.Connection:
-        """Abre conexão com o banco SQLite."""
+        """Abre conexão com o banco SQLite com PRAGMAs de alto desempenho."""
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
         conn = sqlite3.connect(self.db_path, timeout=10.0)
         conn.row_factory = sqlite3.Row
+        # PRAGMAs de Alta Performance (WAL mode, memory cache, mmap)
+        conn.execute("PRAGMA journal_mode = WAL;")
+        conn.execute("PRAGMA synchronous = NORMAL;")
+        conn.execute("PRAGMA cache_size = -64000;")
+        conn.execute("PRAGMA mmap_size = 268435456;")
+        conn.execute("PRAGMA temp_store = MEMORY;")
+        conn.execute("PRAGMA busy_timeout = 5000;")
         return conn
 
     def _init_db(self):
