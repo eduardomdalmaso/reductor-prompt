@@ -30,3 +30,7 @@
    - **Ollama Local (RTX 5090 / 4090 / 3090)**: Use modelos `qwen2.5:14b` ou `qwen2.5:32b` para raciocínio técnico sem custo de API.
    - **Ollama Local (GPUs 8GB - 16GB)**: Use `qwen2.5:7b` ou `llama3.1:8b`.
    - **Gemini API**: Use `LLM_PROVIDER=gemini` como fallback para máquinas sem GPU dedicada.
+
+6. **Harness Engineering & Continuidade de Estado**:
+   - Consulte `PROGRESS.md` para verificar o estado atual e evitar amnésia de contexto.
+   - Valide a integridade do ambiente e testes executando: `python scripts/harness_check.py`.

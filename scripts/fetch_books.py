@@ -409,14 +409,14 @@ def run_pipeline(urls: List[str], max_workers: int = 6, trigger_ingest: bool = F
             print("\nIniciando ingestão vetorial no ChromaDB...")
 
         from src.application.use_cases.ingest_books_use_case import IngestBooksUseCase
-        from src.adapters.outbound.loaders.document_loader_adapter import DocumentLoaderAdapter
-        from src.adapters.outbound.embeddings.ollama_embedding_adapter import OllamaEmbeddingAdapter
+        from src.adapters.outbound.loaders.document_loaders import CompositeDocumentLoader
+        from src.adapters.outbound.embeddings.embedding_adapters import ResilientEmbeddingAdapter
         from src.adapters.outbound.vector_store.chroma_vector_store import ChromaVectorStoreAdapter
         from src.adapters.outbound.storage.file_book_repository import FileBookRepositoryAdapter
 
         use_case = IngestBooksUseCase(
-            loader=DocumentLoaderAdapter(),
-            embedding_port=OllamaEmbeddingAdapter(),
+            loader=CompositeDocumentLoader(),
+            embedding_port=ResilientEmbeddingAdapter(),
             vector_store=ChromaVectorStoreAdapter(),
             book_repo=FileBookRepositoryAdapter()
         )

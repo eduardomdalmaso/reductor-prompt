@@ -420,10 +420,13 @@ async def get_mcp_tools():
             },
             {
                 "name": "list_indexed_books",
-                "description": "Lista todos os livros técnicos atualmente indexados e disponíveis no banco vetorial.",
+                "description": "Lista livros técnicos indexados com suporte a filtro por tópico/palavra-chave e paginação enxuta para IA.",
                 "parameters": {
                     "type": "object",
-                    "properties": {}
+                    "properties": {
+                        "query_filter": {"type": "string", "description": "Filtro por palavra-chave no título (opcional)"},
+                        "limit": {"type": "integer", "default": 30, "description": "Limite máximo de livros retornados"}
+                    }
                 }
             }
         ]
@@ -436,11 +439,11 @@ async def call_mcp_tool(req: MCPCallDTO):
     telemetry_service.log("INFO", "MCPHub", f"Executando ferramenta MCP: '{req.tool_name}'")
     
     if req.tool_name == "list_indexed_books":
-        def _list():
-            vector_store = ChromaVectorStoreAdapter()
-            return vector_store.list_indexed_books()
-        books = await asyncio.to_thread(_list)
-        return {"tool": req.tool_name, "result": books}
+        from src.adapters.inbound.mcp.server import list_indexed_books
+        q_filter = req.arguments.get("query_filter")
+        limit = int(req.arguments.get("limit", 30))
+        result = await asyncio.to_thread(list_indexed_books, query_filter=q_filter, limit=limit)
+        return {"tool": req.tool_name, "result": result}
         
     elif req.tool_name == "search_books":
         from src.adapters.inbound.mcp.server import search_books
