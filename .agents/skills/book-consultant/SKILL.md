@@ -5,7 +5,7 @@ description: Consulta a biblioteca técnica do ReductorPrompt de forma cirúrgic
 
 # Skill: Consultor de Livros Técnicos (ReductorPrompt)
 
-Esta skill permite ao Gemini e a qualquer agente de IA consultar a base de conhecimento de livros técnicos localizada em `/home/hades/Documents/ReductorPrompt` de forma instantânea e sem desperdiçar tokens.
+Esta skill permite ao Gemini e a qualquer agente de IA consultar a base de conhecimento de livros técnicos indexada no ReductorPrompt de forma instantânea e sem desperdiçar tokens.
 
 ---
 
@@ -28,29 +28,26 @@ Esta skill permite ao Gemini e a qualquer agente de IA consultar a base de conhe
 Se as ferramentas MCP estiverem ativas, chame diretamente:
 - **`search_books(query="...", book_filter="...", max_tokens=2000)`**: Retorna o extrato enxuto dos livros com scores de similaridade e capítulos.
 - **`analyze_project_with_books(project_description="...", topic="...")`**: Gera a análise cruzada comparando a arquitetura do usuário com a literatura.
-- **`list_indexed_books()`**: Retorna a lista de todas as obras disponíveis no banco vetorial.
+- **`list_indexed_books(query_filter="...", limit=30)`**: Retorna a lista de todas as obras disponíveis no banco vetorial.
 
 ---
 
 ### Método 2: Via Terminal CLI (Ambiente Isolado Conda)
-Caso precise executar via comando de terminal, use SEMPRE o Python do Conda:
-
-**Python**: `/home/hades/miniconda3/envs/reductor-prompt/bin/python`  
-**Query Script**: `/home/hades/Documents/ReductorPrompt/query.py`
+Caso precise executar via comando de terminal, use o Python do Conda (`reductor-prompt`):
 
 #### A. Para Consulta de Dúvidas / Extração de Contexto:
 ```bash
-/home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py ask "<PERGUNTA_DO_USUARIO>" --only-context
+python query.py "<PERGUNTA_DO_USUARIO>" --only-context
 ```
 
 #### B. Para Consulta com Raciocínio Profundo (Chain-of-Thought):
 ```bash
-/home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py ask "<PERGUNTA>" --deep
+python query.py "<PERGUNTA>" --deep
 ```
 
 #### C. Para Análise Cruzada de Projeto:
 ```bash
-/home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py analyze \
+python query.py analyze \
   --project "<DESCRICAO_DO_PROJETO>" \
   --topic "<TOPICO_FOCO>" \
   --provider ollama
@@ -58,7 +55,7 @@ Caso precise executar via comando de terminal, use SEMPRE o Python do Conda:
 
 #### D. Para Listar Livros Indexados:
 ```bash
-/home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py list
+python query.py list
 ```
 
 ---

@@ -18,8 +18,11 @@ export const MCPHubView: React.FC<MCPHubViewProps> = ({ tools, isLoading }) => {
   const mcpConfigJson = JSON.stringify({
     "mcpServers": {
       "reductor-books": {
-        "command": "/home/hades/miniconda3/envs/reductor-prompt/bin/python",
-        "args": ["/home/hades/Documents/ReductorPrompt/mcp_server.py"]
+        "command": "python",
+        "args": ["mcp_server.py"],
+        "env": {
+          "PYTHONPATH": "."
+        }
       }
     }
   }, null, 2);

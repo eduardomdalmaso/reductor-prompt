@@ -7,8 +7,8 @@
    - Sempre utilize o CLI de consulta (`query.py`) ou o MCP Server (`reductor-books`) para obter o contexto reduzido e cirúrgico com relevância semântica calculada.
 
 2. **Isolamento de Ambiente e Execução**:
-   - Sempre execute os scripts do projeto utilizando o Python do Conda:
-     `/home/hades/miniconda3/envs/reductor-prompt/bin/python`
+   - Sempre execute os scripts do projeto utilizando o ambiente Conda (`reductor-prompt`):
+     `conda run -n reductor-prompt python <script>` ou `python <script>` (com o ambiente ativo).
    - O banco vetorial ChromaDB deve ser acessado prioritariamente via Podman na porta `8001` (`http://127.0.0.1:8001`) ou modo persistente local (`./storage/chroma`) como fallback automático.
 
 3. **Modos de Consulta e Raciocínio**:

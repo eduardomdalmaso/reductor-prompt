@@ -50,14 +50,14 @@
 
 ```bash
 # 1. Diagnóstico completo do ambiente e testes (1 segundo)
-/home/hades/miniconda3/envs/reductor-prompt/bin/python scripts/harness_check.py
+python scripts/harness_check.py
 
 # 2. Ingestão e sincronização de novos livros
-/home/hades/miniconda3/envs/reductor-prompt/bin/python query.py ingest
+python query.py ingest
 
 # 3. Consulta semântica com redução extrema (>95% economia)
-/home/hades/miniconda3/envs/reductor-prompt/bin/python query.py "sua pergunta"
+python query.py "sua pergunta"
 
 # 4. Execução da suíte de testes
-/home/hades/miniconda3/envs/reductor-prompt/bin/pytest -v
+pytest -v
 ```

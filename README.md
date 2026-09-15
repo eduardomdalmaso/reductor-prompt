@@ -60,7 +60,7 @@ python query.py fetch "https://github.com/MinhNguyenDS/AI-pdf-books/tree/Master/
 python query.py fetch "https://arxiv.org/pdf/2401.05566.pdf" --ingest
 ```
 
-*(Você também pode simplesmente copiar arquivos `.pdf`, `.epub`, `.md` diretamente para a pasta [`database/`](file:///home/hades/Documents/ReductorPrompt/database)).*
+*(Você também pode simplesmente copiar arquivos `.pdf`, `.epub`, `.md` diretamente para a pasta `database/` ou `storage/books/`).*
 
 ---
 
@@ -132,14 +132,17 @@ python scripts/benchmark_rag.py
 ---
 
 ### 8. Servidor MCP (Model Context Protocol) para IDEs e Agentes
-O ReductorPrompt possui suporte nativo ao protocolo MCP. O arquivo [`mcp_config.json`](file:///home/hades/Documents/ReductorPrompt/mcp_config.json) já está configurado:
+O ReductorPrompt possui suporte nativo ao protocolo MCP. O arquivo `mcp_config.json` já está configurado:
 
 ```json
 {
   "mcpServers": {
     "reductor-books": {
-      "command": "/home/hades/miniconda3/envs/reductor-prompt/bin/python",
-      "args": ["/home/hades/Documents/ReductorPrompt/mcp_server.py"]
+      "command": "python",
+      "args": ["mcp_server.py"],
+      "env": {
+        "PYTHONPATH": "."
+      }
     }
   }
 }
