@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
@@ -40,6 +41,10 @@ class Settings(BaseSettings):
     DEFAULT_TOP_K: int = Field(default=4, description="Quantidade de trechos mais relevantes recuperados")
     DEFAULT_MAX_CONTEXT_TOKENS: int = Field(default=1500, description="Limite máximo de tokens de contexto")
     SIMILARITY_THRESHOLD: float = Field(default=0.25, description="Score mínimo de corte semântico")
+
+    # Segurança & API
+    API_SECURITY_KEY: Optional[str] = Field(default=None, description="Chave de segurança opcional para proteger a API REST. Se vazia, opera em modo local aberto.")
+    CORS_ALLOWED_ORIGINS: str = Field(default="http://localhost:5173,http://127.0.0.1:5173,http://localhost:8000,http://127.0.0.1:8000", description="Origens permitidas no CORS separadas por vírgula")
 
     def resolve_paths(self):
         """Garante que os diretórios necessários existam no disco."""

@@ -21,6 +21,8 @@ import sys
 import re
 import time
 import json
+import socket
+import ipaddress
 import hashlib
 import argparse
 import urllib.request
@@ -29,6 +31,36 @@ import urllib.error
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional, Set, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+
+def is_safe_public_url(url: str) -> Tuple[bool, str]:
+    """Valida se a URL é segura (esquema HTTP/HTTPS público, sem IPs privados, loopback ou metadata)."""
+    try:
+        parsed = urllib.parse.urlparse(url)
+        if parsed.scheme not in ('http', 'https'):
+            return False, f"Esquema de URL não permitido: '{parsed.scheme}'. Apenas http e https são aceitos."
+        
+        hostname = parsed.hostname
+        if not hostname:
+            return False, "URL inválida: hostname ausente."
+
+        if hostname.lower() in ('localhost', '127.0.0.1', '::1', '0.0.0.0'):
+            return False, "Acesso a endereços de loopback/localhost é proibido por segurança."
+
+        try:
+            addr_info = socket.getaddrinfo(hostname, parsed.port or (443 if parsed.scheme == 'https' else 80), proto=socket.IPPROTO_TCP)
+        except socket.gaierror as e:
+            return False, f"Falha ao resolver DNS para {hostname}: {e}"
+
+        for entry in addr_info:
+            ip_str = entry[4][0]
+            ip = ipaddress.ip_address(ip_str)
+            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_multicast or ip.is_reserved:
+                return False, f"Acesso ao IP privado ou reservado ({ip_str}) é bloqueado (prevenção a SSRF)."
+
+        return True, "OK"
+    except Exception as e:
+        return False, f"Erro ao validar URL: {e}"
 
 try:
     from rich.console import Console
@@ -220,6 +252,11 @@ class ResilientDownloader:
         category = item["category"]
         expected_size = item.get("expected_size", 0)
         dest_path = DATABASE_DIR / filename
+
+        # 0. Validação de Segurança contra SSRF (Bloqueia IPs locais/privados/metadata)
+        is_safe, reason = is_safe_public_url(url)
+        if not is_safe:
+            return ("ERROR", filename, category, Exception(f"Bloqueio de Segurança (SSRF): {reason}"))
 
         # 1. Verificação de deduplicação local exata
         if dest_path.exists():

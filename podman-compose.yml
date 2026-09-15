@@ -6,7 +6,7 @@ services:
     container_name: reductor_chromadb
     restart: unless-stopped
     ports:
-      - "8001:8000"
+      - "127.0.0.1:8001:8000"
     volumes:
       - ./storage/chroma:/chroma/chroma:Z
     environment:

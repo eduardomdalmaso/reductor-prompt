@@ -1,10 +1,12 @@
-import time
 import asyncio
-from typing import List, Dict, Any, Optional
+import time
+import secrets
+from typing import Optional, List, Dict, Any, Union
 from pydantic import BaseModel, Field
-from fastapi import FastAPI, HTTPException, status, Query
+from fastapi import FastAPI, HTTPException, status, Query, Security, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
+from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
 
 from src.application.dtos.query_dtos import (
     QueryRequestDTO, 
@@ -31,13 +33,43 @@ app = FastAPI(
     version="2.0.0"
 )
 
+# Configuração de CORS Seguro com Origens Explícitas
+_raw_origins = getattr(settings, "CORS_ALLOWED_ORIGINS", "")
+_allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()] if _raw_origins else [
+    "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:8000", "http://127.0.0.1:8000"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# Provedores de Autenticação Segura (X-API-Key ou Bearer Token)
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+bearer_auth = HTTPBearer(auto_error=False)
+
+
+async def verify_auth(
+    api_key: Optional[str] = Security(api_key_header),
+    bearer: Optional[HTTPAuthorizationCredentials] = Security(bearer_auth)
+):
+    """Verifica autenticação se API_SECURITY_KEY estiver configurada no .env."""
+    required_key = settings.API_SECURITY_KEY
+    if not required_key:
+        return True
+
+    token = api_key or (bearer.credentials if bearer else None)
+    if not token or not secrets.compare_digest(token, required_key):
+        telemetry_service.log("WARNING", "SecurityGuard", "Tentativa de acesso não autorizada a endpoint protegido.")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Acesso não autorizado. Forneça um X-API-Key ou Bearer Token válido.",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    return True
 
 
 # ==========================================
@@ -97,7 +129,7 @@ async def list_books():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/v1/ingest")
+@app.post("/api/v1/ingest", dependencies=[Depends(verify_auth)])
 async def trigger_ingest(force: bool = False):
     """Executa varredura e indexação de novos livros sem bloquear o event loop."""
     telemetry_service.log("INFO", "Ingestor", f"Disparando ingestão (force={force})...")
@@ -124,13 +156,42 @@ async def trigger_ingest(force: bool = False):
     }
 
 
-@app.post("/api/v1/fetch")
+@app.delete("/api/v1/books/{book_id}", dependencies=[Depends(verify_auth)])
+async def delete_book_endpoint(book_id: str):
+    """Deleta um livro específico do banco vetorial pelo ID."""
+    try:
+        def _delete():
+            vector_store = ChromaVectorStoreAdapter()
+            vector_store.delete_book(book_id)
+            return True
+        await asyncio.to_thread(_delete)
+        telemetry_service.log("INFO", "VectorStore", f"Livro {book_id} removido com sucesso.")
+        return {"status": "ok", "message": f"Livro '{book_id}' removido do banco vetorial."}
+    except Exception as e:
+        telemetry_service.log("ERROR", "VectorStore", f"Erro ao deletar livro {book_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/v1/fetch", dependencies=[Depends(verify_auth)])
 async def fetch_materials(req: FetchBooksRequestDTO):
-    """Baixa livros ou papers dinamicamente da web/GitHub em segundo plano."""
-    from scripts.fetch_books import run_pipeline
+    """Baixa livros ou papers dinamicamente da web/GitHub em segundo plano com proteção anti-SSRF."""
+    from scripts.fetch_books import run_pipeline, is_safe_public_url
     telemetry_service.log("INFO", "Fetcher", f"Iniciando download dinâmico para: {req.urls}")
     try:
         urls_list = [u.strip() for u in req.urls.split(",") if u.strip()]
+        if not urls_list:
+            raise HTTPException(status_code=400, detail="Nenhuma URL informada.")
+
+        # Validação de Segurança contra SSRF
+        for u in urls_list:
+            is_safe, reason = is_safe_public_url(u)
+            if not is_safe:
+                telemetry_service.log("WARNING", "SecurityGuard", f"Bloqueio de SSRF na URL: {u} ({reason})")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"URL bloqueada por segurança (SSRF): {reason}"
+                )
+
         result = await asyncio.to_thread(
             run_pipeline,
             sources=urls_list,
@@ -139,6 +200,8 @@ async def fetch_materials(req: FetchBooksRequestDTO):
         )
         telemetry_service.log("INFO", "Fetcher", f"Download concluído: {result.get('downloaded', 0)} arquivos baixados.")
         return result
+    except HTTPException:
+        raise
     except Exception as e:
         telemetry_service.log("ERROR", "Fetcher", f"Erro no download dinâmico: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -266,7 +329,7 @@ async def get_metrics():
     return telemetry_service.get_metrics()
 
 
-@app.get("/api/v1/queries/export")
+@app.get("/api/v1/queries/export", dependencies=[Depends(verify_auth)])
 async def export_queries(format: str = Query(default="json", pattern="^(json|csv)$")):
     """Exporta o histórico de consultas persistido no SQLite para download em CSV ou JSON."""
     content = await asyncio.to_thread(telemetry_service.export_queries, format)
@@ -279,7 +342,7 @@ async def export_queries(format: str = Query(default="json", pattern="^(json|csv
     )
 
 
-@app.get("/api/v1/logs")
+@app.get("/api/v1/logs", dependencies=[Depends(verify_auth)])
 async def get_logs(limit: int = Query(default=100, le=500), level: Optional[str] = None):
     """Retorna o histórico de logs recentes do sistema."""
     return {"logs": telemetry_service.get_logs(limit=limit, level_filter=level)}
@@ -294,13 +357,13 @@ async def get_llm_status():
     return await asyncio.to_thread(llm_manager_service.get_status)
 
 
-@app.post("/api/v1/llm/toggle")
+@app.post("/api/v1/llm/toggle", dependencies=[Depends(verify_auth)])
 async def toggle_llm(req: LLMToggleDTO):
     """Liga ou desliga o LLM (ativando/desativando o bypass de contexto)."""
     return await asyncio.to_thread(llm_manager_service.toggle_llm_state, req.enabled)
 
 
-@app.post("/api/v1/llm/config")
+@app.post("/api/v1/llm/config", dependencies=[Depends(verify_auth)])
 async def update_llm_config(req: LLMConfigDTO):
     """Atualiza configurações ativas de LLM."""
     return await asyncio.to_thread(
@@ -312,7 +375,7 @@ async def update_llm_config(req: LLMConfigDTO):
     )
 
 
-@app.post("/api/v1/llm/unload")
+@app.post("/api/v1/llm/unload", dependencies=[Depends(verify_auth)])
 async def unload_llm_vram(req: UnloadVRAMDTO):
     """Descarrega modelo da GPU liberando VRAM no Ollama."""
     return await asyncio.to_thread(llm_manager_service.unload_vram, req.model_name)
@@ -367,7 +430,7 @@ async def get_mcp_tools():
     }
 
 
-@app.post("/api/v1/mcp/call")
+@app.post("/api/v1/mcp/call", dependencies=[Depends(verify_auth)])
 async def call_mcp_tool(req: MCPCallDTO):
     """Executa diretamente uma ferramenta MCP e retorna o resultado estruturado."""
     telemetry_service.log("INFO", "MCPHub", f"Executando ferramenta MCP: '{req.tool_name}'")

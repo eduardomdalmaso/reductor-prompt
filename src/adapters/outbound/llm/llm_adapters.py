@@ -52,13 +52,17 @@ class GeminiLLMAdapter(ILLMPort):
             )
             return response.text or ""
         except ImportError:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent"
+            headers = {
+                "x-goog-api-key": self.api_key,
+                "Content-Type": "application/json"
+            }
             payload = {
                 "contents": [{"parts": [{"text": prompt}]}],
                 "systemInstruction": {"parts": [{"text": system_instruction}]},
                 "generationConfig": {"temperature": temperature}
             }
-            resp = _HTTP_CLIENT.post(url, json=payload)
+            resp = _HTTP_CLIENT.post(url, json=payload, headers=headers)
             if resp.status_code == 200:
                 data = resp.json()
                 candidates = data.get("candidates", [])
