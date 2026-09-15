@@ -56,20 +56,23 @@ class PromptCompressorService:
         if max_tokens_override is not None and max_tokens_override != settings.DEFAULT_MAX_CONTEXT_TOKENS:
             return max_tokens_override
 
+        if not getattr(settings, "DYNAMIC_TOKEN_BUDGET_ENABLED", True):
+            return max_tokens_override or settings.DEFAULT_MAX_CONTEXT_TOKENS
+
         complexity = self.classify_query_complexity(query)
         if complexity == "factual":
-            return min(800, settings.DEFAULT_MAX_CONTEXT_TOKENS)
+            return getattr(settings, "DYNAMIC_MIN_FACTUAL_TOKENS", 800)
         elif complexity == "architectural":
-            return max(3500, settings.DEFAULT_MAX_CONTEXT_TOKENS)
+            return getattr(settings, "DYNAMIC_MAX_ARCHITECTURAL_TOKENS", 4000)
         else:
-            return min(1800, settings.DEFAULT_MAX_CONTEXT_TOKENS)
+            return getattr(settings, "DYNAMIC_MAX_CONCEPTUAL_TOKENS", 1800)
 
     def apply_elbow_cutoff(
         self,
         sorted_chunks: List[ScoredChunk],
         min_score: float,
-        max_relative_drop: float = 0.35,
-        max_step_drop: float = 0.22
+        max_relative_drop: float = None,
+        max_step_drop: float = None
     ) -> List[ScoredChunk]:
         """
         Aplica o método Elbow (curva de declínio de relevância) para descartar a cauda de ruído.
@@ -77,6 +80,9 @@ class PromptCompressorService:
         """
         if not sorted_chunks:
             return []
+
+        rel_drop_threshold = max_relative_drop if max_relative_drop is not None else getattr(settings, "DYNAMIC_ELBOW_MAX_RELATIVE_DROP", 0.35)
+        step_drop_threshold = max_step_drop if max_step_drop is not None else getattr(settings, "DYNAMIC_ELBOW_MAX_STEP_DROP", 0.22)
 
         top_score = sorted_chunks[0].score
         if top_score < min_score:
@@ -92,12 +98,12 @@ class PromptCompressorService:
 
             # 2. Queda relativa máxima em relação ao melhor chunk (ex: 35% de tolerância)
             relative_drop = (top_score - sc.score) / max(0.01, top_score)
-            if relative_drop > max_relative_drop and len(selected) >= 1:
+            if relative_drop > rel_drop_threshold and len(selected) >= 1:
                 break
 
             # 3. Queda brusca de degrau em relação ao chunk imediatamente anterior
             step_drop = prev_score - sc.score
-            if step_drop > max_step_drop and len(selected) >= 1:
+            if step_drop > step_drop_threshold and len(selected) >= 1:
                 break
 
             selected.append(sc)

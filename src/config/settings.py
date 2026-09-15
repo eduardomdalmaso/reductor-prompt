@@ -35,12 +35,20 @@ class Settings(BaseSettings):
     STORAGE_DIR: str = Field(default="./storage", description="Diretório de armazenamento persistente")
     CHROMA_PERSIST_DIR: str = Field(default="./storage/chroma", description="Diretório do banco vetorial ChromaDB local")
     
-    # Chunking & Token Optimization
-    CHUNK_SIZE: int = Field(default=600, description="Tamanho médio do chunk em caracteres/palavras")
-    CHUNK_OVERLAP: int = Field(default=100, description="Overlap entre chunks consecutivos")
-    DEFAULT_TOP_K: int = Field(default=4, description="Quantidade de trechos mais relevantes recuperados")
-    DEFAULT_MAX_CONTEXT_TOKENS: int = Field(default=1500, description="Limite máximo de tokens de contexto")
-    SIMILARITY_THRESHOLD: float = Field(default=0.25, description="Score mínimo de corte semântico")
+    # Chunking & Token Optimization (Adaptive RAG)
+    CHUNK_SIZE: int = Field(default=800, description="Tamanho médio do chunk em caracteres/palavras")
+    CHUNK_OVERLAP: int = Field(default=150, description="Overlap entre chunks consecutivos")
+    DEFAULT_TOP_K: int = Field(default=6, description="Quantidade máxima de trechos recuperados na busca vetorial")
+    DEFAULT_MAX_CONTEXT_TOKENS: int = Field(default=2500, description="Teto de segurança de tokens de contexto")
+    SIMILARITY_THRESHOLD: float = Field(default=0.25, description="Score mínimo absoluto de corte semântico")
+    
+    # Orçamento Dinâmico e Corte Adaptativo (Elbow Method)
+    DYNAMIC_TOKEN_BUDGET_ENABLED: bool = Field(default=True, description="Habilita ajuste dinâmico de orçamento por complexidade de query")
+    DYNAMIC_MIN_FACTUAL_TOKENS: int = Field(default=800, description="Orçamento máximo para perguntas factuais/pontuais")
+    DYNAMIC_MAX_CONCEPTUAL_TOKENS: int = Field(default=1800, description="Orçamento máximo para perguntas conceituais/explicativas")
+    DYNAMIC_MAX_ARCHITECTURAL_TOKENS: int = Field(default=4000, description="Orçamento máximo para análises arquiteturais/cruzadas")
+    DYNAMIC_ELBOW_MAX_RELATIVE_DROP: float = Field(default=0.35, description="Queda percentual máxima de relevância em relação ao pico antes do corte")
+    DYNAMIC_ELBOW_MAX_STEP_DROP: float = Field(default=0.22, description="Queda de degrau abrupta máxima entre chunks consecutivos")
 
     # Segurança & API
     API_SECURITY_KEY: Optional[str] = Field(default=None, description="Chave de segurança opcional para proteger a API REST. Se vazia, opera em modo local aberto.")
