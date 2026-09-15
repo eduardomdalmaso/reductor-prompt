@@ -34,3 +34,15 @@
 6. **Harness Engineering & Continuidade de Estado**:
    - Consulte `PROGRESS.md` para verificar o estado atual e evitar amnésia de contexto.
    - Valide a integridade do ambiente e testes executando: `python scripts/harness_check.py`.
+
+7. **🗺️ Mapa de Especialidades da Biblioteca Técnica (194 Livros Indexados)**:
+   - **Visão Computacional & Imagens**: *Learning OpenCV 4*, *Modern Computer Vision with PyTorch 2E*, *Computer Vision Algorithms*.
+   - **LLMs, RAG & Transformers**: *Hands-On Large Language Models (O'Reilly)*, *Generative AI Design Patterns*, *Prompt Engineering*.
+   - **Engenharia de Alta Performance & Streaming**: *Pion WebRTC Media Guide*, *Go Rust Video Pipeline*, *Concurrency in Go*, *Zero-Copy Memory*.
+   - **Arquitetura, Harness & Agentes Autônomos**: *Learn Harness Engineering*, *AI Agents In Depth*, *Domain-Driven Design (DDD)*.
+   - **Bancos de Dados, Storage & Sistemas Distribuídos**: *Database Internals (LSM-Trees, B-Trees, Raft)*, *Polars & Data Engineering*.
+
+8. **🔄 Cruzamento Multi-Livros & Síntese Interdisciplinar**:
+   - Para problemas complexos ou de ponta a ponta, **não restrinja a busca a um único livro** (`book_filter=None`).
+   - O pipeline vetorial realiza busca global com fusão RRF, permitindo que a LLM sintetize soluções cruzando múltiplos autores (ex: rede em Go + decodificação em Rust + inferência PyTorch).
+   - Sempre cite as fontes de cada camada da solução final.

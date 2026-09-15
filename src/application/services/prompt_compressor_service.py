@@ -1,14 +1,109 @@
-from typing import List, Dict, Any, Tuple
+import re
+from typing import List, Dict, Any, Tuple, Optional
 from src.domain.entities.book import ScoredChunk, CompressedContext
 from src.application.services.chunking_service import ChunkingService
 from src.config.settings import settings
 
 
 class PromptCompressorService:
-    """Serviço responsável por comprimir, filtrar e formatar o contexto para economia máxima de tokens."""
+    """Serviço responsável por comprimir, filtrar e formatar o contexto para economia máxima de tokens com orçamento dinâmico e corte por curva de relevância (Elbow Method)."""
 
     def __init__(self, chunking_service: ChunkingService = None):
         self.chunking_service = chunking_service or ChunkingService()
+
+    def classify_query_complexity(self, query: str) -> str:
+        """
+        Classifica a complexidade e escopo da consulta para orçamentação dinâmica de tokens:
+        - 'factual': Dúvidas pontuais, comandos, sintaxe, definições diretas (400-800 tokens).
+        - 'architectural': Análise cruzada, comparações estruturais, diagnósticos e trade-offs (3000-4500 tokens).
+        - 'conceptual': Explicações de mecanismos, tutoriais, algoritmos e boas práticas (1200-2000 tokens).
+        """
+        q = query.lower().strip()
+        word_count = len(q.split())
+
+        # Padrões Arquiteturais / Análise Cruzada
+        arch_patterns = [
+            r"\banalys[e|is]\b", r"\barquitetura\b", r"\bcompar[e|ar|ando]\b", r"\btrade-?offs?\b",
+            r"\bbenchmark\b", r"\bscalab\w+\b", r"\bescalabil\w+\b", r"\bmigra\w+\b",
+            r"\bdistribu\w+\b", r"\bconcorr\w+\b", r"\bdiagn[oó]stico\b", r"\bpipeline\b"
+        ]
+        if any(re.search(pat, q) for pat in arch_patterns):
+            return "architectural"
+
+        # Padrões Conceituais / Explicativos Explícitos
+        conceptual_patterns = [
+            r"^como funciona\b", r"^como implementar\b", r"^como usar\b", r"^por que\b",
+            r"^explique\b", r"^tutorial\b", r"^descreva\b", r"\bmecanismo\b", r"\balgoritmo\b"
+        ]
+        if any(re.search(pat, q) for pat in conceptual_patterns):
+            return "conceptual"
+
+        # Padrões Factuais / Pontuais
+        factual_patterns = [
+            r"^o que [eé]\b", r"^qual [eé]\b", r"^quais s[aã]o\b", r"\bcomando\b", r"\bsintaxe\b",
+            r"\bflag\b", r"\bdefina\b", r"\bsignificado\b", r"\bvers[aã]o\b", r"\batalho\b"
+        ]
+        if any(re.search(pat, q) for pat in factual_patterns) or word_count <= 3:
+            return "factual"
+
+        return "conceptual"
+
+    def determine_dynamic_budget(self, query: str, max_tokens_override: Optional[int] = None) -> int:
+        """
+        Calcula o orçamento de tokens dinamicamente para evitar ruído excessivo (Lost in the Middle)
+        ou corte prematuro de respostas profundas.
+        """
+        if max_tokens_override is not None and max_tokens_override != settings.DEFAULT_MAX_CONTEXT_TOKENS:
+            return max_tokens_override
+
+        complexity = self.classify_query_complexity(query)
+        if complexity == "factual":
+            return min(800, settings.DEFAULT_MAX_CONTEXT_TOKENS)
+        elif complexity == "architectural":
+            return max(3500, settings.DEFAULT_MAX_CONTEXT_TOKENS)
+        else:
+            return min(1800, settings.DEFAULT_MAX_CONTEXT_TOKENS)
+
+    def apply_elbow_cutoff(
+        self,
+        sorted_chunks: List[ScoredChunk],
+        min_score: float,
+        max_relative_drop: float = 0.35,
+        max_step_drop: float = 0.22
+    ) -> List[ScoredChunk]:
+        """
+        Aplica o método Elbow (curva de declínio de relevância) para descartar a cauda de ruído.
+        Se um chunk tiver queda abrupta em relação ao pico ou ao anterior, corta os subsequentes.
+        """
+        if not sorted_chunks:
+            return []
+
+        top_score = sorted_chunks[0].score
+        if top_score < min_score:
+            return [sorted_chunks[0]]
+
+        selected: List[ScoredChunk] = []
+        prev_score = top_score
+
+        for sc in sorted_chunks:
+            # 1. Filtro absoluto mínimo
+            if sc.score < min_score:
+                break
+
+            # 2. Queda relativa máxima em relação ao melhor chunk (ex: 35% de tolerância)
+            relative_drop = (top_score - sc.score) / max(0.01, top_score)
+            if relative_drop > max_relative_drop and len(selected) >= 1:
+                break
+
+            # 3. Queda brusca de degrau em relação ao chunk imediatamente anterior
+            step_drop = prev_score - sc.score
+            if step_drop > max_step_drop and len(selected) >= 1:
+                break
+
+            selected.append(sc)
+            prev_score = sc.score
+
+        return selected or [sorted_chunks[0]]
 
     def compress_and_format(
         self,
@@ -17,18 +112,15 @@ class PromptCompressorService:
         max_tokens: int = None,
         similarity_threshold: float = None
     ) -> CompressedContext:
-        limit_tokens = max_tokens or settings.DEFAULT_MAX_CONTEXT_TOKENS
+        """Comprime e formata o contexto com orçamento adaptativo e filtragem inteligente contra ruído."""
+        limit_tokens = self.determine_dynamic_budget(query, max_tokens)
         min_score = similarity_threshold or settings.SIMILARITY_THRESHOLD
 
-        # 1. Filtra por limiar mínimo de relevância
-        relevant_chunks = [sc for sc in scored_chunks if sc.score >= min_score]
-        
-        # Se nenhum atingir o threshold mas houver resultados, pega o melhor
-        if not relevant_chunks and scored_chunks:
-            relevant_chunks = [scored_chunks[0]]
+        # 1. Ordena decrescente por score de relevância
+        sorted_chunks = sorted(scored_chunks, key=lambda x: x.score, reverse=True)
 
-        # 2. Ordena decrescente por score de relevância
-        relevant_chunks.sort(key=lambda x: x.score, reverse=True)
+        # 2. Aplica corte dinâmico por curva de relevância (Elbow Cutoff)
+        relevant_chunks = self.apply_elbow_cutoff(sorted_chunks, min_score)
 
         selected_chunks: List[ScoredChunk] = []
         current_tokens = 0
@@ -50,7 +142,7 @@ class PromptCompressorService:
             block_tokens = self.chunking_service.count_tokens(block_text)
 
             if current_tokens + block_tokens > limit_tokens and selected_chunks:
-                # Atingiu o limite do TokenBudget
+                # Atingiu o limite do TokenBudget dinâmico
                 break
 
             selected_chunks.append(sc)
