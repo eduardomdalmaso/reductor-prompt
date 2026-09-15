@@ -11,11 +11,13 @@ Esta skill permite ao Gemini e a qualquer agente de IA consultar a base de conhe
 
 ## 🎯 Quando Ativar esta Skill
 - Quando o usuário fizer perguntas conceituais ou práticas sobre:
+  - **LLMs, RAG & Prompt Engineering**: *Hands-On Large Language Models* (O'Reilly 2024), *Designing Large Language Model Applications*, *Domain-Specific Small Language Models* (Manning), *Build a Large Language Model from Scratch*, *Prompt Engineering for LLMs*.
+  - **Visão Computacional & Deep Learning**: *Modern Computer Vision with PyTorch (2E)*, *Learning OpenCV 4 with Python*, *Computer and Machine Vision* (Davies).
   - **Python Avançado & Performance**: *High Performance Python*, *Learning Python*, *Python in a Nutshell*, *Think Python*.
   - **Data Engineering & Analytics**: *Python for Data Analysis*, *Python Polars: The Definitive Guide*, *Data Wrangling & Quality*, *Causal Inference*.
   - **Rust, Concorrência & Baixo Nível**: *Programming Rust*, *Rust Atomics and Locks*, *Async Rust*, *Effective Rust*, *Command-Line Rust*.
   - **DevOps, Arquitetura & Testes**: *Clean Architecture*, *Designing Data-Intensive Applications*, *Python for DevOps*, *Test-Driven Development (TDD)*.
-  - **Machine Learning**: *Machine Learning with Python Cookbook*.
+  - **Machine Learning**: *Machine Learning with Python Cookbook*, *Hands-On Machine Learning with Scikit-Learn and TensorFlow*.
 - Quando o usuário pedir: *"O que os livros dizem sobre X?"* ou *"Tenho o projeto X, o que desse livro pode ser otimizado no meu projeto?"*.
 
 ---
@@ -41,7 +43,12 @@ Caso precise executar via comando de terminal, use SEMPRE o Python do Conda:
 /home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py ask "<PERGUNTA_DO_USUARIO>" --only-context
 ```
 
-#### B. Para Análise Cruzada de Projeto:
+#### B. Para Consulta com Raciocínio Profundo (Chain-of-Thought):
+```bash
+/home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py ask "<PERGUNTA>" --deep
+```
+
+#### C. Para Análise Cruzada de Projeto:
 ```bash
 /home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py analyze \
   --project "<DESCRICAO_DO_PROJETO>" \
@@ -49,7 +56,7 @@ Caso precise executar via comando de terminal, use SEMPRE o Python do Conda:
   --provider ollama
 ```
 
-#### C. Para Listar Livros Indexados:
+#### D. Para Listar Livros Indexados:
 ```bash
 /home/hades/miniconda3/envs/reductor-prompt/bin/python /home/hades/Documents/ReductorPrompt/query.py list
 ```
@@ -63,3 +70,4 @@ Ao responder com base nos livros técnicos:
 2. **Citação Rastreável**: Sempre informe o nome do livro e capítulo/seção citados.
 3. **Exemplos Práticos**: Forneça exemplos de código limpos e idiomáticos.
 4. **Trade-offs**: Destaque possíveis gargalos de memória, latência ou complexidade alertados pelos autores.
+5. **Guia Completo**: Para detalhes e templates de prompts avançados (CoT, ToT, Few-Shot), consulte [PROMPT_OPTIMIZATION_AND_QUERY_GUIDE.md](file:///home/hades/Documents/ReductorPrompt/docs/PROMPT_OPTIMIZATION_AND_QUERY_GUIDE.md).

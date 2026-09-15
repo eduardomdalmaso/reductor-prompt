@@ -135,6 +135,85 @@ class EPUBDocumentLoader(IDocumentLoaderPort):
             raise IngestionException(os.path.basename(file_path), str(e))
 
 
+class IPYNBDocumentLoader(IDocumentLoaderPort):
+    """Carregador para Jupyter Notebooks (.ipynb) com extração de código, markdown, cálculos e saídas."""
+
+    def can_load(self, file_path: str) -> bool:
+        return Path(file_path).suffix.lower() == '.ipynb'
+
+    def load(self, file_path: str) -> List[Dict[str, Any]]:
+        import json
+        try:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                data = json.load(f)
+
+            cells = data.get("cells", [])
+            sections: List[Dict[str, Any]] = []
+            current_section_title = "Introdução"
+            current_buffer = []
+            section_idx = 1
+
+            for cell_num, cell in enumerate(cells, 1):
+                cell_type = cell.get("cell_type", "")
+                raw_source = cell.get("source", [])
+                source_text = "".join(raw_source) if isinstance(raw_source, list) else str(raw_source)
+                source_text = sanitize_text(source_text).strip()
+
+                if not source_text:
+                    continue
+
+                if cell_type == "markdown":
+                    # Detecta se é um título de seção
+                    header_match = re.match(r'^(#{1,3})\s+(.*)', source_text)
+                    if header_match and current_buffer:
+                        # Despeja buffer anterior
+                        sections.append({
+                            "text": "\n\n".join(current_buffer),
+                            "page_number": section_idx,
+                            "chapter": current_section_title
+                        })
+                        section_idx += 1
+                        current_buffer = []
+                        current_section_title = header_match.group(2).strip()
+                    current_buffer.append(source_text)
+
+                elif cell_type == "code":
+                    code_block = f"```python\n# Célula {cell_num} (Código):\n{source_text}\n```"
+                    
+                    # Captura saídas de texto/cálculos da célula se existirem
+                    outputs = cell.get("outputs", [])
+                    out_texts = []
+                    for out in outputs:
+                        if out.get("output_type") == "stream":
+                            st_text = "".join(out.get("text", []))
+                            if st_text.strip():
+                                out_texts.append(st_text.strip())
+                        elif out.get("output_type") in ("execute_result", "display_data"):
+                            data_dict = out.get("data", {})
+                            if "text/plain" in data_dict:
+                                res_text = "".join(data_dict["text/plain"])
+                                if res_text.strip():
+                                    out_texts.append(res_text.strip())
+
+                    if out_texts:
+                        formatted_out = "\n".join(out_texts)
+                        code_block += f"\n```\n# Resultado / Cálculos da Execução:\n{formatted_out}\n```"
+
+                    current_buffer.append(code_block)
+
+            # Despeja o último buffer
+            if current_buffer:
+                sections.append({
+                    "text": "\n\n".join(current_buffer),
+                    "page_number": section_idx,
+                    "chapter": current_section_title
+                })
+
+            return sections
+        except Exception as e:
+            raise IngestionException(os.path.basename(file_path), str(e))
+
+
 class CompositeDocumentLoader(IDocumentLoaderPort):
     """Orquestrador que seleciona o loader apropriado com base no formato."""
     
@@ -142,6 +221,7 @@ class CompositeDocumentLoader(IDocumentLoaderPort):
         self.loaders: List[IDocumentLoaderPort] = [
             PDFDocumentLoader(),
             EPUBDocumentLoader(),
+            IPYNBDocumentLoader(),
             TextAndMarkdownLoader()
         ]
 
@@ -154,5 +234,5 @@ class CompositeDocumentLoader(IDocumentLoaderPort):
                 return loader.load(file_path)
         raise IngestionException(
             os.path.basename(file_path), 
-            f"Formato não suportado. Suporta: .pdf, .epub, .txt, .md"
+            f"Formato não suportado. Suporta: .pdf, .epub, .ipynb, .txt, .md"
         )

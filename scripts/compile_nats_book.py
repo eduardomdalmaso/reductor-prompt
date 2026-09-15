@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 Compilador Oficial do NATS.io (Architecture, JetStream, Go Client, Edge Leaf Nodes)
@@ -18,7 +19,7 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-DB_DIR = "/home/hades/Documents/ReductorPrompt/database"
+DB_DIR = str(Path(__file__).resolve().parent.parent / "database")
 NATS_DOCS_DIR = "/tmp/nats_docs"
 
 

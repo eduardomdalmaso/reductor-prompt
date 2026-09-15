@@ -43,7 +43,7 @@ DATABASE_DIR = Path(__file__).resolve().parent.parent / "database"
 STORAGE_DIR = Path(__file__).resolve().parent.parent / "storage"
 REGISTRY_FILE = STORAGE_DIR / "indexed_books.json"
 
-SUPPORTED_EXTENSIONS = {'.pdf', '.epub', '.txt', '.md', '.markdown'}
+SUPPORTED_EXTENSIONS = {'.pdf', '.epub', '.ipynb', '.txt', '.md', '.markdown'}
 DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 (ReductorPrompt-Fetcher/2.0)"
 
 

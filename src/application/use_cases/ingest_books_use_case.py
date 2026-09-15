@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class IngestBooksUseCase(IIngestBooksUseCase):
     """Caso de uso para escanear a pasta database, processar e indexar livros com deduplicação."""
     
-    SUPPORTED_EXTENSIONS = {'.pdf', '.epub', '.txt', '.md', '.markdown'}
+    SUPPORTED_EXTENSIONS = {'.pdf', '.epub', '.ipynb', '.txt', '.md', '.markdown'}
 
     def __init__(
         self,

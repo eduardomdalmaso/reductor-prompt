@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 Compilador da Documentação Oficial do MinIO (github.com/minio/minio/tree/master/docs)
@@ -18,7 +19,7 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-DB_DIR = "/home/hades/Documents/ReductorPrompt/database"
+DB_DIR = str(Path(__file__).resolve().parent.parent / "database")
 MINIO_DOCS_DIR = "/tmp/minio_docs/docs"
 
 

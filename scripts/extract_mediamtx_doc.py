@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 MediaMTX Documentation Scraper & High-Quality PDF Generator.
@@ -30,7 +31,7 @@ from svglib.svglib import svg2rlg
 
 
 DOCS_TMP_DIR = "/tmp/mediamtx_repo"
-OUTPUT_PDF_PATH = "/home/hades/Documents/ReductorPrompt/database/mediamtx_documentation.pdf"
+OUTPUT_PDF_PATH = str(Path(__file__).resolve().parent.parent / "database" / "mediamtx_documentation.pdf")
 
 
 class NumberedCanvas(canvas.Canvas):

@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 Compilador de Guias Especializados em Go + Rust de Alta Performance para o ReductorPrompt.
@@ -22,7 +23,7 @@ from reportlab.platypus import (
 from reportlab.pdfgen import canvas
 
 
-DB_DIR = "/home/hades/Documents/ReductorPrompt/database"
+DB_DIR = str(Path(__file__).resolve().parent.parent / "database")
 
 
 class NumberedCanvas(canvas.Canvas):

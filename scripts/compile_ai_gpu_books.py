@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 Compilador de Documentações de IA & GPU para o ReductorPrompt Database:
@@ -23,7 +24,7 @@ from reportlab.platypus import (
 from reportlab.pdfgen import canvas
 
 
-DB_DIR = "/home/hades/Documents/ReductorPrompt/database"
+DB_DIR = str(Path(__file__).resolve().parent.parent / "database")
 TMP_DIR = "/tmp/ai_gpu_docs"
 
 

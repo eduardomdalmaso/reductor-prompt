@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 Compilador das Especificações Oficiais do ONVIF (github.com/onvif/specs/tree/development/doc)
@@ -18,7 +19,7 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-DB_DIR = "/home/hades/Documents/ReductorPrompt/database"
+DB_DIR = str(Path(__file__).resolve().parent.parent / "database")
 ONVIF_DOC_DIR = "/tmp/onvif_specs/doc"
 
 

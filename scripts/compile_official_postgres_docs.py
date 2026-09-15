@@ -1,3 +1,4 @@
+from pathlib import Path
 #!/usr/bin/env python3
 """
 Compilador da Documentação Oficial do PostgreSQL (github.com/postgres/postgres/tree/master/doc)
@@ -18,7 +19,7 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-DB_DIR = "/home/hades/Documents/ReductorPrompt/database"
+DB_DIR = str(Path(__file__).resolve().parent.parent / "database")
 SGML_DIR = "/tmp/pg_docs/doc/src/sgml"
 
 
