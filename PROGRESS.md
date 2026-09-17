@@ -9,10 +9,10 @@
 | Componente | Status | Detalhes |
 | :--- | :--- | :--- |
 | **Runtime & Ambiente** | 🟢 Operacional | Python 3.11 (`reductor-prompt` Conda env) |
-| **Vector Store (ChromaDB)** | 🟢 Operacional | 194 livros técnicos indexados (Fallback persistente local ativo) |
+| **Vector Store (ChromaDB)** | 🟢 Operacional | 194 livros indexados + Coleção `agent_episodic_brain` ativa |
 | **Segurança & Anti-SSRF** | 🟢 100% Coberto | Validação de IP público, chaves em headers, CORS restrito, Auth Bearer/X-API-Key |
-| **Suíte de Testes** | 🟢 15/15 Passando | Testes unitários, de arquitetura, segurança e adaptive budgeting |
-| **Harness Health Check** | 🟢 Operacional | Executável via `python scripts/harness_check.py` (1.2s) |
+| **Suíte de Testes** | 🟢 20/20 Passando | Testes unitários, de arquitetura, segurança, adaptive budgeting, memória episódica e hardware advisor |
+| **Harness Health Check** | 🟢 Operacional | Executável via `python scripts/harness_check.py` (0.8s) |
 
 ---
 
@@ -44,6 +44,19 @@
    - Classificação automática de complexidade da query (`factual` 400-800 tokens, `conceptual` 1200-1800 tokens, `architectural` 3500-4500 tokens).
    - Implementação do algoritmo *Elbow Cutoff* para eliminar cauda de ruído quando a similaridade relativa despenca (>35% ou degrau >0.22), eliminando o efeito *Lost in the Middle*.
 
+6. **🧠 Memória Episódica & Cérebro Coletivo (Continuous Knowledge Distillation)**:
+   - Implementação da coleção persistente `agent_episodic_brain` no ChromaDB.
+   - *Semantic Memory Hit*: Resposta instantânea (<2ms) e zero consumo de tokens para perguntas recorrentes com similaridade cosseno >= 88%.
+   - Auto-destilação: Toda consulta inédita sintetizada pela LLM é salva como novo aprendizado no cérebro.
+   - Novas ferramentas MCP: `teach_brain`, `consult_brain` e `validate_reasoning`.
+   - Subcomando CLI: `python query.py brain list` e `python query.py brain teach`.
+
+7. **🔮 Oráculo de Recursos & Telemetria Adaptativa (Hardware & Budget Advisor)**:
+   - Detecção em tempo real de hardware (NVIDIA RTX 5090 32GB VRAM detectada) e provedores ativos (Ollama local vs Gemini Cloud).
+   - Perfilamento inteligente de parâmetros ideais (`max_tokens`, `deep_reasoning`, expansão de queries e estratégia de custo).
+   - Ferramenta MCP: `get_runtime_budget_advice()` para auto-calibração autônoma de agentes (Gemini/Claude).
+   - Endpoint REST `GET /api/v1/hardware/budget-advice` e subcomando CLI `python query.py advisor`.
+
 ---
 
 ## 🛠️ Comandos Rápidos do Harness
@@ -52,12 +65,16 @@
 # 1. Diagnóstico completo do ambiente e testes (1 segundo)
 python scripts/harness_check.py
 
-# 2. Ingestão e sincronização de novos livros
-python query.py ingest
+# 2. Oráculo de Recursos e Telemetria de Hardware
+python query.py advisor
 
-# 3. Consulta semântica com redução extrema (>95% economia)
+# 3. Consultar o Cérebro Coletivo e Livros
 python query.py "sua pergunta"
 
-# 4. Execução da suíte de testes
+# 4. Gerenciar o Cérebro Episódico
+python query.py brain list
+python query.py brain teach "pergunta" "resposta"
+
+# 5. Execução da suíte de testes
 pytest -v
 ```

@@ -17,12 +17,15 @@ from src.application.dtos.query_dtos import (
 from src.adapters.outbound.loaders.document_loaders import CompositeDocumentLoader
 from src.adapters.outbound.embeddings.embedding_adapters import ResilientEmbeddingAdapter
 from src.adapters.outbound.vector_store.chroma_vector_store import ChromaVectorStoreAdapter
+from src.adapters.outbound.memory.chroma_episodic_memory import ChromaEpisodicMemoryAdapter
 from src.adapters.outbound.storage.file_book_repository import FileBookRepositoryAdapter
 from src.adapters.outbound.llm.llm_adapters import LLMFactory
 
 from src.application.use_cases.ingest_books_use_case import IngestBooksUseCase
 from src.application.use_cases.query_books_use_case import QueryBooksUseCase
 from src.application.use_cases.analyze_project_use_case import AnalyzeProjectUseCase
+from src.application.use_cases.manage_brain_use_case import ManageBrainUseCase
+from src.application.services.hardware_budget_advisor_service import hardware_advisor_service
 from src.application.services.system_telemetry_service import telemetry_service
 from src.application.services.llm_manager_service import llm_manager_service
 from src.config.settings import settings
@@ -98,6 +101,13 @@ class MCPCallDTO(BaseModel):
 class FetchBooksRequestDTO(BaseModel):
     urls: str = Field(..., description="URLs separadas por vírgula ou repositórios GitHub")
     ingest_after: bool = Field(default=False, description="Executar indexação vetorial imediatamente após download")
+
+
+class TeachBrainDTO(BaseModel):
+    query: str = Field(..., description="Pergunta ou problema chave")
+    insight: str = Field(..., description="Resposta lapidada ou código canônico")
+    topic: Optional[str] = Field(default=None, description="Tópico ou categoria do conhecimento")
+
 
 
 # ==========================================
@@ -223,19 +233,23 @@ async def query_knowledge(req: QueryRequestDTO):
         def _execute():
             embedding_port = ResilientEmbeddingAdapter()
             vector_store = ChromaVectorStoreAdapter()
+            memory_port = ChromaEpisodicMemoryAdapter()
             llm_port = LLMFactory.create(effective_provider)
             
             use_case = QueryBooksUseCase(
                 embedding_port=embedding_port,
                 vector_store=vector_store,
-                llm_port=llm_port
+                llm_port=llm_port,
+                memory_port=memory_port
             )
             
             return use_case.execute(
                 query=req.query,
                 book_filter=req.book_filter,
                 max_tokens=req.max_tokens,
-                only_context=effective_only_context
+                only_context=effective_only_context,
+                use_brain=True,
+                auto_learn=True
             )
 
         res = await asyncio.to_thread(_execute)
@@ -381,8 +395,73 @@ async def unload_llm_vram(req: UnloadVRAMDTO):
     return await asyncio.to_thread(llm_manager_service.unload_vram, req.model_name)
 
 
+@app.get("/api/v1/hardware/budget-advice")
+async def get_hardware_budget_advice(provider: Optional[str] = None):
+    """Retorna o diagnóstico de hardware (GPU/VRAM/CPU) e orientações de orçamento de tokens."""
+    return await asyncio.to_thread(hardware_advisor_service.get_runtime_advice, provider_override=provider)
+
+
 # ==========================================
-# Rotas do Hub de Ferramentas MCP
+# Rotas do Cérebro Episódico (Knowledge Distillation)
+# ==========================================
+@app.get("/api/v1/brain/episodes")
+async def list_brain_episodes(limit: int = 50, filter: Optional[str] = None):
+    """Lista conhecimentos e memórias destiladas no Cérebro Coletivo."""
+    def _fetch():
+        embedding_port = ResilientEmbeddingAdapter()
+        memory_port = ChromaEpisodicMemoryAdapter()
+        use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
+        return use_case.list_knowledge(limit=limit, query_filter=filter)
+
+    episodes = await asyncio.to_thread(_fetch)
+    return {"episodes": episodes, "count": len(episodes)}
+
+
+@app.post("/api/v1/brain/teach", dependencies=[Depends(verify_auth)])
+async def teach_brain_endpoint(req: TeachBrainDTO):
+    """Ensina diretamente um novo conhecimento ao Cérebro Coletivo."""
+    def _teach():
+        embedding_port = ResilientEmbeddingAdapter()
+        memory_port = ChromaEpisodicMemoryAdapter()
+        use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
+        return use_case.teach_brain(query=req.query, insight=req.insight, topic=req.topic)
+
+    episode = await asyncio.to_thread(_teach)
+    telemetry_service.log("INFO", "Brain", f"Novo conhecimento ensinado ao cérebro: [ID: {episode.id}]")
+    return {"message": "Conhecimento gravado com sucesso no cérebro.", "episode": episode.to_dict()}
+
+
+@app.delete("/api/v1/brain/episodes/{episode_id}", dependencies=[Depends(verify_auth)])
+async def delete_brain_episode(episode_id: str):
+    """Deleta um episódio específico do cérebro."""
+    def _del():
+        embedding_port = ResilientEmbeddingAdapter()
+        memory_port = ChromaEpisodicMemoryAdapter()
+        use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
+        return use_case.delete_knowledge(episode_id)
+
+    deleted = await asyncio.to_thread(_del)
+    if not deleted:
+        raise HTTPException(status_code=404, detail=f"Memória '{episode_id}' não encontrada.")
+    return {"message": f"Memória '{episode_id}' removida com sucesso."}
+
+
+@app.delete("/api/v1/brain/clear", dependencies=[Depends(verify_auth)])
+async def clear_brain_endpoint():
+    """Limpa toda a memória episódica do cérebro."""
+    def _clear():
+        embedding_port = ResilientEmbeddingAdapter()
+        memory_port = ChromaEpisodicMemoryAdapter()
+        use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
+        use_case.clear_brain()
+
+    await asyncio.to_thread(_clear)
+    telemetry_service.log("WARNING", "Brain", "Cérebro episódico resetado.")
+    return {"message": "Cérebro episódico resetado com sucesso."}
+
+
+# ==========================================
+# Hub MCP (Model Context Protocol) para Agentes
 # ==========================================
 @app.get("/api/v1/mcp/tools")
 async def get_mcp_tools():
@@ -393,20 +472,58 @@ async def get_mcp_tools():
         "tools": [
             {
                 "name": "search_books",
-                "description": "Busca cirurgicamente nos livros técnicos indexados retornando apenas o contexto comprimido (>95% de economia de tokens).",
+                "description": "Busca cirurgicamente nos livros técnicos indexados e no cérebro episódico (>95% economia de tokens).",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {"type": "string", "description": "Pergunta ou conceito a pesquisar"},
                         "book_filter": {"type": "string", "description": "Filtro por título de livro específico (opcional)"},
-                        "max_tokens": {"type": "integer", "default": 2000, "description": "Limite máximo de tokens do contexto"}
+                        "max_tokens": {"type": "integer", "default": 2000, "description": "Limite máximo de tokens do contexto"},
+                        "use_local_llm": {"type": "boolean", "default": False, "description": "Se True, sintetiza resposta com LLM"}
                     },
                     "required": ["query"]
                 }
             },
             {
+                "name": "teach_brain",
+                "description": "Ensina e grava um aprendizado/solução diretamente no Cérebro Coletivo.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Pergunta ou problema chave"},
+                        "insight": {"type": "string", "description": "Resposta lapidada ou código canônico"},
+                        "topic": {"type": "string", "description": "Tópico/Categoria (opcional)"}
+                    },
+                    "required": ["query", "insight"]
+                }
+            },
+            {
+                "name": "consult_brain",
+                "description": "Consulta exclusivamente a Memória Episódica do Cérebro Coletivo (<2ms se já resolvida).",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Dúvida a pesquisar na memória"},
+                        "min_similarity": {"type": "number", "default": 0.85, "description": "Limiar de similaridade"}
+                    },
+                    "required": ["query"]
+                }
+            },
+            {
+                "name": "validate_reasoning",
+                "description": "Validação Cruzada de Raciocínio (Peer Review Cognitivo entre Hipótese do Agente e Livros).",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "hypothesis_or_plan": {"type": "string", "description": "Hipótese ou plano do agente"},
+                        "topic": {"type": "string", "description": "Tópico de foco (opcional)"}
+                    },
+                    "required": ["hypothesis_or_plan"]
+                }
+            },
+            {
                 "name": "analyze_project_with_books",
-                "description": "Realiza uma Análise Cruzada entre a arquitetura/código do seu projeto e as melhores práticas dos livros com 5 pilares DDD.",
+                "description": "Realiza uma Análise Cruzada entre a arquitetura/código do seu projeto e as melhores práticas dos livros.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -428,6 +545,16 @@ async def get_mcp_tools():
                         "limit": {"type": "integer", "default": 30, "description": "Limite máximo de livros retornados"}
                     }
                 }
+            },
+            {
+                "name": "get_runtime_budget_advice",
+                "description": "Oráculo de Recursos & Telemetria Adaptativa. Inspeciona hardware local (GPU/VRAM) ou cota de API cloud e orienta parâmetros ótimos.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "provider": {"type": "string", "description": "Provedor para simular ('ollama' ou 'gemini')"}
+                    }
+                }
             }
         ]
     }
@@ -445,6 +572,12 @@ async def call_mcp_tool(req: MCPCallDTO):
         result = await asyncio.to_thread(list_indexed_books, query_filter=q_filter, limit=limit)
         return {"tool": req.tool_name, "result": result}
         
+    elif req.tool_name == "get_runtime_budget_advice":
+        from src.adapters.inbound.mcp.server import get_runtime_budget_advice
+        provider = req.arguments.get("provider")
+        result = await asyncio.to_thread(get_runtime_budget_advice, provider=provider)
+        return {"tool": req.tool_name, "result": result}
+
     elif req.tool_name == "search_books":
         from src.adapters.inbound.mcp.server import search_books
         query = req.arguments.get("query", "")
@@ -452,7 +585,42 @@ async def call_mcp_tool(req: MCPCallDTO):
             raise HTTPException(status_code=400, detail="Argument 'query' is required.")
         book_filter = req.arguments.get("book_filter")
         max_tokens = int(req.arguments.get("max_tokens", 2000))
-        output = await asyncio.to_thread(search_books, query=query, book_filter=book_filter, max_tokens=max_tokens)
+        use_llm = bool(req.arguments.get("use_local_llm", False))
+        output = await asyncio.to_thread(
+            search_books, 
+            query=query, 
+            book_filter=book_filter, 
+            max_tokens=max_tokens,
+            use_local_llm=use_llm
+        )
+        return {"tool": req.tool_name, "result": output}
+
+    elif req.tool_name == "teach_brain":
+        from src.adapters.inbound.mcp.server import teach_brain
+        query = req.arguments.get("query", "")
+        insight = req.arguments.get("insight", "")
+        topic = req.arguments.get("topic")
+        if not query or not insight:
+            raise HTTPException(status_code=400, detail="Arguments 'query' and 'insight' are required.")
+        output = await asyncio.to_thread(teach_brain, query=query, insight=insight, topic=topic)
+        return {"tool": req.tool_name, "result": output}
+
+    elif req.tool_name == "consult_brain":
+        from src.adapters.inbound.mcp.server import consult_brain
+        query = req.arguments.get("query", "")
+        if not query:
+            raise HTTPException(status_code=400, detail="Argument 'query' is required.")
+        sim = float(req.arguments.get("min_similarity", 0.85))
+        output = await asyncio.to_thread(consult_brain, query=query, min_similarity=sim)
+        return {"tool": req.tool_name, "result": output}
+
+    elif req.tool_name == "validate_reasoning":
+        from src.adapters.inbound.mcp.server import validate_reasoning
+        hypo = req.arguments.get("hypothesis_or_plan", "")
+        if not hypo:
+            raise HTTPException(status_code=400, detail="Argument 'hypothesis_or_plan' is required.")
+        topic = req.arguments.get("topic")
+        output = await asyncio.to_thread(validate_reasoning, hypothesis_or_plan=hypo, topic=topic)
         return {"tool": req.tool_name, "result": output}
 
     elif req.tool_name == "analyze_project_with_books":
@@ -474,3 +642,5 @@ async def call_mcp_tool(req: MCPCallDTO):
 
     else:
         raise HTTPException(status_code=404, detail=f"Tool '{req.tool_name}' not found.")
+
+

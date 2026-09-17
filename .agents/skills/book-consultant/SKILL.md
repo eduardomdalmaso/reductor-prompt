@@ -24,11 +24,21 @@ Esta skill permite ao Gemini e a qualquer agente de IA consultar a base de conhe
 
 ## 🚀 Como o Gemini Acessa o Projeto (2 Métodos)
 
-### Método 1: Via MCP Tools (Mais Rápido e Direto - Milissegundos) 🌟
+### Método 1: Via MCP Tools (Mais Rápido e Direto) 🌟
 Se as ferramentas MCP estiverem ativas, chame diretamente:
-- **`search_books(query="...", book_filter="...", max_tokens=2000)`**: Retorna o extrato enxuto dos livros com scores de similaridade e capítulos.
+- **`get_runtime_budget_advice(provider="ollama")`**:
+  - **Oráculo de Recursos & Telemetria Adaptativa**: Inspeciona a GPU/VRAM local ou cota de API cloud e retorna os parâmetros ideais (`max_tokens`, `deep_reasoning`, expansão de busca) para o agente se auto-calibrar.
+- **`search_books(query="...", book_filter="...", max_tokens=2000, use_local_llm=False)`**: 
+  - Com `use_local_llm=False` (padrão): Retorna os trechos puros dos livros com scores e capítulos (>95% economia de tokens).
+  - Com `use_local_llm=True`: Aciona a LLM local (Ollama) ou API (Gemini) para sintetizar a resposta com base nos livros.
+- **`teach_brain(query="...", insight="...", topic="...")`**: Grava aprendizados e soluções canônicas diretamente no Cérebro Coletivo.
+- **`consult_brain(query="...")`**: Consulta rápida exclusiva à memória episódica (<2ms se já resolvida).
+- **`validate_reasoning(hypothesis_or_plan="...", topic="...", provider="ollama")`**:
+  - Submete a hipótese, ideia ou plano de código do agente para **Peer Review Cognitivo**.
+  - A LLM + livros confrontam a proposta do agente, avaliando se o raciocínio é convergente, se é melhor/pior ou se a literatura propõe alternativas superiores.
 - **`analyze_project_with_books(project_description="...", topic="...")`**: Gera a análise cruzada comparando a arquitetura do usuário com a literatura.
 - **`list_indexed_books(query_filter="...", limit=30)`**: Retorna a lista de todas as obras disponíveis no banco vetorial.
+
 
 ---
 
@@ -67,4 +77,4 @@ Ao responder com base nos livros técnicos:
 2. **Citação Rastreável**: Sempre informe o nome do livro e capítulo/seção citados.
 3. **Exemplos Práticos**: Forneça exemplos de código limpos e idiomáticos.
 4. **Trade-offs**: Destaque possíveis gargalos de memória, latência ou complexidade alertados pelos autores.
-5. **Guia Completo**: Para detalhes e templates de prompts avançados (CoT, ToT, Few-Shot), consulte [PROMPT_OPTIMIZATION_AND_QUERY_GUIDE.md](file:///home/hades/Documents/ReductorPrompt/docs/PROMPT_OPTIMIZATION_AND_QUERY_GUIDE.md).
+5. **Guia Completo**: Para detalhes e templates de prompts avançados (CoT, ToT, Few-Shot), consulte [PROMPT_OPTIMIZATION_AND_QUERY_GUIDE.md](docs/PROMPT_OPTIMIZATION_AND_QUERY_GUIDE.md).

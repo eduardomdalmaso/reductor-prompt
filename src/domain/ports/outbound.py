@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 from src.domain.entities.book import Book, BookChunk, ScoredChunk
+from src.domain.entities.memory import MemoryEpisode
 
 
 class IDocumentLoaderPort(ABC):
@@ -89,3 +90,38 @@ class IBookRepositoryPort(ABC):
     def save_book_metadata(self, book: Book) -> None:
         """Persiste metadados do livro após ingestão."""
         pass
+
+
+class IEpisodicMemoryPort(ABC):
+    """Porta para armazenamento e busca na Memória Episódica (Cérebro Coletivo)."""
+    
+    @abstractmethod
+    def save_episode(self, episode: MemoryEpisode, embedding: List[float]) -> None:
+        """Salva uma nova memória episódica associada ao seu vetor semântico."""
+        pass
+
+    @abstractmethod
+    def search_episodes(
+        self, 
+        query_embedding: List[float], 
+        min_similarity: float = 0.88, 
+        top_k: int = 1
+    ) -> List[MemoryEpisode]:
+        """Busca episódios semelhantes no cérebro por limiar de similaridade cosseno."""
+        pass
+
+    @abstractmethod
+    def list_episodes(self, limit: int = 50, query_filter: Optional[str] = None) -> List[MemoryEpisode]:
+        """Lista episódios armazenados no cérebro."""
+        pass
+
+    @abstractmethod
+    def delete_episode(self, episode_id: str) -> bool:
+        """Remove uma memória episódica pelo ID."""
+        pass
+
+    @abstractmethod
+    def clear_all(self) -> None:
+        """Limpa toda a memória episódica do cérebro."""
+        pass
+

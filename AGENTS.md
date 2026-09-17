@@ -46,3 +46,13 @@
    - Para problemas complexos ou de ponta a ponta, **não restrinja a busca a um único livro** (`book_filter=None`).
    - O pipeline vetorial realiza busca global com fusão RRF, permitindo que a LLM sintetize soluções cruzando múltiplos autores (ex: rede em Go + decodificação em Rust + inferência PyTorch).
    - Sempre cite as fontes de cada camada da solução final.
+
+9. **🧠 Triangulação Cognitiva & Validação de Raciocínio (Peer Review com Livros e LLM)**:
+   - O Agente de IA pode e deve **validar seu próprio pensamento** consultando a biblioteca técnica E acionando a LLM local (Ollama) ou API (Gemini).
+   - **Fluxo de Validação**: Submeta sua hipótese/plano técnico para a ferramenta MCP `validate_reasoning` ou `search_books(query="...", use_local_llm=True)` ou execute `python query.py analyze --project "..." --topic "..."`.
+   - **Julgamento Crítico**: Compare ativamente o raciocínio gerado com o seu próprio para avaliar se sua proposta é:
+     - 🎯 **Convergente** (alinhada aos padrões dos livros).
+     - 🚀 **Superior** (otimizada para o contexto específico do usuário).
+     - ⚠️ **Inferior ou com Riscos** (quando os livros alertam sobre trade-offs, gargalos ou anti-patterns que você não havia considerado).
+   - Sintetize essa comparação com transparência para o usuário.
+
