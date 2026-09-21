@@ -19,11 +19,18 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 try:
     from rich.console import Console
     from rich.table import Table
     from rich.panel import Panel
-    console = Console()
+    console = Console(force_terminal=True)
 except ImportError:
     console = None
 
@@ -73,12 +80,8 @@ def check_security_and_config():
 
 def check_test_suite():
     """Executa a suíte de testes pytest de forma concisa."""
-    pytest_bin = str(Path(sys.executable).parent / "pytest")
-    if not os.path.exists(pytest_bin):
-        pytest_bin = "pytest"
-        
     start = time.time()
-    result = subprocess.run([pytest_bin, "-q"], capture_output=True, text=True, cwd=str(ROOT_DIR))
+    result = subprocess.run([sys.executable, "-m", "pytest", "-q"], capture_output=True, text=True, cwd=str(ROOT_DIR))
     elapsed = time.time() - start
     
     if result.returncode == 0:
