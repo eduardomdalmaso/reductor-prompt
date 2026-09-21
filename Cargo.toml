@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "crates/reductor-rs",
+]
+resolver = "2"

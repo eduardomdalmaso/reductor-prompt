@@ -58,5 +58,10 @@ dist/
 .vite/
 .hypothesis/
 npm-debug.log*
+
+# 9. Artefatos de Compilação do Rust / Cargo
+target/
+**/*.rs.bk
+Cargo.lock
 yarn-debug.log*
 yarn-error.log*
