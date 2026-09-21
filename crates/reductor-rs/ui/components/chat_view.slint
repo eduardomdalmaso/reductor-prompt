@@ -1,6 +1,11 @@
 import { ScrollView } from "std-widgets.slint";
 import { Theme } from "../theme/palette.slint";
 
+export struct CitationItem {
+    title: string,
+    score: string,
+}
+
 export component CitationPill inherits Rectangle {
     in-out property <string> title: "";
     in-out property <string> score: "89%";
@@ -26,6 +31,7 @@ export component ChatView inherits Rectangle {
     in-out property <string> last_query: "";
     in-out property <string> response_text: "Pronto para consultas. Digite sua dúvida na barra inferior para auditar sua arquitetura com a biblioteca de livros.";
     in-out property <bool> is_searching: false;
+    in-out property <[CitationItem]> citations: [];
     callback copy_response_clicked(string);
 
     background: Theme.background;
@@ -34,7 +40,6 @@ export component ChatView inherits Rectangle {
         padding: 20px;
         spacing: 12px;
 
-        // Bloco Unificado: Pergunta (Topo) + Resposta dos Livros (Embaixo)
         Rectangle {
             vertical-stretch: 1;
             background: Theme.surface;
@@ -47,7 +52,6 @@ export component ChatView inherits Rectangle {
                     padding: 24px;
                     spacing: 18px;
 
-                    // 1. Pergunta Técnica no Topo do Bloco
                     if last_query != "" : VerticalLayout {
                         spacing: 6px;
                         HorizontalLayout {
@@ -61,10 +65,8 @@ export component ChatView inherits Rectangle {
                         }
                     }
 
-                    // Linha Divisória
                     if last_query != "" : Rectangle { height: 1px; background: Theme.border; }
 
-                    // 2. Diagnóstico e Resposta da IA Embaixo
                     VerticalLayout {
                         spacing: 8px;
                         HorizontalLayout {
@@ -96,14 +98,12 @@ export component ChatView inherits Rectangle {
                         }
                     }
 
-                    // 3. Fontes Auditadas Embutidas no Rodapé da Resposta
-                    if !is_searching && last_query != "" : VerticalLayout {
+                    if !is_searching && last_query != "" && citations.length > 0 : VerticalLayout {
                         spacing: 8px;
                         Text { text: "EVIDÊNCIAS & FONTES CONSULTADAS:"; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; color: Theme.text-dim; }
                         HorizontalLayout {
                             spacing: 8px; alignment: start;
-                            CitationPill { title: "Biblioteca Reductor (RRF Fusão)"; score: "97%"; }
-                            CitationPill { title: "Indexed Technical Books"; score: "94%"; }
+                            for c in citations : CitationPill { title: c.title; score: c.score; }
                         }
                     }
                 }

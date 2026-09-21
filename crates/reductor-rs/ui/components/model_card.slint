@@ -4,10 +4,10 @@ export component ModelCard inherits Rectangle {
     in-out property <string> model_name: "qwen2.5:14b";
     in-out property <string> model_tag: "Raciocínio Técnico & RAG";
     in-out property <string> size_text: "9.0 GB • VRAM";
-    in-out property <bool> is_active: true;
-    in-out property <bool> is_downloaded: true;
-    callback select_clicked();
-    callback delete_clicked();
+    in-out property <bool> is_installed: false;
+    in-out property <bool> is_active: false;
+    in-out property <bool> is_downloading: false;
+    callback action_clicked();
 
     height: 52px;
     background: Theme.surface-elevated;
@@ -21,14 +21,14 @@ export component ModelCard inherits Rectangle {
         spacing: 12px;
         alignment: space-between;
 
-        // Esquerda: Status + Nome + Tag
+        // Esquerda: Indicador + Nome + Tag
         HorizontalLayout {
             spacing: 10px;
             VerticalLayout {
                 alignment: center;
                 Rectangle {
                     width: 8px; height: 8px; border-radius: 4px;
-                    background: is_active ? Theme.status-success : (is_downloaded ? Theme.text-dim : Theme.status-warning);
+                    background: is_active ? Theme.accent-primary : (is_installed ? Theme.status-success : Theme.text-dim);
                 }
             }
             VerticalLayout {
@@ -47,7 +47,7 @@ export component ModelCard inherits Rectangle {
             }
         }
 
-        // Direita: Tamanho + Botão Ação
+        // Direita: VRAM + Botão Inteligente (Baixar ou Ativar)
         HorizontalLayout {
             spacing: 12px;
             VerticalLayout {
@@ -58,19 +58,23 @@ export component ModelCard inherits Rectangle {
             VerticalLayout {
                 alignment: center;
                 Rectangle {
-                    width: 80px; height: 28px; border-radius: 5px;
-                    background: is_active ? #00ff9d1a : (act_touch.has-hover ? Theme.accent-primary : Theme.surface-input);
+                    width: 96px; height: 28px; border-radius: 5px;
+                    background: is_active ? #ff5e3a22 : (is_installed ? #00ff9d1a : (act_touch.has-hover ? Theme.accent-hover : Theme.accent-primary));
                     border-width: 1px;
-                    border-color: is_active ? #00ff9d44 : (act_touch.has-hover ? Theme.accent-hover : Theme.border);
+                    border-color: is_active ? #ff5e3a66 : (is_installed ? #00ff9d44 : Theme.accent-primary);
                     animate background { duration: 100ms; }
 
                     Text {
-                        text: is_active ? "EM USO" : "ATIVAR";
+                        text: is_downloading ? "BAIXANDO..." : (is_active ? "ATIVO" : (is_installed ? "INSTALADO" : "⬇ BAIXAR"));
                         font-size: 10px; font-weight: 800;
-                        color: is_active ? Theme.status-success : (act_touch.has-hover ? #ffffff : Theme.text-secondary);
+                        color: is_downloading ? #ffaa00 : (is_active ? Theme.accent-primary : (is_installed ? Theme.status-success : #ffffff));
                         horizontal-alignment: center; vertical-alignment: center;
                     }
-                    act_touch := TouchArea { clicked => { select_clicked(); } }
+                    act_touch := TouchArea {
+                        clicked => {
+                            root.action_clicked();
+                        }
+                    }
                 }
             }
         }

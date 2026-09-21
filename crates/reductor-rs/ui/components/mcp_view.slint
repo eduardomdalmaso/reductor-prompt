@@ -6,7 +6,7 @@ export { TokenItem }
 
 export component McpView inherits Rectangle {
     in-out property <[TokenItem]> tokens: [];
-    in-out property <string> active_token: "rdk_live_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+    in-out property <string> active_token: "";
     callback generate_token(string);
     callback copy_token(string);
     callback delete_token(string);

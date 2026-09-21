@@ -2,12 +2,12 @@ import { Theme } from "theme/palette.slint";
 import { LoginCard } from "components/login_card.slint";
 import { HeaderBar } from "components/header_bar.slint";
 import { SidebarNav } from "components/sidebar_nav.slint";
-import { PageRouter, DocItem, TokenItem, ModelItem, HistoryItem } from "components/page_router.slint";
+import { PageRouter, DocItem, TokenItem, ModelItem, ProviderItem, HistoryItem, CitationItem } from "components/page_router.slint";
 import { DocModal } from "components/doc_modal.slint";
 import { IngestModal } from "components/ingest_modal.slint";
 import { GnomeCalendar } from "components/gnome_calendar.slint";
 
-export { DocItem, TokenItem, ModelItem, HistoryItem }
+export { DocItem, TokenItem, ModelItem, ProviderItem, HistoryItem, CitationItem }
 
 export component AppWindow inherits Window {
     title: "ReductorPrompt - Local AI & Knowledge Engine";
@@ -21,36 +21,25 @@ export component AppWindow inherits Window {
     in-out property <bool> is_searching: false; in-out property <bool> is_sidebar_open: true; in-out property <string> current_page: "cockpit";
     in-out property <bool> is_modal_open: false; in-out property <string> modal_title: ""; in-out property <string> modal_format: ""; in-out property <string> modal_meta: ""; in-out property <string> modal_preview: "";
 
-    // Calendário & Ingestão
     in-out property <bool> is_calendar_open: false; in-out property <bool> is_ingesting: false; in-out property <string> ingest_filename: "";
     in-out property <string> ingest_step: ""; in-out property <float> ingest_progress: 0.0; in-out property <string> ingest_log: ""; in-out property <bool> ingest_finished: false;
 
-    // Modelos Dinâmicos (com fallbacks para preview no slint-viewer)
-    in-out property <[DocItem]> docs_data: [
-        { id: "1", title: "Rust Atomics and Locks", format_type: "PDF", author: "Mara Bos • 242 Chunks", chunks_count: "242 Chunks", meta: "Rust Concurrency", preview: "Documento: Rust Atomics and Locks\nAutor: Mara Bos\n242 Chunks indexados." },
-        { id: "2", title: "Designing Data-Intensive Applications", format_type: "PDF", author: "Martin Kleppmann • 601 Chunks", chunks_count: "601 Chunks", meta: "Distributed Systems", preview: "Documento: Designing Data-Intensive Applications\nAutor: Martin Kleppmann" },
-        { id: "3", title: "Learning Domain-Driven Design", format_type: "PDF", author: "Vlad Khononov • 326 Chunks", chunks_count: "326 Chunks", meta: "DDD Architecture", preview: "Documento: Learning Domain-Driven Design\nAutor: Vlad Khononov" },
-        { id: "4", title: "Hands-On Large Language Models", format_type: "PDF", author: "Jay Alammar • 518 Chunks", chunks_count: "518 Chunks", meta: "GenAI & LLMs", preview: "Documento: Hands-On Large Language Models\nAutor: Jay Alammar" }
-    ];
-    in-out property <[TokenItem]> tokens_data: [
-        { id: "tok_1", project_name: "Antigravity IDE Agent", token: "rdk_live_7f8a9b0c1d2e3f4a5b6c7d8e", token_mask: "rdk_live_7f8a...3f4a", created_at: "Hoje 16:30", is_active: true },
-        { id: "tok_2", project_name: "Cursor AI Subagent", token: "rdk_live_1a2b3c4d5e6f7a8b9c0d1e2f", token_mask: "rdk_live_1a2b...9c0d", created_at: "Hoje 14:15", is_active: true }
-    ];
-    in-out property <string> active_mcp_token_val: "rdk_live_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-    in-out property <[ModelItem]> local_models_data: [
-        { name: "nomic-embed-text:latest", tag: "Embeddings 768d", size_text: "0.5 GB • VRAM", is_active: true },
-        { name: "qwen2.5:14b", tag: "Raciocínio & RAG", size_text: "9.0 GB • VRAM", is_active: true },
-        { name: "qwen2.5-coder:14b", tag: "Auditoria de Código", size_text: "9.0 GB • VRAM", is_active: true }
-    ];
-    in-out property <string> gpu_status_val: "● Ollama RTX 5090 Operacional"; in-out property <[HistoryItem]> history_data: [];
-    in-out property <string> total_chunks_counter: "15.521 Chunks"; in-out property <string> kpi_tokens_saved_val: "0.0%"; in-out property <string> kpi_tokens_saved_sub_val: "0 tokens evitados";
+    // Modelos Dinâmicos Livres de Mock
+    in-out property <[DocItem]> docs_data: [];
+    in-out property <[TokenItem]> tokens_data: [];
+    in-out property <string> active_mcp_token_val: "";
+    in-out property <[ModelItem]> local_models_data: [];
+    in-out property <[ProviderItem]> cloud_providers_data: [];
+    in-out property <[CitationItem]> citations_data: [];
+    in-out property <string> gpu_status_val: "● Verificando Ollama..."; in-out property <[HistoryItem]> history_data: [];
+    in-out property <string> total_chunks_counter: "0 Chunks"; in-out property <string> kpi_tokens_saved_val: "0.0%"; in-out property <string> kpi_tokens_saved_sub_val: "0 tokens evitados";
     in-out property <string> kpi_total_queries_val: "0"; in-out property <string> kpi_avg_latency_val: "0ms"; in-out property <string> kpi_saved_cost_val: "$0.00";
-    in-out property <float> compression_ratio_val: 0.0; in-out property <string> compression_text_val: "Aguardando primeira consulta para calcular compressão...";
+    in-out property <float> compression_ratio_val: 0.0; in-out property <string> compression_text_val: "Aguardando primeira consulta...";
 
-    in-out property <string> cal_time_val: "17:50"; in-out property <string> cal_date_val: "Segunda-feira, 21 de Setembro";
+    in-out property <string> cal_time_val: ""; in-out property <string> cal_date_val: "";
     in-out property <bool> cal_chroma_offline: false; in-out property <string> cal_chroma_status: "Motor Vetorial Nativo Rust Persistente Operacional.";
-    in-out property <string> cal_ollama_title: "● Provedor LLM: Ollama Local (11434)"; in-out property <string> cal_ollama_desc: "Modelos: nomic-embed-text | qwen2.5";
-    in-out property <string> cal_dataset_desc: "82 Livros e 15.521 Chunks indexados com SHA-256.";
+    in-out property <string> cal_ollama_title: "● Provedor LLM: Ollama Local (11434)"; in-out property <string> cal_ollama_desc: "Verificando...";
+    in-out property <string> cal_dataset_desc: "0 Livros indexados.";
 
     callback login_requested(string, string);
     callback logout_requested();
@@ -61,6 +50,7 @@ export component AppWindow inherits Window {
     callback delete_mcp_token_requested(string);
     callback copy_mcp_token_requested(string);
     callback pull_model_requested(string);
+    callback configure_provider_requested(string);
 
     if !is_logged_in : HorizontalLayout {
         alignment: center;
@@ -95,8 +85,8 @@ export component AppWindow inherits Window {
             PageRouter {
                 horizontal-stretch: 1; current_page: current_page; last_query: last_query; response_text: response_text;
                 is_searching: is_searching; query_text <=> query_text; active_mode <=> active_mode;
-                docs_data: docs_data; tokens_data: tokens_data; active_mcp_token: active_mcp_token_val;
-                local_models_data: local_models_data; gpu_status: gpu_status_val; history_data: history_data;
+                citations_data: citations_data; docs_data: docs_data; tokens_data: tokens_data; active_mcp_token: active_mcp_token_val;
+                local_models_data: local_models_data; cloud_providers_data: cloud_providers_data; gpu_status: gpu_status_val; history_data: history_data;
                 kpi_saved_tokens: kpi_tokens_saved_val; kpi_saved_tokens_sub: kpi_tokens_saved_sub_val;
                 kpi_total_queries: kpi_total_queries_val; kpi_avg_latency: kpi_avg_latency_val;
                 kpi_saved_cost: kpi_saved_cost_val; compression_ratio: compression_ratio_val;
@@ -109,6 +99,7 @@ export component AppWindow inherits Window {
                 copy_mcp_token(t) => { root.copy_mcp_token_requested(t); }
                 delete_mcp_token(id) => { root.delete_mcp_token_requested(id); }
                 pull_model(m) => { root.pull_model_requested(m); }
+                configure_provider(p) => { root.configure_provider_requested(p); }
             }
         }
     }

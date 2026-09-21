@@ -11,8 +11,8 @@ export struct TokenItem {
 }
 
 export component TokenManager inherits VerticalLayout {
-    in-out property <string> project_input: "Meu-Agente-IA";
-    in-out property <string> generated_token: "rdk_live_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+    in-out property <string> project_input: "";
+    in-out property <string> generated_token: "";
     in-out property <[TokenItem]> tokens: [];
     callback generate_token_clicked(string);
     callback copy_token_clicked(string);
@@ -43,6 +43,10 @@ export component TokenManager inherits VerticalLayout {
                         padding-left: 12px; padding-right: 12px;
                         TextInput { text <=> project_input; color: Theme.text-primary; font-size: 12px; vertical-alignment: center; }
                     }
+                    if project_input == "" : HorizontalLayout {
+                        padding-left: 12px; alignment: start;
+                        Text { text: "Nome do Projeto (ex: Antigravity IDE Agent, Cursor AI)..."; font-size: 12px; color: Theme.text-dim; vertical-alignment: center; }
+                    }
                 }
 
                 Rectangle {
@@ -50,7 +54,7 @@ export component TokenManager inherits VerticalLayout {
                     background: gen_touch.has-hover ? Theme.accent-hover : Theme.accent-primary;
                     animate background { duration: 100ms; }
                     Text { text: "+ GERAR NOVO TOKEN"; font-size: 11px; font-weight: 800; color: #ffffff; horizontal-alignment: center; vertical-alignment: center; }
-                    gen_touch := TouchArea { clicked => { generate_token_clicked(project_input); } }
+                    gen_touch := TouchArea { clicked => { if (project_input != "") { let p = project_input; project_input = ""; generate_token_clicked(p); } } }
                 }
             }
 
@@ -59,9 +63,9 @@ export component TokenManager inherits VerticalLayout {
                 background: Theme.surface-input; border-radius: 6px; border-width: 1px; border-color: #ff5e3a33;
                 VerticalLayout {
                     padding: 10px; spacing: 4px;
-                    Text { text: "TOKEN ATIVO: " + generated_token; font-size: 11px; font-weight: 700; color: Theme.status-success; wrap: word-wrap; }
+                    Text { text: generated_token != "" ? ("TOKEN ATIVO: " + generated_token) : "TOKEN ATIVO: Selecione ou gere um token para visualizar o snippet de conexão."; font-size: 11px; font-weight: 700; color: generated_token != "" ? Theme.status-success : Theme.text-dim; wrap: word-wrap; }
                     Text { text: "Configuração MCP (Cole no claude_desktop_config.json ou .cursor/mcp.json):"; font-size: 10px; color: Theme.text-dim; }
-                    Text { text: "{\n  \"mcpServers\": {\n    \"reductor-prompt\": {\n      \"command\": \"reductor\",\n      \"args\": [\"mcp\"],\n      \"env\": { \"REDUCTOR_API_TOKEN\": \"" + generated_token + "\" }\n    }\n  }\n}"; font-size: 10px; color: Theme.accent-primary; }
+                    Text { text: "{\n  \"mcpServers\": {\n    \"reductor-prompt\": {\n      \"command\": \"reductor\",\n      \"args\": [\"mcp\"],\n      \"env\": { \"REDUCTOR_API_TOKEN\": \"" + (generated_token != "" ? generated_token : "rdk_live_<SEU_TOKEN>") + "\" }\n    }\n  }\n}"; font-size: 10px; color: Theme.accent-primary; }
                 }
             }
         }
@@ -70,7 +74,14 @@ export component TokenManager inherits VerticalLayout {
     // Lista de Tokens Ativos
     VerticalLayout {
         spacing: 6px;
-        Text { text: "PROJETOS E AGENTES CONECTADOS"; font-size: 11px; font-weight: 800; color: Theme.text-secondary; }
+        Text { text: "PROJETOS E AGENTES CONECTADOS NO BANCO SQLITE"; font-size: 11px; font-weight: 800; color: Theme.text-secondary; }
+        if tokens.length == 0 : Rectangle {
+            height: 48px; background: Theme.surface-elevated; border-radius: 6px; border-width: 1px; border-color: Theme.border;
+            HorizontalLayout {
+                alignment: center;
+                Text { text: "Nenhum agente MCP cadastrado no banco SQLite. Cadastre um acima para autorizar seus agentes."; font-size: 11px; color: Theme.text-dim; vertical-alignment: center; }
+            }
+        }
         for t in tokens : TokenRow {
             project_name: t.project_name;
             token_mask: t.token_mask;

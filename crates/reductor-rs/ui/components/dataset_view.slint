@@ -60,6 +60,14 @@ export component DatasetView inherits Rectangle {
                     padding: 16px;
                     spacing: 8px;
 
+                    if docs.length == 0 : Rectangle {
+                        height: 48px; background: Theme.surface-elevated; border-radius: 6px; border-width: 1px; border-color: Theme.border;
+                        HorizontalLayout {
+                            alignment: center;
+                            Text { text: "Nenhum livro carregado na biblioteca. Clique em '+ ADICIONAR LIVRO' para importar."; font-size: 11px; color: Theme.text-dim; vertical-alignment: center; }
+                        }
+                    }
+
                     for doc in docs : DatasetRow {
                         title: doc.title;
                         format_type: doc.format_type;

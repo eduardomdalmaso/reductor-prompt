@@ -1,0 +1,94 @@
+import { ComboBox } from "std-widgets.slint";
+import { Theme } from "../theme/palette.slint";
+
+export component QuickInstaller inherits Rectangle {
+    in-out property <string> selected_model: "deepseek-r1:14b";
+    callback pull_clicked(string);
+
+    background: Theme.surface-elevated;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: Theme.border;
+
+    VerticalLayout {
+        padding: 14px;
+        spacing: 10px;
+
+        HorizontalLayout {
+            alignment: space-between;
+            VerticalLayout {
+                spacing: 2px;
+                Text { text: "SELECIONE UM MODELO LLM PARA INSTALAR NO OLLAMA"; font-size: 11px; font-weight: 800; color: Theme.text-primary; }
+                Text { text: "Escolha na lista suspensa o modelo desejado para download direto na GPU."; font-size: 10px; color: Theme.text-dim; }
+            }
+            Text { text: "ollama.com/library"; font-size: 10px; font-weight: 700; color: Theme.accent-primary; vertical-alignment: center; }
+        }
+
+        HorizontalLayout {
+            spacing: 12px;
+            alignment: center;
+
+            // Dropdown / Select List de Modelos
+            Rectangle {
+                horizontal-stretch: 1;
+                height: 38px;
+                background: Theme.surface-input;
+                border-radius: 6px;
+                border-width: 1px;
+                border-color: Theme.border;
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    padding-right: 8px;
+                    ComboBox {
+                        model: [
+                            "deepseek-r1:14b",
+                            "qwen2.5-coder:14b",
+                            "llama3.1:8b",
+                            "qwen2.5:7b",
+                            "mistral:7b",
+                            "phi4:14b",
+                            "gemma2:9b",
+                            "codellama:13b",
+                            "starcoder2:15b",
+                            "nomic-embed-text:latest"
+                        ];
+                        current-value: root.selected_model;
+                        selected(val) => {
+                            root.selected_model = val;
+                        }
+                    }
+                }
+            }
+
+            // Botão de Download do Modelo Selecionado
+            Rectangle {
+                width: 220px;
+                height: 38px;
+                border-radius: 6px;
+                background: pull_touch.pressed ? Theme.accent-active : (pull_touch.has-hover ? Theme.accent-hover : Theme.accent-primary);
+                animate background { duration: 100ms; }
+
+                HorizontalLayout {
+                    alignment: center;
+                    spacing: 6px;
+                    Text {
+                        text: "⬇ BAIXAR MODELO SELECIONADO";
+                        font-size: 10px;
+                        font-weight: 800;
+                        color: #ffffff;
+                        vertical-alignment: center;
+                    }
+                }
+
+                pull_touch := TouchArea {
+                    clicked => {
+                        if (root.selected_model != "") {
+                            root.pull_clicked(root.selected_model);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

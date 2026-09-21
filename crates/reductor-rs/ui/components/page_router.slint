@@ -1,25 +1,27 @@
 import { Theme } from "../theme/palette.slint";
-import { ChatView } from "chat_view.slint";
+import { ChatView, CitationItem } from "chat_view.slint";
 import { BottomBar } from "bottom_bar.slint";
 import { DatasetView, DocItem } from "dataset_view.slint";
 import { McpView, TokenItem } from "mcp_view.slint";
-import { ModelHubView, ModelItem } from "model_hub_view.slint";
+import { ModelHubView, ModelItem, ProviderItem } from "model_hub_view.slint";
 import { MetricsView, HistoryItem } from "metrics_view.slint";
 import { ApiDocsView } from "api_docs_view.slint";
 
-export { DocItem, TokenItem, ModelItem, HistoryItem }
+export { DocItem, TokenItem, ModelItem, ProviderItem, HistoryItem, CitationItem }
 
 export component PageRouter inherits Rectangle {
     in-out property <string> current_page: "cockpit";
     in-out property <string> last_query: "";
     in-out property <string> response_text: "";
     in-out property <bool> is_searching: false;
+    in-out property <[CitationItem]> citations_data: [];
     in-out property <string> query_text: "";
     in-out property <string> active_mode: "Standard";
     in-out property <[DocItem]> docs_data: [];
     in-out property <[TokenItem]> tokens_data: [];
     in-out property <string> active_mcp_token: "";
     in-out property <[ModelItem]> local_models_data: [];
+    in-out property <[ProviderItem]> cloud_providers_data: [];
     in-out property <string> gpu_status: "";
     in-out property <[HistoryItem]> history_data: [];
     in-out property <string> kpi_saved_tokens: "0.0%";
@@ -38,11 +40,13 @@ export component PageRouter inherits Rectangle {
     callback copy_mcp_token(string);
     callback delete_mcp_token(string);
     callback pull_model(string);
+    callback configure_provider(string);
 
     if current_page == "cockpit" : VerticalLayout {
         horizontal-stretch: 1; padding: 0px; spacing: 0px;
         ChatView {
-            vertical-stretch: 1; last_query: root.last_query; response_text: root.response_text; is_searching: root.is_searching;
+            vertical-stretch: 1; last_query: root.last_query; response_text: root.response_text;
+            is_searching: root.is_searching; citations: root.citations_data;
             copy_response_clicked(text) => { root.copy_response(text); }
         }
         BottomBar {
@@ -72,8 +76,10 @@ export component PageRouter inherits Rectangle {
     }
 
     if current_page == "models" : ModelHubView {
-        horizontal-stretch: 1; local_models: root.local_models_data; gpu_status: root.gpu_status;
+        horizontal-stretch: 1; local_models: root.local_models_data;
+        cloud_providers: root.cloud_providers_data; gpu_status: root.gpu_status;
         pull_model_clicked(m) => { root.pull_model(m); }
+        configure_provider_clicked(p) => { root.configure_provider(p); }
     }
 
     if current_page == "metrics" : MetricsView {
