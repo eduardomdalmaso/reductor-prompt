@@ -1,0 +1,78 @@
+import { Theme } from "../theme/palette.slint";
+
+export component ModelCard inherits Rectangle {
+    in-out property <string> model_name: "qwen2.5:14b";
+    in-out property <string> model_tag: "Raciocínio Técnico & RAG";
+    in-out property <string> size_text: "9.0 GB • VRAM";
+    in-out property <bool> is_active: true;
+    in-out property <bool> is_downloaded: true;
+    callback select_clicked();
+    callback delete_clicked();
+
+    height: 52px;
+    background: Theme.surface-elevated;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: is_active ? #ff5e3a55 : Theme.border;
+
+    HorizontalLayout {
+        padding-left: 14px;
+        padding-right: 14px;
+        spacing: 12px;
+        alignment: space-between;
+
+        // Esquerda: Status + Nome + Tag
+        HorizontalLayout {
+            spacing: 10px;
+            VerticalLayout {
+                alignment: center;
+                Rectangle {
+                    width: 8px; height: 8px; border-radius: 4px;
+                    background: is_active ? Theme.status-success : (is_downloaded ? Theme.text-dim : Theme.status-warning);
+                }
+            }
+            VerticalLayout {
+                alignment: center;
+                Text { text: model_name; font-size: 12px; font-weight: 800; color: Theme.text-primary; }
+            }
+            VerticalLayout {
+                alignment: center;
+                Rectangle {
+                    height: 20px; background: Theme.accent-subtle; border-radius: 4px;
+                    HorizontalLayout {
+                        padding-left: 6px; padding-right: 6px;
+                        Text { text: model_tag; font-size: 9px; font-weight: 700; color: Theme.accent-primary; vertical-alignment: center; }
+                    }
+                }
+            }
+        }
+
+        // Direita: Tamanho + Botão Ação
+        HorizontalLayout {
+            spacing: 12px;
+            VerticalLayout {
+                alignment: center;
+                Text { text: size_text; font-size: 10px; color: Theme.text-dim; }
+            }
+
+            VerticalLayout {
+                alignment: center;
+                Rectangle {
+                    width: 80px; height: 28px; border-radius: 5px;
+                    background: is_active ? #00ff9d1a : (act_touch.has-hover ? Theme.accent-primary : Theme.surface-input);
+                    border-width: 1px;
+                    border-color: is_active ? #00ff9d44 : (act_touch.has-hover ? Theme.accent-hover : Theme.border);
+                    animate background { duration: 100ms; }
+
+                    Text {
+                        text: is_active ? "EM USO" : "ATIVAR";
+                        font-size: 10px; font-weight: 800;
+                        color: is_active ? Theme.status-success : (act_touch.has-hover ? #ffffff : Theme.text-secondary);
+                        horizontal-alignment: center; vertical-alignment: center;
+                    }
+                    act_touch := TouchArea { clicked => { select_clicked(); } }
+                }
+            }
+        }
+    }
+}

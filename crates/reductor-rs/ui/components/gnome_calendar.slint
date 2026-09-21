@@ -1,0 +1,109 @@
+import { Theme } from "../theme/palette.slint";
+import { CalendarGrid } from "calendar_grid.slint";
+
+export component GnomeCalendar inherits Rectangle {
+    in-out property <bool> is_open: false;
+    in-out property <string> current_time: "17:50";
+    in-out property <string> current_date_str: "Segunda-feira, 21 de Setembro";
+    in-out property <bool> chromadb_is_offline: false;
+    in-out property <string> chromadb_status_text: "Motor Vetorial Nativo Rust Persistente Operacional.";
+    in-out property <string> ollama_status_title: "● Provedor LLM: Ollama Local (11434)";
+    in-out property <string> ollama_status_desc: "Modelos Ativos: nomic-embed-text | qwen2.5";
+    in-out property <string> dataset_status_desc: "82 Livros e 15.521 Chunks indexados com SHA-256.";
+    callback close_clicked();
+
+    if is_open : Rectangle {
+        width: 100%; height: 100%;
+        background: #00000044;
+        TouchArea { clicked => { close_clicked(); } }
+
+        // Popover GNOME 45 Style
+        Rectangle {
+            x: (parent.width - self.width) / 2; y: 60px;
+            width: 680px; height: 380px;
+            background: Theme.surface;
+            border-radius: 14px;
+            border-width: 1px;
+            border-color: Theme.border;
+            clip: true;
+
+            HorizontalLayout {
+                padding: 20px; spacing: 20px;
+
+                // Coluna 1: Relógio e Calendário Mensal Completo
+                VerticalLayout {
+                    width: 270px; spacing: 14px;
+
+                    VerticalLayout {
+                        spacing: 2px;
+                        Text { text: current_time; font-size: 24px; font-weight: 800; color: Theme.text-primary; }
+                        Text { text: current_date_str; font-size: 12px; color: Theme.accent-primary; font-weight: 700; }
+                    }
+
+                    Rectangle { height: 1px; background: Theme.border; }
+
+                    CalendarGrid { }
+                }
+
+                Rectangle { width: 1px; background: Theme.border; }
+
+                // Coluna 2: Notificações e Alarmes do Sistema
+                VerticalLayout {
+                    horizontal-stretch: 1; spacing: 12px;
+
+                    HorizontalLayout {
+                        alignment: space-between;
+                        Text { text: "NOTIFICAÇÕES & ALARMES"; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; color: Theme.text-secondary; vertical-alignment: center; }
+                        Rectangle {
+                            height: 20px; background: chromadb_is_offline ? #ff003c22 : #00ff9d22; border-radius: 4px;
+                            HorizontalLayout {
+                                padding-left: 6px; padding-right: 6px;
+                                Text { text: chromadb_is_offline ? "1 ALERTA ATIVO" : "SISTEMA 100% OK"; font-size: 9px; font-weight: 800; color: chromadb_is_offline ? Theme.status-danger : Theme.status-success; vertical-alignment: center; }
+                            }
+                        }
+                    }
+
+                    // Card 1: Motor Vetorial
+                    Rectangle {
+                        height: 72px;
+                        background: chromadb_is_offline ? #ff003c14 : #00ff9d10;
+                        border-radius: 8px; border-width: 1px;
+                        border-color: chromadb_is_offline ? #ff003c55 : #00ff9d33;
+
+                        VerticalLayout {
+                            padding: 10px; spacing: 4px;
+                            HorizontalLayout {
+                                alignment: space-between;
+                                Text { text: chromadb_is_offline ? "● ALARME: ChromaDB Remoto Inacessível" : "● Motor Vetorial Local Ativo"; font-size: 11px; font-weight: 800; color: chromadb_is_offline ? Theme.status-danger : Theme.status-success; }
+                                Text { text: "Zero-Latency"; font-size: 10px; color: Theme.text-dim; }
+                            }
+                            Text { text: chromadb_status_text; font-size: 10px; color: Theme.text-regular; wrap: word-wrap; }
+                        }
+                    }
+
+                    // Card 2: Motor LLM
+                    Rectangle {
+                        height: 60px; background: Theme.surface-elevated;
+                        border-radius: 8px; border-width: 1px; border-color: Theme.border;
+                        VerticalLayout {
+                            padding: 10px; spacing: 3px;
+                            Text { text: ollama_status_title; font-size: 11px; font-weight: 700; color: Theme.status-success; }
+                            Text { text: ollama_status_desc; font-size: 10px; color: Theme.text-dim; wrap: word-wrap; }
+                        }
+                    }
+
+                    // Card 3: Integridade do Dataset
+                    Rectangle {
+                        height: 54px; background: Theme.surface-elevated;
+                        border-radius: 8px; border-width: 1px; border-color: Theme.border;
+                        VerticalLayout {
+                            padding: 10px; spacing: 3px;
+                            Text { text: "● Integridade do Dataset & SHA-256"; font-size: 11px; font-weight: 700; color: Theme.status-info; }
+                            Text { text: dataset_status_desc; font-size: 10px; color: Theme.text-dim; wrap: word-wrap; }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

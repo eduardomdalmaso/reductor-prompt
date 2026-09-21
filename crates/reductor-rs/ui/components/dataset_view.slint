@@ -1,0 +1,74 @@
+import { ScrollView } from "std-widgets.slint";
+import { Theme } from "../theme/palette.slint";
+import { DatasetRow } from "dataset_row.slint";
+
+export struct DocItem {
+    id: string,
+    title: string,
+    format_type: string,
+    author: string,
+    chunks_count: string,
+    meta: string,
+    preview: string,
+}
+
+export component DatasetView inherits Rectangle {
+    in-out property <[DocItem]> docs: [];
+    callback open_doc(string, string, string, string);
+    callback add_doc_clicked();
+
+    background: Theme.background;
+
+    VerticalLayout {
+        padding: 24px;
+        spacing: 16px;
+
+        // Header Dataset
+        HorizontalLayout {
+            alignment: space-between;
+            VerticalLayout {
+                spacing: 4px;
+                alignment: center;
+                Text { text: "DATASET & BIBLIOTECA TÉCNICA"; font-size: 15px; font-weight: 800; letter-spacing: 0.8px; color: Theme.text-primary; }
+                Text { text: "Formatos Suportados: .PDF, .MD, .TXT, .EPUB (Deduplicação SHA-256)"; font-size: 11px; color: Theme.text-dim; }
+            }
+
+            Rectangle {
+                width: 160px;
+                height: 36px;
+                background: add_touch.has-hover ? Theme.accent-hover : Theme.accent-primary;
+                border-radius: 6px;
+                animate background { duration: 120ms; }
+                HorizontalLayout {
+                    alignment: center;
+                    Text { text: "+ ADICIONAR LIVRO"; font-size: 11px; font-weight: 800; letter-spacing: 0.6px; color: #ffffff; vertical-alignment: center; }
+                }
+                add_touch := TouchArea { clicked => { root.add_doc_clicked(); } }
+            }
+        }
+
+        // Tabela de Documentos
+        Rectangle {
+            vertical-stretch: 1;
+            background: Theme.surface;
+            border-radius: 10px;
+            border-width: 1px;
+            border-color: Theme.border;
+
+            ScrollView {
+                VerticalLayout {
+                    padding: 16px;
+                    spacing: 8px;
+
+                    for doc in docs : DatasetRow {
+                        title: doc.title;
+                        format_type: doc.format_type;
+                        author: doc.author;
+                        chunks_count: doc.chunks_count;
+                        inspect_clicked => { open_doc(doc.title, doc.format_type, doc.meta, doc.preview); }
+                    }
+                }
+            }
+        }
+    }
+}

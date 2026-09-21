@@ -39,5 +39,16 @@ walkdir = "2.5"
 # Configurações de Ambiente
 dotenvy = "0.15"
 
+# Slint GUI Framework
+slint = "1.8"
+rfd = "0.15"
+arboard = "3.4"
+
+# Banco de Dados Relacional Embutido (SQLite)
+rusqlite = { version = "0.31", features = ["bundled"] }
+
+[build-dependencies]
+slint-build = "1.8"
+
 [dev-dependencies]
 tempfile = "3.10"

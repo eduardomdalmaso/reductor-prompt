@@ -1,0 +1,62 @@
+import { Theme } from "../theme/palette.slint";
+
+export component NavButton inherits Rectangle {
+    in-out property <string> label: "";
+    in-out property <string> icon_text: "RAG";
+    in-out property <bool> is_active: false;
+    callback clicked();
+
+    height: 38px;
+    background: is_active ? Theme.surface-elevated : (nav_touch.has-hover ? Theme.surface-hover : #00000000);
+    border-radius: 8px;
+    border-width: is_active ? 1px : 0px;
+    border-color: Theme.accent-primary;
+    animate background { duration: 120ms; }
+
+    HorizontalLayout {
+        padding-left: 14px; padding-right: 14px; spacing: 10px; alignment: start;
+        Text { text: icon_text; font-size: 10px; font-weight: 800; color: is_active ? Theme.accent-primary : Theme.text-dim; vertical-alignment: center; }
+        Text { text: label; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; color: is_active ? Theme.text-primary : Theme.text-secondary; vertical-alignment: center; }
+    }
+    nav_touch := TouchArea { clicked => { root.clicked(); } }
+}
+
+export component SidebarNav inherits Rectangle {
+    in-out property <bool> is_open: true;
+    in-out property <string> current_page: "cockpit";
+    in-out property <string> total_chunks_text: "15.521 Chunks";
+    callback page_changed(string);
+
+    width: is_open ? 220px : 0px;
+    clip: true;
+    animate width { duration: 180ms; easing: ease-out; }
+    background: Theme.surface;
+    border-width: is_open ? 1px : 0px;
+    border-color: Theme.border;
+
+    VerticalLayout {
+        padding: 16px; spacing: 6px;
+        Text { text: "NAVEGAÇÃO"; font-size: 10px; font-weight: 800; letter-spacing: 0.8px; color: Theme.text-dim; }
+
+        NavButton { label: "COCKPIT"; icon_text: "RAG"; is_active: current_page == "cockpit"; clicked => { page_changed("cockpit"); } }
+        NavButton { label: "DATASET"; icon_text: "DATA"; is_active: current_page == "dataset"; clicked => { page_changed("dataset"); } }
+        NavButton { label: "AGENTES MCP"; icon_text: "MCP"; is_active: current_page == "mcp"; clicked => { page_changed("mcp"); } }
+        NavButton { label: "MODEL HUB"; icon_text: "LLM"; is_active: current_page == "models"; clicked => { page_changed("models"); } }
+        NavButton { label: "MÉTRICAS"; icon_text: "METR"; is_active: current_page == "metrics"; clicked => { page_changed("metrics"); } }
+        NavButton { label: "API REST"; icon_text: "REST"; is_active: current_page == "api"; clicked => { page_changed("api"); } }
+
+        Rectangle { vertical-stretch: 1; }
+
+        Rectangle {
+            height: 38px; background: Theme.surface-elevated; border-radius: 6px; border-width: 1px; border-color: Theme.border;
+            HorizontalLayout {
+                padding-left: 10px; padding-right: 10px; alignment: space-between;
+                Text { text: "ÍNDICE"; font-size: 10px; font-weight: 700; color: Theme.text-dim; vertical-alignment: center; }
+                Text { text: total_chunks_text; font-size: 10px; font-weight: 700; color: Theme.status-success; vertical-alignment: center; }
+            }
+        }
+    }
+}
+
+
+

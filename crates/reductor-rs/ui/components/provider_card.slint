@@ -1,0 +1,70 @@
+import { Theme } from "../theme/palette.slint";
+
+export component ProviderCard inherits Rectangle {
+    in-out property <string> provider_name: "Google Gemini API";
+    in-out property <string> provider_models: "gemini-1.5-pro • gemini-1.5-flash";
+    in-out property <string> api_key_masked: "AIzaSyD...987x";
+    in-out property <bool> is_connected: true;
+    callback configure_clicked();
+
+    height: 52px;
+    background: Theme.surface-elevated;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: Theme.border;
+
+    HorizontalLayout {
+        padding-left: 14px;
+        padding-right: 14px;
+        spacing: 12px;
+        alignment: space-between;
+
+        // Esquerda: Status + Nome do Provedor + Modelos
+        HorizontalLayout {
+            spacing: 10px;
+            VerticalLayout {
+                alignment: center;
+                Rectangle {
+                    width: 8px; height: 8px; border-radius: 4px;
+                    background: is_connected ? Theme.status-success : Theme.text-dim;
+                }
+            }
+            VerticalLayout {
+                alignment: center;
+                Text { text: provider_name; font-size: 12px; font-weight: 800; color: Theme.text-primary; }
+            }
+            VerticalLayout {
+                alignment: center;
+                Text { text: "• " + provider_models; font-size: 10px; color: Theme.text-dim; }
+            }
+        }
+
+        // Direita: Chave API + Botão Configurar
+        HorizontalLayout {
+            spacing: 12px;
+            VerticalLayout {
+                alignment: center;
+                Text { text: is_connected ? "Chave: " + api_key_masked : "Não Configurado"; font-size: 10px; color: is_connected ? Theme.accent-primary : Theme.text-dim; }
+            }
+
+            VerticalLayout {
+                alignment: center;
+                Rectangle {
+                    width: 90px; height: 28px; border-radius: 5px;
+                    background: cfg_touch.has-hover ? Theme.surface-hover : Theme.surface-input;
+                    border-width: 1px;
+                    border-color: cfg_touch.has-hover ? Theme.border-focus : Theme.border;
+                    animate background { duration: 100ms; }
+
+                    Text {
+                        text: is_connected ? "ALTERAR" : "CONECTAR";
+                        font-size: 10px; font-weight: 800;
+                        color: cfg_touch.has-hover ? #ffffff : Theme.text-secondary;
+                        horizontal-alignment: center; vertical-alignment: center;
+                    }
+                    cfg_touch := TouchArea { clicked => { configure_clicked(); } }
+                }
+            }
+        }
+    }
+}

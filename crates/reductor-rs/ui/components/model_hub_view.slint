@@ -1,0 +1,98 @@
+import { ScrollView } from "std-widgets.slint";
+import { Theme } from "../theme/palette.slint";
+import { ModelCard } from "model_card.slint";
+import { ProviderCard } from "provider_card.slint";
+
+export struct ModelItem {
+    name: string,
+    tag: string,
+    size_text: string,
+    is_active: bool,
+}
+
+export component ModelHubView inherits Rectangle {
+    in-out property <string> pull_input: "llama3.1:8b";
+    in-out property <string> gpu_status: "● Ollama Local Operacional";
+    in-out property <[ModelItem]> local_models: [];
+    callback pull_model_clicked(string);
+    callback configure_provider_clicked(string);
+
+    background: Theme.background;
+
+    VerticalLayout {
+        padding: 24px;
+        spacing: 14px;
+
+        // Header do Hub
+        HorizontalLayout {
+            alignment: space-between;
+            VerticalLayout {
+                spacing: 3px;
+                Text { text: "HUB DE MODELOS & PROVEDORES DE IA"; font-size: 15px; font-weight: 800; letter-spacing: 0.8px; color: Theme.text-primary; }
+                Text { text: "Gerencie modelos locais na GPU (Ollama) ou conecte APIs externas de agentes (Gemini, Claude, OpenAI)."; font-size: 11px; color: Theme.text-dim; }
+            }
+            Rectangle {
+                height: 26px; background: #00ff9d14; border-radius: 4px; border-width: 1px; border-color: #00ff9d33;
+                HorizontalLayout {
+                    padding-left: 10px; padding-right: 10px;
+                    Text { text: gpu_status; font-size: 10px; font-weight: 800; color: Theme.status-success; vertical-alignment: center; }
+                }
+            }
+        }
+
+        // Barra de Download de Novo Modelo Local
+        Rectangle {
+            height: 52px; background: Theme.surface-elevated; border-radius: 8px; border-width: 1px; border-color: Theme.border;
+            HorizontalLayout {
+                padding-left: 12px; padding-right: 12px; spacing: 10px; alignment: center;
+                Text { text: "BAIXAR MODELO:"; font-size: 11px; font-weight: 800; color: Theme.text-secondary; vertical-alignment: center; }
+                Rectangle {
+                    horizontal-stretch: 1; height: 36px; background: Theme.surface-input; border-radius: 6px; border-width: 1px; border-color: Theme.border;
+                    HorizontalLayout {
+                        padding-left: 10px; padding-right: 10px;
+                        TextInput { text <=> pull_input; color: Theme.text-primary; font-size: 12px; vertical-alignment: center; }
+                    }
+                }
+                Rectangle {
+                    width: 160px; height: 36px; border-radius: 6px;
+                    background: pull_touch.has-hover ? Theme.accent-hover : Theme.accent-primary;
+                    animate background { duration: 100ms; }
+                    Text { text: "+ BAIXAR VIA OLLAMA"; font-size: 10px; font-weight: 800; color: #ffffff; horizontal-alignment: center; vertical-alignment: center; }
+                    pull_touch := TouchArea { clicked => { pull_model_clicked(pull_input); } }
+                }
+            }
+        }
+
+        // Área Scrollável de Modelos e Provedores
+        Rectangle {
+            vertical-stretch: 1; background: Theme.surface; border-radius: 10px; border-width: 1px; border-color: Theme.border;
+            ScrollView {
+                VerticalLayout {
+                    padding: 16px; spacing: 14px;
+
+                    // Seção 1: Modelos Locais
+                    VerticalLayout {
+                        spacing: 6px;
+                        Text { text: "MODELOS LOCAIS (GPU / VRAM)"; font-size: 11px; font-weight: 800; color: Theme.text-secondary; }
+                        for m in local_models : ModelCard {
+                            model_name: m.name;
+                            model_tag: m.tag;
+                            size_text: m.size_text;
+                            is_active: m.is_active;
+                        }
+                    }
+
+                    // Seção 2: Provedores em Nuvem
+                    VerticalLayout {
+                        spacing: 6px;
+                        Text { text: "PROVEDORES EXTERNOS EM NUVEM (FALLBACK & AGENTES)"; font-size: 11px; font-weight: 800; color: Theme.text-secondary; }
+                        ProviderCard { provider_name: "Google Gemini API"; provider_models: "gemini-1.5-pro / flash"; api_key_masked: "AIzaSyD...987x"; is_connected: true; configure_clicked => { configure_provider_clicked("gemini"); } }
+                        ProviderCard { provider_name: "Anthropic Claude API"; provider_models: "claude-3-5-sonnet"; api_key_masked: "sk-ant-...441a"; is_connected: true; configure_clicked => { configure_provider_clicked("claude"); } }
+                        ProviderCard { provider_name: "OpenAI API"; provider_models: "gpt-4o / gpt-4o-mini"; api_key_masked: "sk-proj-...883f"; is_connected: false; configure_clicked => { configure_provider_clicked("openai"); } }
+                        ProviderCard { provider_name: "Groq Cloud (LPU)"; provider_models: "llama-3.1-70b-versatile"; api_key_masked: "gsk_...1102"; is_connected: false; configure_clicked => { configure_provider_clicked("groq"); } }
+                    }
+                }
+            }
+        }
+    }
+}

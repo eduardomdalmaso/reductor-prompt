@@ -1,0 +1,83 @@
+import { Theme } from "../theme/palette.slint";
+import { TokenRow } from "token_row.slint";
+
+export struct TokenItem {
+    id: string,
+    project_name: string,
+    token: string,
+    token_mask: string,
+    created_at: string,
+    is_active: bool,
+}
+
+export component TokenManager inherits VerticalLayout {
+    in-out property <string> project_input: "Meu-Agente-IA";
+    in-out property <string> generated_token: "rdk_live_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+    in-out property <[TokenItem]> tokens: [];
+    callback generate_token_clicked(string);
+    callback copy_token_clicked(string);
+    callback delete_token_clicked(string);
+
+    spacing: 14px;
+
+    // Gerador de Token
+    Rectangle {
+        background: Theme.surface-elevated;
+        border-radius: 8px;
+        border-width: 1px;
+        border-color: Theme.border;
+
+        VerticalLayout {
+            padding: 16px;
+            spacing: 10px;
+
+            Text { text: "CADASTRAR PROJETO & GERAR TOKEN PARA AGENTE DE IA (MCP)"; font-size: 12px; font-weight: 800; color: Theme.text-primary; }
+            Text { text: "Gera credencial criptográfica SHA-256 para autorizar agentes autônomos a consultar os livros e a LLM local."; font-size: 11px; color: Theme.text-dim; }
+
+            HorizontalLayout {
+                spacing: 10px;
+                Rectangle {
+                    horizontal-stretch: 1; height: 38px;
+                    background: Theme.surface-input; border-radius: 6px; border-width: 1px; border-color: Theme.border;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px;
+                        TextInput { text <=> project_input; color: Theme.text-primary; font-size: 12px; vertical-alignment: center; }
+                    }
+                }
+
+                Rectangle {
+                    width: 180px; height: 38px; border-radius: 6px;
+                    background: gen_touch.has-hover ? Theme.accent-hover : Theme.accent-primary;
+                    animate background { duration: 100ms; }
+                    Text { text: "+ GERAR NOVO TOKEN"; font-size: 11px; font-weight: 800; color: #ffffff; horizontal-alignment: center; vertical-alignment: center; }
+                    gen_touch := TouchArea { clicked => { generate_token_clicked(project_input); } }
+                }
+            }
+
+            // Exibição do Token Gerado e Snippet MCP
+            Rectangle {
+                background: Theme.surface-input; border-radius: 6px; border-width: 1px; border-color: #ff5e3a33;
+                VerticalLayout {
+                    padding: 10px; spacing: 4px;
+                    Text { text: "TOKEN ATIVO: " + generated_token; font-size: 11px; font-weight: 700; color: Theme.status-success; wrap: word-wrap; }
+                    Text { text: "Configuração MCP (Cole no claude_desktop_config.json ou .cursor/mcp.json):"; font-size: 10px; color: Theme.text-dim; }
+                    Text { text: "{\n  \"mcpServers\": {\n    \"reductor-prompt\": {\n      \"command\": \"reductor\",\n      \"args\": [\"mcp\"],\n      \"env\": { \"REDUCTOR_API_TOKEN\": \"" + generated_token + "\" }\n    }\n  }\n}"; font-size: 10px; color: Theme.accent-primary; }
+                }
+            }
+        }
+    }
+
+    // Lista de Tokens Ativos
+    VerticalLayout {
+        spacing: 6px;
+        Text { text: "PROJETOS E AGENTES CONECTADOS"; font-size: 11px; font-weight: 800; color: Theme.text-secondary; }
+        for t in tokens : TokenRow {
+            project_name: t.project_name;
+            token_mask: t.token_mask;
+            created_at: t.created_at;
+            is_active: t.is_active;
+            copy_clicked => { copy_token_clicked(t.token); }
+            delete_clicked => { delete_token_clicked(t.id); }
+        }
+    }
+}

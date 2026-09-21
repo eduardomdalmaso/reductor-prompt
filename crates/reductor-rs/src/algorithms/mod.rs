@@ -5,6 +5,7 @@ pub struct AdaptiveRRFEngine;
 
 impl AdaptiveRRFEngine {
     /// Fusão de múltiplos rankings de busca usando Reciprocal Rank Fusion (RRF)
+    #[allow(dead_code)]
     pub fn fuse_rankings(rankings: Vec<Vec<ScoredChunk>>, rrf_k: f32) -> Vec<ScoredChunk> {
         if rankings.is_empty() {
             return Vec::new();

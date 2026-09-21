@@ -1,0 +1,57 @@
+import { ScrollView } from "std-widgets.slint";
+import { Theme } from "../theme/palette.slint";
+import { TokenManager, TokenItem } from "token_manager.slint";
+
+export { TokenItem }
+
+export component McpView inherits Rectangle {
+    in-out property <[TokenItem]> tokens: [];
+    in-out property <string> active_token: "rdk_live_e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+    callback generate_token(string);
+    callback copy_token(string);
+    callback delete_token(string);
+
+    background: Theme.background;
+
+    VerticalLayout {
+        padding: 24px;
+        spacing: 14px;
+
+        HorizontalLayout {
+            alignment: space-between;
+            VerticalLayout {
+                spacing: 3px;
+                Text { text: "INTEGRAÇÃO MCP (MODEL CONTEXT PROTOCOL)"; font-size: 15px; font-weight: 800; letter-spacing: 0.8px; color: Theme.text-primary; }
+                Text { text: "Conecte agentes autônomos (Cursor, Claude Desktop, Antigravity) para auditar códigos com os livros."; font-size: 11px; color: Theme.text-dim; }
+            }
+            Rectangle {
+                height: 26px; background: #ff5e3a14; border-radius: 4px; border-width: 1px; border-color: #ff5e3a33;
+                HorizontalLayout {
+                    padding-left: 10px; padding-right: 10px;
+                    Text { text: "● Protocolo MCP Stdio Ativo"; font-size: 10px; font-weight: 800; color: Theme.accent-primary; vertical-alignment: center; }
+                }
+            }
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+            background: Theme.surface;
+            border-radius: 10px;
+            border-width: 1px;
+            border-color: Theme.border;
+
+            ScrollView {
+                VerticalLayout {
+                    padding: 16px;
+                    TokenManager {
+                        tokens <=> root.tokens;
+                        generated_token <=> root.active_token;
+                        generate_token_clicked(p) => { root.generate_token(p); }
+                        copy_token_clicked(t) => { root.copy_token(t); }
+                        delete_token_clicked(id) => { root.delete_token(id); }
+                    }
+                }
+            }
+        }
+    }
+}

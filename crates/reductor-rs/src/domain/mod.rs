@@ -19,6 +19,16 @@ impl DocumentFormat {
             _ => DocumentFormat::Unknown,
         }
     }
+
+    pub fn badge_label(&self) -> &'static str {
+        match self {
+            DocumentFormat::Pdf => ".PDF",
+            DocumentFormat::Epub => ".EPUB",
+            DocumentFormat::Markdown => ".MD",
+            DocumentFormat::PlainText => ".TXT",
+            DocumentFormat::Unknown => ".DOC",
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

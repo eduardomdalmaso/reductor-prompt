@@ -1,0 +1,47 @@
+import { Theme } from "../theme/palette.slint";
+
+export component MetricKpiCard inherits Rectangle {
+    in-out property <string> title: "";
+    in-out property <string> value_text: "";
+    in-out property <string> subtitle_text: "";
+    in-out property <color> value_color: Theme.text-primary;
+
+    height: 78px;
+    background: Theme.surface;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: Theme.border;
+
+    VerticalLayout {
+        padding: 12px;
+        spacing: 4px;
+        alignment: center;
+
+        Text {
+            text: title;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            color: Theme.text-dim;
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            alignment: start;
+            Text {
+                text: value_text;
+                font-size: 18px;
+                font-weight: 800;
+                color: value_color;
+                vertical-alignment: center;
+            }
+            Text {
+                text: subtitle_text;
+                font-size: 10px;
+                font-weight: 700;
+                color: Theme.text-dim;
+                vertical-alignment: bottom;
+            }
+        }
+    }
+}

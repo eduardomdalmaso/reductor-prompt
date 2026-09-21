@@ -1,0 +1,80 @@
+import { Theme } from "../theme/palette.slint";
+
+export component LoginCard inherits Rectangle {
+    in-out property <string> username <=> user-edit.text;
+    in-out property <string> password_val <=> pass-edit.text;
+    in-out property <string> error_message: "";
+    callback login_submitted();
+
+    width: 420px;
+    background: Theme.surface;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: Theme.border;
+
+    VerticalLayout {
+        padding: 36px; spacing: 18px; alignment: center;
+
+        // Logo
+        VerticalLayout {
+            spacing: 8px; alignment: center;
+            Rectangle {
+                width: 56px; height: 56px; background: Theme.surface-elevated;
+                border-radius: 16px; border-width: 1px; border-color: Theme.accent-primary;
+                Text { text: "RP"; font-size: 22px; font-weight: 800; color: Theme.accent-primary; horizontal-alignment: center; vertical-alignment: center; }
+            }
+            Text { text: "REDUCTOR PROMPT"; font-size: 18px; font-weight: 800; letter-spacing: 1px; color: Theme.text-primary; horizontal-alignment: center; }
+            Text { text: "Zero-Leak Local AI & Knowledge Engine"; font-size: 12px; color: Theme.text-secondary; horizontal-alignment: center; }
+        }
+
+        // Erro
+        if error_message != "" : Rectangle {
+            height: 34px; background: #ff003c1a; border-radius: 6px; border-width: 1px; border-color: Theme.status-danger;
+            Text { text: error_message; color: Theme.status-danger; font-size: 11px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+        }
+
+        // Inputs
+        VerticalLayout {
+            spacing: 12px;
+            VerticalLayout {
+                spacing: 4px;
+                Text { text: "USUÁRIO"; font-size: 11px; font-weight: 700; color: Theme.text-secondary; letter-spacing: 0.5px; }
+                Rectangle {
+                    height: 42px; background: Theme.surface-input; border-radius: 6px; border-width: 1px;
+                    border-color: user-edit.has-focus ? Theme.border-focus : Theme.border;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px;
+                        user-edit := TextInput { color: Theme.text-primary; font-size: 13px; vertical-alignment: center; }
+                    }
+                }
+            }
+            VerticalLayout {
+                spacing: 4px;
+                Text { text: "SENHA"; font-size: 11px; font-weight: 700; color: Theme.text-secondary; letter-spacing: 0.5px; }
+                Rectangle {
+                    height: 42px; background: Theme.surface-input; border-radius: 6px; border-width: 1px;
+                    border-color: pass-edit.has-focus ? Theme.border-focus : Theme.border;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px;
+                        pass-edit := TextInput { input-type: password; color: Theme.text-primary; font-size: 13px; vertical-alignment: center; accepted => { login_submitted(); } }
+                    }
+                }
+            }
+        }
+
+        // Botão Entrar
+        Rectangle {
+            height: 44px;
+            background: touch.pressed ? Theme.accent-active : (touch.has-hover ? Theme.accent-hover : Theme.accent-primary);
+            border-radius: 6px;
+            Text { text: "ENTRAR NO COCKPIT"; color: #ffffff; font-size: 12px; font-weight: 700; letter-spacing: 0.8px; horizontal-alignment: center; vertical-alignment: center; }
+            touch := TouchArea { clicked => { login_submitted(); } }
+        }
+
+        // Rodapé de Dica
+        Rectangle {
+            height: 28px; background: Theme.accent-subtle; border-radius: 4px; border-width: 1px; border-color: #ff5e3a33;
+            Text { text: "ACESSO PADRÃO: admin / admin"; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; color: Theme.accent-primary; horizontal-alignment: center; vertical-alignment: center; }
+        }
+    }
+}

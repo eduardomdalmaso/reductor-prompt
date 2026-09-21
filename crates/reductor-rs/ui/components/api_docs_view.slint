@@ -1,0 +1,103 @@
+import { ScrollView } from "std-widgets.slint";
+import { Theme } from "../theme/palette.slint";
+
+export component ApiCard inherits Rectangle {
+    in-out property <string> method: "POST";
+    in-out property <string> endpoint: "/api/v1/query";
+    in-out property <string> description: "Executa consulta RAG inteligente com corte adaptativo de tokens.";
+    in-out property <string> example_payload: "curl -X POST http://localhost:8000/api/v1/query -H 'Content-Type: application/json' -d '{\"query\": \"...\", \"deep\": true}'";
+
+    background: Theme.surface-elevated;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: Theme.border;
+
+    VerticalLayout {
+        padding: 14px;
+        spacing: 8px;
+
+        HorizontalLayout {
+            spacing: 8px;
+            Rectangle {
+                width: 48px; height: 22px; border-radius: 4px;
+                background: method == "POST" ? #00ff9d1a : #00f0ff1a;
+                border-width: 1px;
+                border-color: method == "POST" ? #00ff9d44 : #00f0ff44;
+                Text { text: method; font-size: 10px; font-weight: 800; color: method == "POST" ? Theme.status-success : Theme.status-info; horizontal-alignment: center; vertical-alignment: center; }
+            }
+            Text { text: endpoint; font-size: 13px; font-weight: 800; color: Theme.text-primary; vertical-alignment: center; }
+        }
+
+        Text { text: description; font-size: 11px; color: Theme.text-regular; }
+
+        Rectangle {
+            background: Theme.surface-input;
+            border-radius: 6px;
+            border-width: 1px;
+            border-color: Theme.border;
+
+            VerticalLayout {
+                padding: 10px;
+                Text { text: example_payload; font-size: 11px; color: Theme.accent-primary; wrap: word-wrap; }
+            }
+        }
+    }
+}
+
+export component ApiDocsView inherits Rectangle {
+    background: Theme.background;
+
+    VerticalLayout {
+        padding: 24px;
+        spacing: 14px;
+
+        HorizontalLayout {
+            alignment: space-between;
+            VerticalLayout {
+                spacing: 3px;
+                Text { text: "MANUAL DA API REST & ENDPOINTS HTTP"; font-size: 15px; font-weight: 800; letter-spacing: 0.8px; color: Theme.text-primary; }
+                Text { text: "Servidor REST nativo Axum rodando localmente na porta 8000."; font-size: 11px; color: Theme.text-dim; }
+            }
+            Rectangle {
+                height: 26px; background: #00ff9d14; border-radius: 4px; border-width: 1px; border-color: #00ff9d33;
+                HorizontalLayout {
+                    padding-left: 10px; padding-right: 10px;
+                    Text { text: "● Servidor Axum :8000 Ativo"; font-size: 10px; font-weight: 800; color: Theme.status-success; vertical-alignment: center; }
+                }
+            }
+        }
+
+        Rectangle {
+            vertical-stretch: 1;
+            background: Theme.surface;
+            border-radius: 10px;
+            border-width: 1px;
+            border-color: Theme.border;
+
+            ScrollView {
+                VerticalLayout {
+                    padding: 16px;
+                    spacing: 12px;
+
+                    ApiCard {
+                        method: "POST"; endpoint: "/api/v1/query";
+                        description: "Envia pergunta técnica. Retorna diagnóstico sintetizado pela LLM local e citações extraídas dos livros.";
+                        example_payload: "curl -X POST http://127.0.0.1:8000/api/v1/query \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"query\": \"Padrões de concorrência com Rust atomics\", \"deep\": true, \"max_tokens\": 2500}'";
+                    }
+
+                    ApiCard {
+                        method: "GET"; endpoint: "/api/v1/books";
+                        description: "Lista todos os livros e documentos indexados na biblioteca com hashes SHA-256 e contagem de chunks.";
+                        example_payload: "curl http://127.0.0.1:8000/api/v1/books";
+                    }
+
+                    ApiCard {
+                        method: "GET"; endpoint: "/health";
+                        description: "Healthcheck do serviço e telemetria dos modelos vetoriais.";
+                        example_payload: "curl http://127.0.0.1:8000/health";
+                    }
+                }
+            }
+        }
+    }
+}

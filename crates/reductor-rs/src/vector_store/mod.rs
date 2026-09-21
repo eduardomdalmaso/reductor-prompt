@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use serde::{Deserialize, Serialize};
-use crate::domain::{Book, BookChunk, ScoredChunk};
+use crate::domain::{Book, BookChunk, ConfidentialityLevel, DocumentFormat, ScoredChunk};
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct VectorIndexData {
@@ -19,20 +19,44 @@ pub struct EmbeddedVectorStore {
 impl EmbeddedVectorStore {
     pub fn new<P: AsRef<Path>>(storage_dir: P) -> Self {
         let persist_path = storage_dir.as_ref().join("reductor_index.json");
-        let initial_data = if persist_path.exists() {
-            match fs::read_to_string(&persist_path) {
-                Ok(content) => serde_json::from_str(&content).unwrap_or_else(|_| VectorIndexData {
+        let mut initial_data = if persist_path.exists() {
+            if let Ok(file) = fs::File::open(&persist_path) {
+                let reader = std::io::BufReader::new(file);
+                serde_json::from_reader(reader).unwrap_or_else(|_| VectorIndexData {
                     books: Vec::new(),
                     chunks: Vec::new(),
-                }),
-                Err(_) => VectorIndexData { books: Vec::new(), chunks: Vec::new() },
+                })
+            } else {
+                VectorIndexData { books: Vec::new(), chunks: Vec::new() }
             }
         } else {
-            VectorIndexData {
-                books: Vec::new(),
-                chunks: Vec::new(),
-            }
+            VectorIndexData { books: Vec::new(), chunks: Vec::new() }
         };
+
+        // Fallback seguro: se a lista de livros estiver vazia, carrega de indexed_books.json
+        if initial_data.books.is_empty() {
+            let indexed_books_path = storage_dir.as_ref().join("indexed_books.json");
+            if let Ok(content) = fs::read_to_string(&indexed_books_path) {
+                if let Ok(val) = serde_json::from_str::<serde_json::Value>(&content) {
+                    if let Some(books_map) = val.get("books").and_then(|b| b.as_object()) {
+                        for (_, b) in books_map {
+                            let title = b["title"].as_str().unwrap_or("unknown").to_string();
+                            let format_str = b["file_format"].as_str().unwrap_or("pdf");
+                            initial_data.books.push(Book {
+                                id: b["id"].as_str().unwrap_or("").to_string(),
+                                title,
+                                file_path: b["file_path"].as_str().unwrap_or("").to_string(),
+                                file_hash: b["file_hash"].as_str().unwrap_or("").to_string(),
+                                format: DocumentFormat::from_extension(format_str),
+                                confidentiality: ConfidentialityLevel::Public,
+                                total_chunks: b["total_chunks"].as_u64().unwrap_or(0) as usize,
+                                total_tokens: b["total_tokens"].as_u64().unwrap_or(0) as usize,
+                            });
+                        }
+                    }
+                }
+            }
+        }
 
         Self {
             persist_path,
@@ -65,6 +89,11 @@ impl EmbeddedVectorStore {
         drop(data);
 
         self.persist().await
+    }
+
+    /// Lista todos os livros indexados de forma síncrona/imediata
+    pub fn list_books_sync(&self) -> Vec<Book> {
+        self.data.try_read().map(|d| d.books.clone()).unwrap_or_default()
     }
 
     /// Lista todos os livros indexados

@@ -1,0 +1,77 @@
+import { Theme } from "../theme/palette.slint";
+
+export component MetricHistoryRow inherits Rectangle {
+    in-out property <string> timestamp: "16:42";
+    in-out property <string> query_title: "Otimização de Zero-Copy em Rust e FFI";
+    in-out property <string> mode_badge: "DEEP";
+    in-out property <string> chunks_count: "8 Chunks";
+    in-out property <string> tokens_saved: "-98.9%";
+    in-out property <string> latency: "14ms";
+
+    height: 44px;
+    background: row_touch.has-hover ? Theme.surface-hover : Theme.surface-elevated;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: Theme.border;
+    animate background { duration: 100ms; }
+
+    HorizontalLayout {
+        padding-left: 14px;
+        padding-right: 14px;
+        spacing: 12px;
+
+        // Hora
+        VerticalLayout {
+            alignment: center;
+            width: 55px;
+            Text { text: timestamp; font-size: 11px; font-weight: 700; color: Theme.text-dim; }
+        }
+
+        // Modo Badge
+        VerticalLayout {
+            alignment: center;
+            width: 65px;
+            Rectangle {
+                width: 55px; height: 20px; border-radius: 4px;
+                background: mode_badge == "DEEP" ? #ff5e3a22 : (mode_badge == "FAST" ? #00ff9d22 : #00e5ff22);
+                border-width: 1px;
+                border-color: mode_badge == "DEEP" ? #ff5e3a55 : (mode_badge == "FAST" ? #00ff9d55 : #00e5ff55);
+                Text {
+                    text: mode_badge; font-size: 9px; font-weight: 800;
+                    color: mode_badge == "DEEP" ? Theme.accent-primary : (mode_badge == "FAST" ? Theme.status-success : #00e5ff);
+                    horizontal-alignment: center; vertical-alignment: center;
+                }
+            }
+        }
+
+        // Query text
+        VerticalLayout {
+            alignment: center;
+            horizontal-stretch: 1;
+            Text { text: query_title; font-size: 11px; font-weight: 700; color: Theme.text-primary; overflow: elide; }
+        }
+
+        // Chunks
+        VerticalLayout {
+            alignment: center;
+            width: 80px;
+            Text { text: chunks_count; font-size: 11px; font-weight: 700; color: Theme.text-secondary; horizontal-alignment: right; }
+        }
+
+        // Economia
+        VerticalLayout {
+            alignment: center;
+            width: 80px;
+            Text { text: tokens_saved; font-size: 11px; font-weight: 800; color: Theme.status-success; horizontal-alignment: right; }
+        }
+
+        // Latência
+        VerticalLayout {
+            alignment: center;
+            width: 55px;
+            Text { text: latency; font-size: 11px; font-weight: 700; color: Theme.text-dim; horizontal-alignment: right; }
+        }
+    }
+
+    row_touch := TouchArea {}
+}
