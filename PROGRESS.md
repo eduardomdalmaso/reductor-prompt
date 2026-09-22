@@ -57,6 +57,16 @@
    - Ferramenta MCP: `get_runtime_budget_advice()` para auto-calibração autônoma de agentes (Gemini/Claude).
    - Endpoint REST `GET /api/v1/hardware/budget-advice` e subcomando CLI `python query.py advisor`.
 
+8. **📚 Ingestão de Documentações Técnicas Oficiais (Elasticsearch, Redis, Triton, PHP 8.4, Laravel 12.x)**:
+   - Download concorrente e compilação de repositórios oficiais GitHub (`elastic/elasticsearch`, `redis/docs`, `triton-inference-server/server`, `laravel/docs`, `php/php-src`).
+   - 14 manuais técnicos estruturados em `database/` somando **15.817 chunks** e mais de **3.360.000 tokens** indexados no ChromaDB.
+   - Cobertura completa de:
+     - **PHP 8.4**: Property Hooks, Asymmetric Visibility, HTML5 DOM API, novas funções de array (`array_find`, `array_any`, etc.), Lazy Objects e UPGRADING guide.
+     - **Laravel 12.x (12.68.0)**: Architecture, Routing, Eloquent ORM, Migrations, Security, Sanctum, Concurrency Facade, Octane, Queues e Laravel AI SDK.
+     - **Elasticsearch**: Query DSL, Text Analysis, Custom Analyzers, Plugins.
+     - **Redis**: Vector Search (HNSW), Semantic Caching, Data Types, Clustering.
+     - **Triton**: Inference Server, Dynamic Batching, Model Ensembles, GPU Compiler.
+
 ---
 
 ## 🛠️ Comandos Rápidos do Harness
