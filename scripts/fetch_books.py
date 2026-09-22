@@ -1,456 +1,60 @@
 #!/usr/bin/env python3
 """
-Universal Dynamic Book & Doc Fetcher - ReductorPrompt
-======================================================
-Downloader e compilador dinâmico universal baseado nas melhores práticas de:
-- "High Performance Python" (Concorrência com ThreadPoolExecutor e I/O Buffering)
-- "Python in a Nutshell" (Resiliência de Rede, Backoff e Tratamento de Exceções)
-- "Architecture Patterns with Python" & Clean Code (Separação de Responsabilidades e Idempotência)
-
-Suporta:
-  1. Pastas do GitHub (tree): https://github.com/owner/repo/tree/branch/subfolder
-  2. Arquivos do GitHub (blob): https://github.com/owner/repo/blob/branch/book.pdf
-  3. Links diretos da Web (ArXiv, PDFs, EPUBs, Markdown, etc.)
-  4. Múltiplas URLs separadas por vírgula, espaço ou arquivo .txt
-  5. Deduplicação criptográfica SHA-256 e verificação pré-download
-  6. Ingestão vetorial automática opcional (--ingest)
+Ponto de entrada para download e compilação dinâmica universal de livros e documentações.
+Uso:
+  python scripts/fetch_books.py "https://github.com/laravel/docs/tree/12.x" --compile --ingest
+  python scripts/fetch_books.py "https://arxiv.org/pdf/2401.05566.pdf" --ingest
 """
 
-import os
 import sys
-import re
-import time
-import json
-import socket
-import ipaddress
-import hashlib
 import argparse
-import urllib.request
-import urllib.parse
-import urllib.error
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional, Set, Any
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List
 
-
-def is_safe_public_url(url: str) -> Tuple[bool, str]:
-    """Valida se a URL é segura (esquema HTTP/HTTPS público, sem IPs privados, loopback ou metadata)."""
+if sys.platform == "win32":
     try:
-        parsed = urllib.parse.urlparse(url)
-        if parsed.scheme not in ('http', 'https'):
-            return False, f"Esquema de URL não permitido: '{parsed.scheme}'. Apenas http e https são aceitos."
-        
-        hostname = parsed.hostname
-        if not hostname:
-            return False, "URL inválida: hostname ausente."
-
-        if hostname.lower() in ('localhost', '127.0.0.1', '::1', '0.0.0.0'):
-            return False, "Acesso a endereços de loopback/localhost é proibido por segurança."
-
-        try:
-            addr_info = socket.getaddrinfo(hostname, parsed.port or (443 if parsed.scheme == 'https' else 80), proto=socket.IPPROTO_TCP)
-        except socket.gaierror as e:
-            return False, f"Falha ao resolver DNS para {hostname}: {e}"
-
-        for entry in addr_info:
-            ip_str = entry[4][0]
-            ip = ipaddress.ip_address(ip_str)
-            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_multicast or ip.is_reserved:
-                return False, f"Acesso ao IP privado ou reservado ({ip_str}) é bloqueado (prevenção a SSRF)."
-
-        return True, "OK"
-    except Exception as e:
-        return False, f"Erro ao validar URL: {e}"
-
-try:
-    from rich.console import Console
-    from rich.table import Table
-    from rich.panel import Panel
-    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, DownloadColumn, TransferSpeedColumn, TimeRemainingColumn
-    console = Console()
-except ImportError:
-    console = None
-
-DATABASE_DIR = Path(__file__).resolve().parent.parent / "database"
-STORAGE_DIR = Path(__file__).resolve().parent.parent / "storage"
-REGISTRY_FILE = STORAGE_DIR / "indexed_books.json"
-
-SUPPORTED_EXTENSIONS = {'.pdf', '.epub', '.ipynb', '.txt', '.md', '.markdown'}
-DEFAULT_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 (ReductorPrompt-Fetcher/2.0)"
-
-
-def calculate_sha256(file_path: Path) -> str:
-    """Calcula hash SHA-256 com buffer otimizado de 64KB (High Performance Python)."""
-    hasher = hashlib.sha256()
-    with open(file_path, "rb") as f:
-        for chunk in iter(lambda: f.read(65536), b""):
-            hasher.update(chunk)
-    return hasher.hexdigest()
-
-
-def normalize_title(name: str) -> str:
-    """Normaliza nome de arquivo para comparação de similaridade sem ruídos."""
-    name = Path(name).stem
-    name = re.sub(r'\[.*?\]', '', name)
-    name = re.sub(r'[^a-zA-Z0-9]', '', name).lower()
-    return name
-
-
-def load_indexed_metadata() -> Dict[str, str]:
-    """Carrega catálogo de livros já indexados para deduplicação absoluta."""
-    if not REGISTRY_FILE.exists():
-        return {}
-    try:
-        with open(REGISTRY_FILE, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            return {b["file_path"]: b.get("file_hash", "") for b in data.get("books", {}).values()}
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
     except Exception:
-        return {}
+        pass
+
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+
+from src.application.services.doc_fetcher_service import DocFetcherService, is_safe_public_url
+
+console = Console()
 
 
-def get_local_database_catalog() -> Dict[str, Dict]:
-    """Mapeia todos os arquivos locais existentes na pasta database/."""
-    catalog = {}
-    if not DATABASE_DIR.exists():
-        DATABASE_DIR.mkdir(parents=True, exist_ok=True)
-        return catalog
+def run_pipeline(urls: List[str], max_workers: int = 8, compile_tree: bool = True, trigger_ingest: bool = False):
+    console.print(Panel.fit(
+        "[bold cyan]📚 ReductorPrompt - Universal Book & Doc Fetcher[/bold cyan]\n"
+        "[dim]Download inteligente, compilação semântica e auto-ingestão vetorial[/dim]",
+        border_style="cyan"
+    ))
 
-    for f in DATABASE_DIR.iterdir():
-        if f.is_file() and not f.name.startswith("."):
-            norm = normalize_title(f.name)
-            catalog[f.name.lower()] = {
-                "path": f,
-                "size": f.stat().st_size,
-                "norm": norm
-            }
-    return catalog
+    service = DocFetcherService()
+    all_results = []
 
+    for u in urls:
+        console.print(f"🔍 [dim]Processando fonte:[/dim] [blue]{u}[/blue]")
+        results = service.process_url(u, compile_tree=compile_tree, max_workers=max_workers)
+        all_results.extend(results)
 
-class SourceResolver:
-    """Resolve dinamicamente qualquer link (GitHub Tree, GitHub Blob, URL direta) em tarefas de download."""
+    table = Table(title="📊 Resumo da Extração Dinâmica", border_style="cyan")
+    table.add_column("Status", style="bold")
+    table.add_column("Arquivo / Manual", style="cyan")
+    table.add_column("Detalhes", style="dim")
 
-    @staticmethod
-    def parse_github_url(url: str) -> Optional[Dict[str, str]]:
-        """Extrai owner, repo, tipo (tree/blob/root), branch e path de uma URL do GitHub."""
-        tree_match = re.match(r'^https?://github\.com/([^/]+)/([^/]+)/tree/([^/]+)/(.*)$', url, re.IGNORECASE)
-        if tree_match:
-            return {
-                "owner": tree_match.group(1),
-                "repo": tree_match.group(2),
-                "type": "tree",
-                "branch": tree_match.group(3),
-                "path": urllib.parse.unquote(tree_match.group(4)).rstrip('/')
-            }
+    for status, name, detail in all_results:
+        st_color = "green" if status in ["DOWNLOADED", "COMPILED"] else ("yellow" if status == "SKIPPED_EXISTING" else "red")
+        table.add_row(f"[{st_color}]{status}[/{st_color}]", name, detail)
 
-        blob_match = re.match(r'^https?://github\.com/([^/]+)/([^/]+)/blob/([^/]+)/(.*)$', url, re.IGNORECASE)
-        if blob_match:
-            return {
-                "owner": blob_match.group(1),
-                "repo": blob_match.group(2),
-                "type": "blob",
-                "branch": blob_match.group(3),
-                "path": urllib.parse.unquote(blob_match.group(4))
-            }
+    console.print("\n", table)
 
-        root_match = re.match(r'^https?://github\.com/([^/]+)/([^/]+)/?$', url, re.IGNORECASE)
-        if root_match:
-            owner = root_match.group(1)
-            repo = root_match.group(2).rstrip('.git')
-            # Descobre branch padrão via API do GitHub
-            branch = "main"
-            try:
-                api_url = f"https://api.github.com/repos/{owner}/{repo}"
-                req = urllib.request.Request(api_url, headers={"User-Agent": DEFAULT_USER_AGENT})
-                with urllib.request.urlopen(req, timeout=10) as resp:
-                    data = json.loads(resp.read().decode())
-                    branch = data.get("default_branch", "main")
-            except Exception:
-                branch = "main"
-            return {
-                "owner": owner,
-                "repo": repo,
-                "type": "tree",
-                "branch": branch,
-                "path": ""
-            }
-
-        return None
-
-    @classmethod
-    def resolve(cls, input_url: str) -> List[Dict]:
-        """Transforma qualquer URL em uma lista padronizada de itens para download."""
-        url = input_url.strip().strip("'").strip('"')
-        if not url:
-            return []
-
-        gh_info = cls.parse_github_url(url)
-        if gh_info:
-            if gh_info["type"] == "blob":
-                # Arquivo único no GitHub
-                rel_path = gh_info["path"]
-                filename = f"{gh_info['repo']}_{Path(rel_path).name}" if Path(rel_path).name.lower() in ["readme.md", "license", "changelog.md"] else Path(rel_path).name
-                encoded_path = urllib.parse.quote(rel_path)
-                raw_url = f"https://raw.githubusercontent.com/{gh_info['owner']}/{gh_info['repo']}/{gh_info['branch']}/{encoded_path}"
-                return [{
-                    "source_type": "github_blob",
-                    "title": filename,
-                    "filename": filename,
-                    "download_url": raw_url,
-                    "expected_size": 0,
-                    "category": f"{gh_info['owner']}/{gh_info['repo']}"
-                }]
-
-            elif gh_info["type"] == "tree":
-                # Pasta ou repositório no GitHub via API
-                return cls._fetch_github_tree_items(gh_info)
-
-        # Link Direto Web
-        parsed = urllib.parse.urlparse(url)
-        raw_name = Path(parsed.path).name or "downloaded_document.pdf"
-        if not any(raw_name.lower().endswith(ext) for ext in SUPPORTED_EXTENSIONS):
-            raw_name += ".pdf"
-
-        return [{
-            "source_type": "direct_url",
-            "title": raw_name,
-            "filename": raw_name,
-            "download_url": url,
-            "expected_size": 0,
-            "category": parsed.netloc or "web"
-        }]
-
-    @classmethod
-    def _fetch_github_tree_items(cls, gh_info: Dict[str, str]) -> List[Dict]:
-        """Consulta a árvore do repositório GitHub e extrai arquivos da pasta especificada."""
-        owner = gh_info["owner"]
-        repo = gh_info["repo"]
-        branch = gh_info["branch"]
-        target_path = gh_info["path"]
-
-        api_url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/{branch}?recursive=1"
-        req = urllib.request.Request(api_url, headers={"User-Agent": DEFAULT_USER_AGENT})
-
-        tree = []
-        try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                data = json.loads(resp.read().decode())
-                tree = data.get("tree", [])
-        except Exception as e:
-            # Fallback para master se main falhou
-            if branch == "main":
-                try:
-                    fallback_url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/master?recursive=1"
-                    req_fb = urllib.request.Request(fallback_url, headers={"User-Agent": DEFAULT_USER_AGENT})
-                    with urllib.request.urlopen(req_fb, timeout=30) as resp_fb:
-                        data_fb = json.loads(resp_fb.read().decode())
-                        tree = data_fb.get("tree", [])
-                        branch = "master"
-                except Exception:
-                    pass
-
-            if not tree:
-                if console:
-                    console.print(f"[red]Erro ao consultar API do GitHub ({owner}/{repo}): {e}[/red]")
-                else:
-                    print(f"Erro ao consultar API do GitHub ({owner}/{repo}): {e}")
-                return []
-
-        items = []
-        for node in tree:
-            if node.get("type") == "blob":
-                path = node.get("path", "")
-                if not target_path or path.startswith(target_path + "/") or path == target_path:
-                    suffix = Path(path).suffix.lower()
-                    if suffix in SUPPORTED_EXTENSIONS:
-                        raw_filename = Path(path).name
-                        # Prefixa o repositório para evitar colisão de nomes genéricos (ex: README.md)
-                        if target_path == "" or raw_filename.lower() in ["readme.md", "summary.md", "index.md"]:
-                            safe_path_str = path.replace('/', '_').replace('\\', '_')
-                            filename = f"{repo}_{safe_path_str}"
-                        else:
-                            filename = raw_filename
-                        encoded_path = urllib.parse.quote(path)
-                        raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{encoded_path}"
-                        items.append({
-                            "source_type": "github_tree",
-                            "title": filename,
-                            "filename": filename,
-                            "download_url": raw_url,
-                            "expected_size": node.get("size", 0),
-                            "category": f"{owner}/{repo}"
-                        })
-        return items
-
-
-class ResilientDownloader:
-    """Executa downloads atômicos com retentativas, backoff exponencial e deduplicação inteligente."""
-
-    def __init__(self, max_retries: int = 3, timeout: int = 120):
-        self.max_retries = max_retries
-        self.timeout = timeout
-
-    def download(self, item: Dict, local_catalog: Dict[str, Dict]) -> Tuple[str, str, str, Any]:
-        filename = item["filename"]
-        url = item["download_url"]
-        category = item["category"]
-        expected_size = item.get("expected_size", 0)
-        dest_path = DATABASE_DIR / filename
-
-        # 0. Validação de Segurança contra SSRF (Bloqueia IPs locais/privados/metadata)
-        is_safe, reason = is_safe_public_url(url)
-        if not is_safe:
-            return ("ERROR", filename, category, Exception(f"Bloqueio de Segurança (SSRF): {reason}"))
-
-        # 1. Verificação de deduplicação local exata
-        if dest_path.exists():
-            actual_size = dest_path.stat().st_size
-            if expected_size > 0 and actual_size == expected_size:
-                return ("SKIPPED_EXISTING", filename, category, actual_size)
-            elif expected_size == 0 and actual_size > 0:
-                return ("SKIPPED_EXISTING", filename, category, actual_size)
-
-        # 2. Verificação de deduplicação por nome em minúsculas
-        lower_name = filename.lower()
-        if lower_name in local_catalog:
-            info = local_catalog[lower_name]
-            if expected_size > 0 and info["size"] == expected_size:
-                return ("SKIPPED_EXISTING", filename, category, info["size"])
-
-        # 3. Download Atômico com Retry e Exponential Backoff
-        temp_path = dest_path.with_suffix(dest_path.suffix + ".tmp")
-        last_error = None
-
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                req = urllib.request.Request(url, headers={"User-Agent": DEFAULT_USER_AGENT})
-                with urllib.request.urlopen(req, timeout=self.timeout) as resp, open(temp_path, "wb") as out_f:
-                    total_read = 0
-                    while True:
-                        chunk = resp.read(256 * 1024)  # 256KB buffer
-                        if not chunk:
-                            break
-                        out_f.write(chunk)
-                        total_read += len(chunk)
-
-                # Move atomicamente o arquivo finalizado
-                temp_path.replace(dest_path)
-                return ("DOWNLOADED", filename, category, total_read)
-
-            except Exception as err:
-                last_error = err
-                if temp_path.exists():
-                    try:
-                        temp_path.unlink()
-                    except Exception:
-                        pass
-                if attempt < self.max_retries:
-                    time.sleep(2 ** attempt)  # 2s, 4s, 8s backoff
-
-        return ("ERROR", filename, category, str(last_error))
-
-
-def run_pipeline(urls: List[str], max_workers: int = 6, trigger_ingest: bool = False):
-    """Orquestrador principal de download concorrente e ingestão."""
-    if console:
-        console.print(Panel.fit(
-            "[bold cyan]📚 ReductorPrompt - Universal Book & Doc Fetcher[/bold cyan]\n"
-            "[dim]Download inteligente, deduplicação SHA-256 e auto-ingestão vetorial[/dim]",
-            border_style="cyan"
-        ))
-    else:
-        print("=== ReductorPrompt - Universal Book & Doc Fetcher ===")
-
-    local_catalog = get_local_database_catalog()
-    all_items: List[Dict] = []
-    seen_urls: Set[str] = set()
-
-    for raw_url in urls:
-        for single_url in re.split(r'[,\s]+', raw_url):
-            single_url = single_url.strip()
-            if not single_url or single_url in seen_urls:
-                continue
-            seen_urls.add(single_url)
-
-            if console:
-                console.print(f"🔍 [dim]Resolvendo fonte:[/dim] [blue]{single_url}[/blue]")
-            else:
-                print(f"Resolvendo fonte: {single_url}")
-
-            items = SourceResolver.resolve(single_url)
-            all_items.extend(items)
-
-    if not all_items:
-        if console:
-            console.print("[yellow]⚠️ Nenhum arquivo para download encontrado nas URLs fornecidas.[/yellow]")
-        else:
-            print("Nenhum arquivo para download encontrado.")
-        return
-
-    # Deduplicação na lista de itens encontrados
-    unique_items = []
-    seen_filenames = set()
-    for it in all_items:
-        if it["filename"] not in seen_filenames:
-            seen_filenames.add(it["filename"])
-            unique_items.append(it)
-
-    if console:
-        console.print(f"\n🚀 [bold green]Iniciando processamento de {len(unique_items)} arquivos ({max_workers} threads concorrentes)...[/bold green]\n")
-    else:
-        print(f"\nIniciando processamento de {len(unique_items)} arquivos ({max_workers} threads)...\n")
-
-    downloader = ResilientDownloader()
-    downloaded_count = 0
-    skipped_count = 0
-    error_count = 0
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = {executor.submit(downloader.download, it, local_catalog): it for it in unique_items}
-        for idx, future in enumerate(as_completed(futures), 1):
-            status, filename, category, detail = future.result()
-            if status == "DOWNLOADED":
-                downloaded_count += 1
-                size_mb = detail / (1024 * 1024)
-                if console:
-                    console.print(f"[{idx}/{len(unique_items)}] [bold green]✅ Baixado:[/bold green] [cyan][{category}][/cyan] {filename} ([dim]{size_mb:.2f} MB[/dim])")
-                else:
-                    print(f"[{idx}/{len(unique_items)}] ✅ Baixado: [{category}] {filename} ({size_mb:.2f} MB)")
-            elif status == "SKIPPED_EXISTING":
-                skipped_count += 1
-                size_mb = detail / (1024 * 1024)
-                if console:
-                    console.print(f"[{idx}/{len(unique_items)}] [bold yellow]⏩ Já existente (ignorado):[/bold yellow] [cyan][{category}][/cyan] {filename} ([dim]{size_mb:.2f} MB[/dim])")
-                else:
-                    print(f"[{idx}/{len(unique_items)}] ⏩ Já existente: [{category}] {filename} ({size_mb:.2f} MB)")
-            else:
-                error_count += 1
-                if console:
-                    console.print(f"[{idx}/{len(unique_items)}] [bold red]❌ Erro:[/bold red] [cyan][{category}][/cyan] {filename} - {detail}")
-                else:
-                    print(f"[{idx}/{len(unique_items)}] ❌ Erro: [{category}] {filename} - {detail}")
-
-    # Resumo da Execução
-    if console:
-        table = Table(title="📊 Resumo da Operação", border_style="cyan")
-        table.add_column("Métrica", style="bold")
-        table.add_column("Quantidade", justify="right")
-        table.add_row("Novos Livros Baixados", f"[green]{downloaded_count}[/green]")
-        table.add_row("Deduplicados / Já Existentes", f"[yellow]{skipped_count}[/yellow]")
-        table.add_row("Falhas / Erros", f"[red]{error_count}[/red]")
-        table.add_row("Total Processado", str(len(unique_items)))
-        console.print("\n", table)
-    else:
-        print("\n" + "="*40)
-        print(f"Baixados: {downloaded_count} | Já existentes: {skipped_count} | Erros: {error_count}")
-        print("="*40)
-
-    # Disparo opcional da ingestão vetorial
-    if trigger_ingest and downloaded_count > 0:
-        if console:
-            console.print("\n[bold cyan]🧠 Iniciando ingestão vetorial automática no ChromaDB...[/bold cyan]")
-        else:
-            print("\nIniciando ingestão vetorial no ChromaDB...")
-
+    if trigger_ingest and any(st in ["DOWNLOADED", "COMPILED"] for st, _, _ in all_results):
+        console.print("\n[bold cyan]🧠 Disparando ingestão vetorial automática no ChromaDB...[/bold cyan]")
         from src.application.use_cases.ingest_books_use_case import IngestBooksUseCase
         from src.adapters.outbound.loaders.document_loaders import CompositeDocumentLoader
         from src.adapters.outbound.embeddings.embedding_adapters import ResilientEmbeddingAdapter
@@ -463,31 +67,19 @@ def run_pipeline(urls: List[str], max_workers: int = 6, trigger_ingest: bool = F
             vector_store=ChromaVectorStoreAdapter(),
             book_repo=FileBookRepositoryAdapter()
         )
-        processed = use_case.execute(force_reindex=False)
-        if console:
-            console.print(f"[bold green]✨ Ingestão concluída com sucesso! {len(processed)} livros indexados.[/bold green]")
-        else:
-            print(f"Ingestão concluída! {len(processed)} livros indexados.")
+        books = use_case.execute(force_reindex=False)
+        console.print(f"[bold green]✨ Ingestão concluída com sucesso! {len(books)} livros/manuais indexados.[/bold green]")
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="ReductorPrompt Universal Book & Doc Fetcher",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Exemplos:
-  python scripts/fetch_books.py "https://github.com/MinhNguyenDS/AI-pdf-books/tree/Master/Paper"
-  python scripts/fetch_books.py "https://github.com/owner/repo/blob/main/manual.pdf"
-  python scripts/fetch_books.py "https://arxiv.org/pdf/2401.05566.pdf" --ingest
-  python scripts/fetch_books.py "link1,link2,link3" --workers 8
-        """
-    )
+    parser = argparse.ArgumentParser(description="ReductorPrompt Universal Book & Doc Fetcher")
     parser.add_argument("urls", nargs="+", help="Uma ou mais URLs (GitHub tree, blob ou links diretos)")
-    parser.add_argument("--workers", "-w", type=int, default=6, help="Número de threads concorrentes (padrão: 6)")
-    parser.add_argument("--ingest", "-i", action="store_true", help="Executar ingestão vetorial no ChromaDB automaticamente após download")
+    parser.add_argument("--workers", "-w", type=int, default=8, help="Número de threads concorrentes")
+    parser.add_argument("--compile", "-c", action="store_true", default=True, help="Compila árvores de markdown em manuais únicos")
+    parser.add_argument("--ingest", "-i", action="store_true", help="Auto-ingestão no ChromaDB após download")
 
     args = parser.parse_args()
-    run_pipeline(args.urls, max_workers=args.workers, trigger_ingest=args.ingest)
+    run_pipeline(args.urls, max_workers=args.workers, compile_tree=args.compile, trigger_ingest=args.ingest)
 
 
 if __name__ == "__main__":

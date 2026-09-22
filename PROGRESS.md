@@ -60,12 +60,11 @@
 8. **📚 Ingestão de Documentações Técnicas Oficiais (Elasticsearch, Redis, Triton, PHP 8.4, Laravel 12.x)**:
    - Download concorrente e compilação de repositórios oficiais GitHub (`elastic/elasticsearch`, `redis/docs`, `triton-inference-server/server`, `laravel/docs`, `php/php-src`).
    - 14 manuais técnicos estruturados em `database/` somando **15.817 chunks** e mais de **3.360.000 tokens** indexados no ChromaDB.
-   - Cobertura completa de:
-     - **PHP 8.4**: Property Hooks, Asymmetric Visibility, HTML5 DOM API, novas funções de array (`array_find`, `array_any`, etc.), Lazy Objects e UPGRADING guide.
-     - **Laravel 12.x (12.68.0)**: Architecture, Routing, Eloquent ORM, Migrations, Security, Sanctum, Concurrency Facade, Octane, Queues e Laravel AI SDK.
-     - **Elasticsearch**: Query DSL, Text Analysis, Custom Analyzers, Plugins.
-     - **Redis**: Vector Search (HNSW), Semantic Caching, Data Types, Clustering.
-     - **Triton**: Inference Server, Dynamic Batching, Model Ensembles, GPU Compiler.
+
+9. **🌐 Extrator & Compilador Dinâmico Universal (Zero Scripts Avulsos)**:
+   - Implementação de [`DocFetcherService`](file:///c:/Users/eduar/Documents/reductor-prompt/src/application/services/doc_fetcher_service.py) e [`DocCompilerService`](file:///c:/Users/eduar/Documents/reductor-prompt/src/application/services/doc_compiler_service.py) baseados em *Clean Architecture*, *Strategy Pattern* e I/O concorrente.
+   - Resolução polimórfica de links (árvores GitHub, arquivos únicos, links diretos e web) com compilação semântica em manuais canônicos.
+   - Eliminação de todos os scripts avulsos da pasta `scripts/`, integrando todo o pipeline diretamente ao CLI (`python query.py fetch "<urls>" [--compile] [--ingest]`).
 
 ---
 
