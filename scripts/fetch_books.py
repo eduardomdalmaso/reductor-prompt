@@ -131,7 +131,7 @@ class SourceResolver:
 
     @staticmethod
     def parse_github_url(url: str) -> Optional[Dict[str, str]]:
-        """Extrai owner, repo, tipo (tree/blob), branch e path de uma URL do GitHub."""
+        """Extrai owner, repo, tipo (tree/blob/root), branch e path de uma URL do GitHub."""
         tree_match = re.match(r'^https?://github\.com/([^/]+)/([^/]+)/tree/([^/]+)/(.*)$', url, re.IGNORECASE)
         if tree_match:
             return {
@@ -151,6 +151,29 @@ class SourceResolver:
                 "branch": blob_match.group(3),
                 "path": urllib.parse.unquote(blob_match.group(4))
             }
+
+        root_match = re.match(r'^https?://github\.com/([^/]+)/([^/]+)/?$', url, re.IGNORECASE)
+        if root_match:
+            owner = root_match.group(1)
+            repo = root_match.group(2).rstrip('.git')
+            # Descobre branch padrão via API do GitHub
+            branch = "main"
+            try:
+                api_url = f"https://api.github.com/repos/{owner}/{repo}"
+                req = urllib.request.Request(api_url, headers={"User-Agent": DEFAULT_USER_AGENT})
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = json.loads(resp.read().decode())
+                    branch = data.get("default_branch", "main")
+            except Exception:
+                branch = "main"
+            return {
+                "owner": owner,
+                "repo": repo,
+                "type": "tree",
+                "branch": branch,
+                "path": ""
+            }
+
         return None
 
     @classmethod
@@ -165,7 +188,7 @@ class SourceResolver:
             if gh_info["type"] == "blob":
                 # Arquivo único no GitHub
                 rel_path = gh_info["path"]
-                filename = Path(rel_path).name
+                filename = f"{gh_info['repo']}_{Path(rel_path).name}" if Path(rel_path).name.lower() in ["readme.md", "license", "changelog.md"] else Path(rel_path).name
                 encoded_path = urllib.parse.quote(rel_path)
                 raw_url = f"https://raw.githubusercontent.com/{gh_info['owner']}/{gh_info['repo']}/{gh_info['branch']}/{encoded_path}"
                 return [{
@@ -178,7 +201,7 @@ class SourceResolver:
                 }]
 
             elif gh_info["type"] == "tree":
-                # Pasta no GitHub via API
+                # Pasta ou repositório no GitHub via API
                 return cls._fetch_github_tree_items(gh_info)
 
         # Link Direto Web
@@ -207,25 +230,45 @@ class SourceResolver:
         api_url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/{branch}?recursive=1"
         req = urllib.request.Request(api_url, headers={"User-Agent": DEFAULT_USER_AGENT})
 
+        tree = []
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 data = json.loads(resp.read().decode())
                 tree = data.get("tree", [])
         except Exception as e:
-            if console:
-                console.print(f"[red]Erro ao consultar API do GitHub ({owner}/{repo}): {e}[/red]")
-            else:
-                print(f"Erro ao consultar API do GitHub ({owner}/{repo}): {e}")
-            return []
+            # Fallback para master se main falhou
+            if branch == "main":
+                try:
+                    fallback_url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/master?recursive=1"
+                    req_fb = urllib.request.Request(fallback_url, headers={"User-Agent": DEFAULT_USER_AGENT})
+                    with urllib.request.urlopen(req_fb, timeout=30) as resp_fb:
+                        data_fb = json.loads(resp_fb.read().decode())
+                        tree = data_fb.get("tree", [])
+                        branch = "master"
+                except Exception:
+                    pass
+
+            if not tree:
+                if console:
+                    console.print(f"[red]Erro ao consultar API do GitHub ({owner}/{repo}): {e}[/red]")
+                else:
+                    print(f"Erro ao consultar API do GitHub ({owner}/{repo}): {e}")
+                return []
 
         items = []
         for node in tree:
             if node.get("type") == "blob":
                 path = node.get("path", "")
-                if path.startswith(target_path + "/") or path == target_path:
+                if not target_path or path.startswith(target_path + "/") or path == target_path:
                     suffix = Path(path).suffix.lower()
-                    if suffix in SUPPORTED_EXTENSIONS or not suffix:
-                        filename = Path(path).name
+                    if suffix in SUPPORTED_EXTENSIONS:
+                        raw_filename = Path(path).name
+                        # Prefixa o repositório para evitar colisão de nomes genéricos (ex: README.md)
+                        if target_path == "" or raw_filename.lower() in ["readme.md", "summary.md", "index.md"]:
+                            safe_path_str = path.replace('/', '_').replace('\\', '_')
+                            filename = f"{repo}_{safe_path_str}"
+                        else:
+                            filename = raw_filename
                         encoded_path = urllib.parse.quote(path)
                         raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{encoded_path}"
                         items.append({
@@ -234,7 +277,7 @@ class SourceResolver:
                             "filename": filename,
                             "download_url": raw_url,
                             "expected_size": node.get("size", 0),
-                            "category": target_path
+                            "category": f"{owner}/{repo}"
                         })
         return items
 
