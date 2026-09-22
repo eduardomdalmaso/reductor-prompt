@@ -32,7 +32,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         first_arg = sys.argv[1]
         # Se o primeiro argumento não for um subcomando conhecido, assume que é o comando 'ask'
-        if first_arg not in ["ask", "analyze", "ingest", "list", "fetch", "brain", "advisor", "--help", "-h"]:
+        if first_arg not in ["ask", "chat", "serve", "analyze", "ingest", "list", "fetch", "brain", "advisor", "--help", "-h"]:
             sys.argv.insert(1, "ask")
     else:
         # Mostra ajuda se nenhum argumento for passado

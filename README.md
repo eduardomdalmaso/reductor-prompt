@@ -101,6 +101,15 @@ python query.py "Princípios de Clean Architecture" --only-context
 python query.py list
 ```
 
+#### 💬 Modo Interativo / Chat no Terminal (REPL)
+```bash
+# Inicia uma sessão contínua de conversação técnica sem reabrir o processo:
+python query.py chat
+
+# Ou filtrando por livro específico:
+python query.py chat --book "Redis Core Architecture"
+```
+
 ---
 
 ### 6. Análise Cruzada de Projeto (*Diagnóstico Arquitetural*)

@@ -58,8 +58,8 @@
 
 10. **Modularidade Estrita e Limites de Linhas por Arquivo (Zero Monólitos)**:
     - **Princípio da Responsabilidade Única (SRP)**: Nenhum arquivo deve acumular múltiplas responsabilidades.
-    - **Frontend & Telas Slint UI (`.slint`)**: Máximo de **120 linhas** por componente. Cada elemento visual (`LoginCard`, `HeaderBar`, `BookSidebar`, `QueryPanel`, `Palette`) deve residir em arquivo isolado em `ui/components/` ou `ui/theme/`.
-    - **Módulos Backend Rust (`.rs`)**: Máximo de **250 linhas** por arquivo. Módulos que excederem esse limite devem ser decompostos em submódulos (`types.rs`, `service.rs`, `handlers.rs`).
+    - **Arquitetura Puramente Terminal (CLI) + REST API + MCP**: O projeto não possui acoplamento de desktop ou UI legada. Todas as interfaces de entrada residem em `src/adapters/inbound/` (CLI, API FastAPI e MCP Server).
+    - **Controladores e Handlers CLI/API**: Máximo de **180 linhas** por módulo. Módulos que excederem esse limite devem ser decompostos em submódulos (`formatters.py`, `chat_handler.py`, `routes/`, `dtos/`).
     - **Scripts e Módulos Python (`.py`)**: Máximo de **200 linhas** por arquivo.
 
 
