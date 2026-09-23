@@ -71,6 +71,12 @@
     - Cliente HTTP/SSE com streaming de tokens e detecção/auto-spawn de daemon em background.
     - Binário compilado em `bin/reductor.exe` com tempo de inicialização `< 3ms`.
 
+11. **🎥 Ingestão de Documentações Técnicas de Streaming (WebRTC & WHEP/WHIP Protocols)**:
+    - Adição de manuais técnicos aprofundados em `database/`:
+      - [`WebRTC_Core_Architecture_Protocols_and_Media_Pipelines.md`](file:///c:/Users/eduar/Documents/reductor-prompt/database/WebRTC_Core_Architecture_Protocols_and_Media_Pipelines.md): Arquitetura PeerConnection, SDP Offer/Answer, NAT Traversal (STUN, TURN, ICE, Trickle ICE), Criptografia DTLS-SRTP, Feedback RTCP (PLI/FIR/NACK/TWCC), Codecs (H.264/H.265/VP8/VP9/AV1/Opus/G.711) e Packetização RTP.
+      - [`WHEP_WHIP_Protocols_and_Go2rtc_Streaming_Guide.md`](file:///c:/Users/eduar/Documents/reductor-prompt/database/WHEP_WHIP_Protocols_and_Go2rtc_Streaming_Guide.md): Especificação WHEP (draft-ietf-wish-whep) & WHIP (RFC 9308), Ciclo de Vida HTTP POST/PATCH/DELETE, Integração Go2rtc (Pion WebRTC, transmuxing zero-copy, go2rtc.yaml), Cliente Vanilla JavaScript resiliente com Trickle ICE e Proxy Backend autenticado em PHP/Laravel.
+    - Vetorização e indexação no ChromaDB concluídas com sucesso.
+
 ---
 
 ## 🛠️ Comandos Rápidos do Harness
