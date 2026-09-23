@@ -1,0 +1,54 @@
+module.exports = {
+  apps: [
+    {
+      name: 'ollama',
+      script: 'C:\\Users\\eduar\\AppData\\Local\\Programs\\Ollama\\ollama.exe',
+      args: 'serve',
+      cwd: 'C:/Users/eduar/Documents/reductor-prompt',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      interpreter: 'none',
+      env: {
+        OLLAMA_HOST: '0.0.0.0:11434',
+      },
+    },
+    {
+      name: 'reductor-chromadb',
+      script: 'C:\\Users\\eduar\\miniconda3\\envs\\reductor-prompt\\Scripts\\chroma.exe',
+      args: 'run --path ./storage/chroma --port 8001 --host 0.0.0.0',
+      cwd: 'C:/Users/eduar/Documents/reductor-prompt',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      interpreter: 'none',
+      max_memory_restart: '2G',
+    },
+    {
+      name: 'reductor-api',
+      script: 'api.py',
+      cwd: 'C:/Users/eduar/Documents/reductor-prompt',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      interpreter: 'C:\\Users\\eduar\\miniconda3\\envs\\reductor-prompt\\python.exe',
+      max_memory_restart: '2G',
+      env: {
+        PYTHONUNBUFFERED: '1',
+      },
+    },
+    {
+      name: 'reductor-web',
+      script: 'node_modules/vite/bin/vite.js',
+      args: '--port 5173 --host',
+      cwd: 'C:/Users/eduar/Documents/reductor-prompt/web',
+      instances: 1,
+      autorestart: true,
+      watch: false,
+      interpreter: 'node',
+      env: {
+        NODE_ENV: 'development',
+      },
+    },
+  ],
+};
