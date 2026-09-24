@@ -40,7 +40,7 @@ module.exports = {
     {
       name: 'reductor-web',
       script: 'node_modules/vite/bin/vite.js',
-      args: '--port 5173 --host',
+      args: '--port 5174 --host',
       cwd: 'C:/Users/eduar/Documents/reductor-prompt/web',
       instances: 1,
       autorestart: true,
