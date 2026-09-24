@@ -46,6 +46,7 @@ module.exports = {
       autorestart: true,
       watch: false,
       interpreter: 'node',
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'development',
       },
