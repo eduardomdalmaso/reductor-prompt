@@ -59,9 +59,16 @@ dist/
 .hypothesis/
 npm-debug.log*
 
-# 9. Artefatos de Compilação do Rust / Cargo
+# 9. Artefatos de Compilação do Rust / Cargo / Go
 target/
 **/*.rs.bk
 Cargo.lock
 yarn-debug.log*
 yarn-error.log*
+bin/
+*.exe
+*.dll
+*.dylib
+reductor
+reductor.exe
+
