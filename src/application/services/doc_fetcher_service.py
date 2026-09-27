@@ -127,6 +127,10 @@ class DocFetcherService:
                 if dest.exists():
                     results.append(("SKIPPED_EXISTING", dest.name, "Já existe localmente"))
                     continue
+                safe_item, reason_item = is_safe_public_url(it["download_url"])
+                if not safe_item:
+                    results.append(("ERROR", dest.name, f"Bloqueio SSRF: {reason_item}"))
+                    continue
                 try:
                     req = urllib.request.Request(it["download_url"], headers={"User-Agent": DEFAULT_USER_AGENT})
                     with urllib.request.urlopen(req, timeout=30) as resp, open(dest, "wb") as f:
@@ -135,3 +139,4 @@ class DocFetcherService:
                 except Exception as e:
                     results.append(("ERROR", dest.name, str(e)))
         return results
+

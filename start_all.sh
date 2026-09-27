@@ -20,7 +20,7 @@ if ! podman ps --format "{{.Names}}" | grep -q "reductor_chromadb"; then
     echo "  -> Subindo container reductor_chromadb na porta 8001..."
     podman run -d \
       --name reductor_chromadb \
-      -p 8001:8000 \
+      -p 127.0.0.1:8001:8000 \
       -v "$SCRIPT_DIR/storage/chroma:/chroma/chroma:Z" \
       --replace \
       docker.io/chromadb/chroma:latest run --host 0.0.0.0 --port 8000 --path /chroma/chroma

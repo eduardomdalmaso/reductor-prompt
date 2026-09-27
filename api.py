@@ -19,7 +19,9 @@ if sys.platform == "win32":
 import os
 
 if __name__ == "__main__":
+    host = os.environ.get("API_HOST", "127.0.0.1")
     port = int(os.environ.get("API_PORT", "8002"))
     reload_enabled = os.environ.get("API_RELOAD", "false").lower() == "true"
-    print(f"🚀 Iniciando ReductorPrompt API em http://0.0.0.0:{port} (reload={reload_enabled}) ...")
-    uvicorn.run("src.adapters.inbound.api.fastapi_app:app", host="0.0.0.0", port=port, reload=reload_enabled)
+    print(f"🚀 Iniciando ReductorPrompt API em http://{host}:{port} (reload={reload_enabled}) ...")
+    uvicorn.run("src.adapters.inbound.api.fastapi_app:app", host=host, port=port, reload=reload_enabled)
+

@@ -5,7 +5,7 @@ from typing import Optional, List, Dict, Any, Union
 from pydantic import BaseModel, Field
 from fastapi import FastAPI, HTTPException, status, Query, Security, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
+from fastapi.responses import Response, FileResponse
 from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
 
 from src.application.dtos.query_dtos import (
@@ -36,19 +36,27 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# Configuração de CORS Seguro com Origens Explícitas
+# Configuração de CORS Seguro com Origens Explícitas (Proibição de Wildcards)
 _raw_origins = getattr(settings, "CORS_ALLOWED_ORIGINS", "")
-_allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()] if _raw_origins else [
-    "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:8000", "http://127.0.0.1:8000"
+_default_origins = [
+    "http://localhost:5173", "http://127.0.0.1:5173",
+    "http://localhost:5174", "http://127.0.0.1:5174",
+    "http://localhost:5175", "http://127.0.0.1:5175",
+    "http://localhost:8000", "http://127.0.0.1:8000",
+    "http://localhost:8002", "http://127.0.0.1:8002",
+    "http://localhost:3001", "http://127.0.0.1:3001",
 ]
+_parsed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip() and o.strip() != "*"] if _raw_origins else []
+_allowed_origins = list(set(_default_origins + _parsed_origins))
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
+    allow_headers=["Authorization", "Content-Type", "X-API-Key", "Accept", "Origin"],
 )
+
 
 # Provedores de Autenticação Segura (X-API-Key ou Bearer Token)
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
@@ -344,9 +352,13 @@ async def get_metrics():
 
 
 @app.get("/api/v1/queries/export", dependencies=[Depends(verify_auth)])
-async def export_queries(format: str = Query(default="json", pattern="^(json|csv)$")):
-    """Exporta o histórico de consultas persistido no SQLite para download em CSV ou JSON."""
-    content = await asyncio.to_thread(telemetry_service.export_queries, format)
+async def export_queries(
+    format: str = Query(default="json", pattern="^(json|csv)$"),
+    limit: int = Query(default=1000, ge=1, le=5000, description="Limite máximo de consultas a exportar"),
+    since: Optional[float] = Query(default=None, description="Timestamp UNIX inicial para filtro")
+):
+    """Exporta o histórico de consultas persistido no SQLite com limite seguro de paginação."""
+    content = await asyncio.to_thread(telemetry_service.export_queries, format, limit, since)
     media_type = "text/csv" if format == "csv" else "application/json"
     filename = f"reductor_queries_{int(time.time())}.{format}"
     return Response(
@@ -354,6 +366,7 @@ async def export_queries(format: str = Query(default="json", pattern="^(json|csv
         media_type=media_type,
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
+
 
 
 @app.get("/api/v1/logs", dependencies=[Depends(verify_auth)])
@@ -642,5 +655,19 @@ async def call_mcp_tool(req: MCPCallDTO):
 
     else:
         raise HTTPException(status_code=404, detail=f"Tool '{req.tool_name}' not found.")
+
+
+@app.get("/api/v1/report/pdf", summary="Obtém o relatório de auditoria de segurança compilado em PDF")
+async def get_security_audit_report():
+    from pathlib import Path
+    pdf_path = Path(__file__).resolve().parents[4] / "docs" / "security-audit" / "relatorio-auditoria-seguranca.pdf"
+    if not pdf_path.exists():
+        raise HTTPException(status_code=404, detail="Relatório em PDF não encontrado.")
+    return FileResponse(
+        path=str(pdf_path),
+        media_type="application/pdf",
+        filename="relatorio-auditoria-seguranca.pdf"
+    )
+
 
 

@@ -267,11 +267,21 @@ class SystemTelemetryService:
             return entries[-limit:]
 
 
-    def export_queries(self, format_type: str = "json") -> str:
-        """Exporta todas as consultas do banco SQLite em CSV ou JSON."""
+    def export_queries(self, format_type: str = "json", limit: int = 1000, since_timestamp: Optional[float] = None) -> str:
+        """Exporta consultas do banco SQLite em CSV ou JSON com limite de segurança."""
+        safe_limit = min(max(1, limit), 5000)
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM queries ORDER BY created_at DESC")
+            if since_timestamp is not None:
+                cursor.execute(
+                    "SELECT * FROM queries WHERE created_at >= ? ORDER BY created_at DESC LIMIT ?",
+                    (since_timestamp, safe_limit)
+                )
+            else:
+                cursor.execute(
+                    "SELECT * FROM queries ORDER BY created_at DESC LIMIT ?",
+                    (safe_limit,)
+                )
             rows = [dict(r) for r in cursor.fetchall()]
 
         if format_type.lower() == "csv":
@@ -285,6 +295,7 @@ class SystemTelemetryService:
             return output.getvalue()
         else:
             return json.dumps(rows, indent=2, ensure_ascii=False)
+
 
 
 telemetry_service = SystemTelemetryService()
