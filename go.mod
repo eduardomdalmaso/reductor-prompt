@@ -1,6 +1,7 @@
 module github.com/eduardomdalmaso/reductor-cli
 
-go 1.27.1
+go 1.26
+
 
 require (
 	github.com/charmbracelet/lipgloss v1.1.0
