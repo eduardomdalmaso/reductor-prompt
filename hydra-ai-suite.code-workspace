@@ -1,16 +1,12 @@
 {
   "folders": [
     {
-      "name": "🧠 ReductorPrompt (RAG & Knowledge)",
-      "path": "c:/Users/hades/Documents/reductor-prompt"
-    },
-    {
-      "name": "⚡ HydraForge (AI Training Studio)",
+      "name": "⚡ HydraForge (AI Studio & Datasets)",
       "path": "c:/Users/hades/Documents/HydraForge"
     },
     {
-      "name": "🗄️ HydraVault (Dataset Engine)",
-      "path": "c:/Users/hades/Documents/HydraVault"
+      "name": "🧠 ReductorPrompt (RAG & Knowledge)",
+      "path": "c:/Users/hades/Documents/reductor-prompt"
     },
     {
       "name": "🌊 HydraStream (Media & RTSP)",

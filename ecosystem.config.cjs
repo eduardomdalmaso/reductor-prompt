@@ -72,9 +72,8 @@ const reductorApps = [
   },
 ];
 
-// 3. HydraForge & HydraVault Apps
+// 3. HydraForge App (Studio Unificado de Datasets & Treino)
 const hydraForgeDir = path.join(docsDir, 'HydraForge');
-const hydraVaultDir = path.join(docsDir, 'HydraVault');
 
 const hydraApps = [
   {
@@ -89,22 +88,9 @@ const hydraApps = [
       PORT: '8081',
     },
   },
-  {
-    name: 'hydra-vault',
-    script: isWin ? 'hydravault.exe' : './hydravault',
-    cwd: hydraVaultDir,
-    instances: 1,
-    autorestart: true,
-    watch: false,
-    interpreter: 'none',
-    env: {
-      PORT: '8082',
-    },
-  },
 ];
 
-// 4. Seleção de Perfil via PM2_TARGET
-// Opções: 'reductor' (padrão), 'hydra', 'suite' ou 'all'
+// 4. Seleção de Perfil via PM2_TARGET: 'reductor' (padrão), 'hydra', 'suite' ou 'all'
 const target = (process.env.PM2_TARGET || 'reductor').toLowerCase();
 
 let selectedApps = reductorApps;
