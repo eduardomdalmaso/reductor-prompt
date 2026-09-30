@@ -8,7 +8,9 @@ const pythonPath = isWin
   ? path.join(homeDir, 'miniconda3', 'envs', 'reductor-prompt', 'python.exe')
   : path.join(homeDir, 'miniconda3', 'bin', 'python');
 
-const ollamaPath = isWin ? 'ollama' : path.join(homeDir, '.local', 'bin', 'ollama');
+const ollamaPath = isWin
+  ? path.join(homeDir, 'AppData', 'Local', 'Programs', 'Ollama', 'ollama.exe')
+  : path.join(homeDir, '.local', 'bin', 'ollama');
 
 // 1. Ollama
 const ollamaApp = {
@@ -21,7 +23,8 @@ const ollamaApp = {
   watch: false,
   interpreter: 'none',
   env: {
-    OLLAMA_HOST: '0.0.0.0:11434',
+    OLLAMA_HOST: '127.0.0.1:11434',
+    OLLAMA_ORIGINS: '*',
   },
 };
 
@@ -111,12 +114,12 @@ const hydraApps = [
 // 4. Seleção de Perfil via PM2_TARGET: 'reductor', 'hydra', 'suite' (padrão) ou 'all'
 const target = (process.env.PM2_TARGET || 'suite').toLowerCase();
 
-let selectedApps = [...reductorApps, ...hydraApps];
+let selectedApps = [ollamaApp, ...reductorApps, ...hydraApps];
 if (target === 'reductor') {
-  selectedApps = reductorApps;
+  selectedApps = [ollamaApp, ...reductorApps];
 } else if (target === 'hydra') {
   selectedApps = hydraApps;
-} else if (target === 'all') {
+} else if (target === 'all' || target === 'suite') {
   selectedApps = [ollamaApp, ...reductorApps, ...hydraApps];
 }
 
