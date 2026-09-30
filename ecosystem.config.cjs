@@ -72,32 +72,52 @@ const reductorApps = [
   },
 ];
 
-// 3. HydraForge App (Studio Unificado de Datasets & Treino)
+// 3. HydraForge Apps (FastAPI Backend + Web SPA)
 const hydraForgeDir = path.join(docsDir, 'HydraForge');
+const hydraForgeWebDir = path.join(hydraForgeDir, 'web');
 
 const hydraApps = [
   {
-    name: 'hydra-forge',
-    script: isWin ? 'hydraforge.exe' : './hydraforge',
+    name: 'hydra-forge-api',
+    script: 'api/main.py',
     cwd: hydraForgeDir,
     instances: 1,
     autorestart: true,
     watch: false,
-    interpreter: 'none',
+    interpreter: pythonPath,
+    max_memory_restart: '2G',
     env: {
-      PORT: '8081',
+      PYTHONUNBUFFERED: '1',
+      PYTHONIOENCODING: 'utf-8',
+      API_PORT: '8088',
+    },
+  },
+  {
+    name: 'hydra-forge-web',
+    script: path.join(hydraForgeWebDir, 'node_modules', 'vite', 'bin', 'vite.js'),
+    args: '--port 8081 --host',
+    cwd: hydraForgeWebDir,
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    interpreter: 'node',
+    exec_mode: 'fork',
+    env: {
+      NODE_ENV: 'development',
     },
   },
 ];
 
-// 4. Seleção de Perfil via PM2_TARGET: 'reductor' (padrão), 'hydra', 'suite' ou 'all'
-const target = (process.env.PM2_TARGET || 'reductor').toLowerCase();
+// 4. Seleção de Perfil via PM2_TARGET: 'reductor', 'hydra', 'suite' (padrão) ou 'all'
+const target = (process.env.PM2_TARGET || 'suite').toLowerCase();
 
-let selectedApps = reductorApps;
-if (target === 'hydra') {
+let selectedApps = [...reductorApps, ...hydraApps];
+if (target === 'reductor') {
+  selectedApps = reductorApps;
+} else if (target === 'hydra') {
   selectedApps = hydraApps;
-} else if (target === 'suite' || target === 'all') {
-  selectedApps = [...reductorApps, ...hydraApps, ...(target === 'all' ? [ollamaApp] : [])];
+} else if (target === 'all') {
+  selectedApps = [ollamaApp, ...reductorApps, ...hydraApps];
 }
 
 module.exports = {
