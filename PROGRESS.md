@@ -9,7 +9,8 @@
 | Componente | Status | Detalhes |
 | :--- | :--- | :--- |
 | **Runtime & Ambiente** | 🟢 Operacional | Python 3.11 (`reductor-prompt` Conda env) |
-| **Vector Store (ChromaDB)** | 🟢 Operacional | 194 livros indexados + Coleção `agent_episodic_brain` ativa |
+| **Vector Store (ChromaDB)** | 🟢 Operacional | Podman (`reductor_chromadb:8001`) - 186 livros / 36.976 chunks |
+| **Ollama Local (GPU)** | 🟢 Operacional | Podman (`reductor_ollama:11434`) - RTX 5090 (PTX JIT) \| `qwen2.5:7b` + `nomic-embed-text` |
 | **Segurança & Anti-SSRF** | 🟢 100% Coberto | Validação de IP público, chaves em headers, CORS restrito, Auth Bearer/X-API-Key |
 | **Suíte de Testes** | 🟢 20/20 Passando | Testes unitários, de arquitetura, segurança, adaptive budgeting, memória episódica e hardware advisor |
 | **Harness Health Check** | 🟢 Operacional | Executável via `python scripts/harness_check.py` (0.8s) |
