@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # Script de Inicialização Completa do ReductorPrompt
-# Orquestra: Podman (ChromaDB), Ollama, PM2 (API, Web, Relatórios)
+# Orquestra: Podman (ChromaDB + Ollama GPU), PM2 (API, Web, Relatórios)
 # ==============================================================================
 set -e
 
@@ -14,41 +14,37 @@ echo "======================================================================"
 
 # 1. Iniciar ChromaDB via Podman
 echo "📦 [1/4] Verificando e iniciando ChromaDB (Podman)..."
-mkdir -p "$SCRIPT_DIR/storage/chroma"
+bash "$SCRIPT_DIR/start_chroma.sh"
 
-if ! podman ps --format "{{.Names}}" | grep -q "reductor_chromadb"; then
-    echo "  -> Subindo container reductor_chromadb na porta 8001..."
-    podman run -d \
-      --name reductor_chromadb \
-      -p 127.0.0.1:8001:8000 \
-      -v "$SCRIPT_DIR/storage/chroma:/chroma/chroma:Z" \
-      --replace \
-      docker.io/chromadb/chroma:latest run --host 0.0.0.0 --port 8000 --path /chroma/chroma
+# 2. Iniciar Ollama via Podman com GPU
+echo "🧠 [2/4] Verificando e iniciando Ollama (Podman + GPU)..."
+if ! podman ps --format "{{.Names}}" | grep -q "reductor_ollama"; then
+    bash "$SCRIPT_DIR/start_ollama.sh"
+else
+    echo "  ✅ Ollama já está em execução no Podman."
 fi
 
-echo "  -> Aguardando ChromaDB responder em http://127.0.0.1:8001..."
-until curl -s http://127.0.0.1:8001/api/v2/heartbeat > /dev/null 2>&1; do
-    sleep 1
-done
-echo "  ✅ ChromaDB ONLINE em http://127.0.0.1:8001"
-
-# 2. Iniciar serviços via PM2 (Ollama, API, Web, Gerar Relatório)
-echo "⚡ [2/4] Iniciando processos via PM2..."
-pm2 start ecosystem.config.cjs
-
-# 3. Aguardar Ollama inicializar e verificar modelos
-echo "🧠 [3/4] Verificando Ollama Server..."
+echo "  -> Aguardando Ollama responder em http://127.0.0.1:11434..."
 until curl -s http://127.0.0.1:11434/api/tags > /dev/null 2>&1; do
     sleep 1
 done
 echo "  ✅ Ollama Server ONLINE em http://127.0.0.1:11434"
 
-# Garantir modelos nomic-embed-text e qwen2.5:14b
+# Garantir modelos nomic-embed-text e qwen2.5:7b
 echo "  -> Verificando modelos necessários no Ollama..."
-if ! /home/hades/.local/bin/ollama list | grep -q "nomic-embed-text"; then
+if ! podman exec reductor_ollama ollama list | grep -q "nomic-embed-text"; then
     echo "  -> Baixando modelo de embeddings nomic-embed-text..."
-    /home/hades/.local/bin/ollama pull nomic-embed-text
+    podman exec reductor_ollama ollama pull nomic-embed-text
 fi
+
+if ! podman exec reductor_ollama ollama list | grep -q "qwen2.5:7b"; then
+    echo "  -> Baixando modelo LLM qwen2.5:7b..."
+    podman exec reductor_ollama ollama pull qwen2.5:7b
+fi
+
+# 3. Iniciar serviços via PM2 (API, Web, Gerar Relatório)
+echo "⚡ [3/4] Iniciando processos via PM2..."
+PM2_TARGET=reductor pm2 start ecosystem.config.cjs
 
 # 4. Aguardar API FastAPI
 echo "🌐 [4/4] Verificando ReductorPrompt API..."

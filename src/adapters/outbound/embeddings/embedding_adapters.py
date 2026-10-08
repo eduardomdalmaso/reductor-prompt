@@ -49,18 +49,25 @@ class OllamaEmbeddingAdapter(IEmbeddingPort):
             raise EmbeddingException("Ollama", f"Erro ao gerar embedding: {str(e)}")
 
     def embed_batch(self, texts: List[str]) -> List[List[float]]:
+        if not texts:
+            return []
         url_v2 = f"{self.base_url}/api/embed"
-        payload = {"model": self.model, "input": texts, "keep_alive": self.keep_alive}
-        try:
-            resp = _EMBED_HTTP_CLIENT.post(url_v2, json=payload)
-            if resp.status_code == 200:
-                embeddings = resp.json().get("embeddings", [])
-                if len(embeddings) == len(texts):
-                    return embeddings
-        except Exception:
-            pass
-
-        return [self.embed_text(t) for t in texts]
+        all_embeddings: List[List[float]] = []
+        batch_size = 64
+        for i in range(0, len(texts), batch_size):
+            batch_texts = texts[i:i + batch_size]
+            payload = {"model": self.model, "input": batch_texts, "keep_alive": self.keep_alive}
+            try:
+                resp = _EMBED_HTTP_CLIENT.post(url_v2, json=payload)
+                if resp.status_code == 200:
+                    embs = resp.json().get("embeddings", [])
+                    if len(embs) == len(batch_texts):
+                        all_embeddings.extend(embs)
+                        continue
+            except Exception:
+                pass
+            all_embeddings.extend([self.embed_text(t) for t in batch_texts])
+        return all_embeddings
 
 
 class ChromaDefaultEmbeddingAdapter(IEmbeddingPort):

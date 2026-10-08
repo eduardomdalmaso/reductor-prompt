@@ -6,14 +6,16 @@ const docsDir = path.resolve(__dirname, '..');
 
 const pythonPath = isWin
   ? path.join(homeDir, 'miniconda3', 'envs', 'reductor-prompt', 'python.exe')
-  : path.join(homeDir, 'miniconda3', 'bin', 'python');
+  : path.join(homeDir, 'miniconda3', 'envs', 'reductor-prompt', 'bin', 'python');
 
 const ollamaPath = isWin
   ? path.join(homeDir, 'AppData', 'Local', 'Programs', 'Ollama', 'ollama.exe')
   : path.join(homeDir, '.local', 'bin', 'ollama');
 
-// 1. Ollama
-const ollamaApp = {
+// 1. Ollama (apenas mantido se existir binário local, caso contrário roda via Podman)
+const fs = require('fs');
+const hasLocalOllama = fs.existsSync(ollamaPath);
+const ollamaApp = hasLocalOllama ? {
   name: 'ollama',
   script: ollamaPath,
   args: 'serve',
@@ -26,7 +28,7 @@ const ollamaApp = {
     OLLAMA_HOST: '127.0.0.1:11434',
     OLLAMA_ORIGINS: '*',
   },
-};
+} : null;
 
 // 2. ReductorPrompt Apps
 const reductorApps = [
@@ -124,5 +126,5 @@ if (target === 'reductor') {
 }
 
 module.exports = {
-  apps: selectedApps,
+  apps: selectedApps.filter(Boolean),
 };
