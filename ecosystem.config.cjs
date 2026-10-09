@@ -61,20 +61,6 @@ const reductorApps = [
       NODE_ENV: 'development',
     },
   },
-  {
-    name: 'gerar_relatorio',
-    script: 'gerar_relatorio.py',
-    cwd: __dirname,
-    instances: 1,
-    autorestart: true,
-    watch: false,
-    interpreter: pythonPath,
-    max_memory_restart: '1G',
-    env: {
-      PYTHONUNBUFFERED: '1',
-      PYTHONIOENCODING: 'utf-8',
-    },
-  },
 ];
 
 // 3. HydraForge Apps (FastAPI Backend + Web SPA)
