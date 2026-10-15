@@ -1,12 +1,13 @@
 {
   "mcpServers": {
     "reductor-books": {
-      "command": "python",
+      "command": "C:\\Users\\hades\\miniconda3\\envs\\reductor-prompt\\python.exe",
       "args": [
-        "mcp_server.py"
+        "C:\\Users\\hades\\Documents\\reductor-prompt\\mcp_server.py"
       ],
       "env": {
-        "PYTHONPATH": "."
+        "PYTHONPATH": "C:\\Users\\hades\\Documents\\reductor-prompt",
+        "PYTHONIOENCODING": "utf-8"
       }
     }
   }
