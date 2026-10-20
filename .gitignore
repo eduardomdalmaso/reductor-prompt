@@ -71,4 +71,6 @@ bin/
 *.dylib
 reductor
 reductor.exe
-
+# 10. Configuração do PM2 (Local)
+ecosystem.config.cjs
+!ecosystem.config.example.cjs
