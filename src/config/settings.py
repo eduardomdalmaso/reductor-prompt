@@ -5,10 +5,16 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+ENV_PATH = PROJECT_ROOT / ".env"
+
+from pydantic import model_validator
+
+
 class Settings(BaseSettings):
     """Configurações centralizadas da aplicação."""
     model_config = SettingsConfigDict(
-        env_file=".env", 
+        env_file=str(ENV_PATH) if ENV_PATH.exists() else ".env", 
         env_file_encoding="utf-8", 
         extra="ignore"
     )
@@ -53,6 +59,19 @@ class Settings(BaseSettings):
     # Segurança & API
     API_SECURITY_KEY: Optional[str] = Field(default=None, description="Chave de segurança opcional para proteger a API REST. Se vazia, opera em modo local aberto.")
     CORS_ALLOWED_ORIGINS: str = Field(default="http://localhost:5173,http://127.0.0.1:5173,http://localhost:8000,http://127.0.0.1:8000", description="Origens permitidas no CORS separadas por vírgula")
+
+    @model_validator(mode="after")
+    def resolve_relative_paths(self):
+        def _to_abs(p: str) -> str:
+            path_obj = Path(p)
+            if not path_obj.is_absolute():
+                return str((PROJECT_ROOT / path_obj).resolve())
+            return str(path_obj.resolve())
+
+        self.DATABASE_DIR = _to_abs(self.DATABASE_DIR)
+        self.STORAGE_DIR = _to_abs(self.STORAGE_DIR)
+        self.CHROMA_PERSIST_DIR = _to_abs(self.CHROMA_PERSIST_DIR)
+        return self
 
     def resolve_paths(self):
         """Garante que os diretórios necessários existam no disco."""

@@ -74,3 +74,8 @@ reductor.exe
 # 10. Configuração do PM2 (Local)
 ecosystem.config.cjs
 !ecosystem.config.example.cjs
+
+# 11. Configurações Locais do MCP
+mcp_config.json
+.agents/mcp_config.json
+
