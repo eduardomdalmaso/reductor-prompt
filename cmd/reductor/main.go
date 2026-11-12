@@ -23,7 +23,6 @@ var (
 	fast          bool
 	streamOutput  bool
 	provider      string
-	topicFilter   string
 	projectSource string
 	targetHardware string
 	targetCommit  string
@@ -166,6 +165,9 @@ func main() {
 					break
 				}
 				runAsk(input)
+			}
+			if err := scanner.Err(); err != nil {
+				fmt.Println(tui.ErrorStyle.Render(fmt.Sprintf("Erro na leitura de entrada: %v", err)))
 			}
 		},
 	}

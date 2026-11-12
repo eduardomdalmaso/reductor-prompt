@@ -113,11 +113,12 @@ func (c *ReductorClient) AskStream(ctx context.Context, reqPayload QueryRequest,
 			var event map[string]any
 			if err := json.Unmarshal([]byte(rawJSON), &event); err == nil {
 				if t, ok := event["type"].(string); ok {
-					if t == "token" {
+					switch t {
+					case "token":
 						if content, ok := event["content"].(string); ok {
 							onToken(content)
 						}
-					} else if t == "final" {
+					case "final":
 						if respData, ok := event["data"]; ok {
 							rawFinal, _ := json.Marshal(respData)
 							var qr QueryResponse
