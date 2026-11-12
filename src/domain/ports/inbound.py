@@ -3,6 +3,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass, field
 from src.domain.entities.book import Book, OptimizationInsight
 from src.domain.entities.memory import MemoryEpisode, ProvenanceType, EvidenceStatus
+from src.domain.entities.decision import DecisionReport, DecisionVerdict
 
 
 @dataclass
@@ -69,5 +70,28 @@ class IIngestEvidenceUseCase(ABC):
         """
         Valida, deduplica idempotentemente e persiste a evidência.
         Retorna (MemoryEpisode, is_created: bool).
+        """
+        pass
+
+
+@dataclass
+class MakeDecisionCommand:
+    """Comando para requisição de decisão técnica fundamentada."""
+    query: str
+    target_hardware: Optional[str] = None
+    target_commit: Optional[str] = None
+    book_filter: Optional[str] = None
+    max_tokens: int = 2500
+    llm_synthesis: bool = True
+
+
+class IMakeDecisionUseCase(ABC):
+    """Porta de entrada para orquestração de decisões de engenharia fundamentadas."""
+
+    @abstractmethod
+    def execute(self, command: MakeDecisionCommand) -> DecisionReport:
+        """
+        Orquestra recuperação bilateral, avaliação de completude, detecção de
+        obsolescência e política determinística, emitindo o DecisionReport.
         """
         pass

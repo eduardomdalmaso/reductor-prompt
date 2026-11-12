@@ -1,7 +1,7 @@
 import hashlib
 import logging
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from src.domain.entities.memory import MemoryEpisode
 from src.domain.ports.outbound import IEpisodicMemoryPort, IEmbeddingPort
@@ -43,7 +43,7 @@ class ManageBrainUseCase:
             tokens_used=len(insight.split()) * 2,
             tokens_saved=3500,
             reduction_percentage=98.0,
-            created_at=datetime.utcnow().isoformat(),
+            created_at=datetime.now(timezone.utc).isoformat(),
             confidence_score=1.0,
             hit_count=0
         )

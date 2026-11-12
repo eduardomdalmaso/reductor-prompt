@@ -79,3 +79,32 @@ type HardwareAdvice struct {
 	OptimalParameters  map[string]any    `json:"optimal_parameters"`
 	GuidanceForAgent   string            `json:"guidance_for_agent"`
 }
+
+// MakeDecisionRequest representa a requisição para /api/v1/decisions
+type MakeDecisionRequest struct {
+	Query            string  `json:"query"`
+	ProjectSource    *string `json:"project_source,omitempty"`
+	TargetHardware   *string `json:"target_hardware,omitempty"`
+	TargetCommit     *string `json:"target_commit,omitempty"`
+	PolicyVersion    string  `json:"policy_version"`
+	MaxTokens        int     `json:"max_tokens"`
+	ProviderOverride *string `json:"provider_override,omitempty"`
+}
+
+// MakeDecisionResponse representa o relatório estruturado de decisão
+type MakeDecisionResponse struct {
+	DecisionID          string   `json:"decision_id"`
+	Query               string   `json:"query"`
+	Verdict             string   `json:"verdict"`
+	Recommendation      string   `json:"recommendation"`
+	PolicyVersion       string   `json:"policy_version"`
+	CompletenessScore   float64  `json:"completeness_score"`
+	RelevanceScore      float64  `json:"relevance_score"`
+	EvidenceCount       int      `json:"evidence_count"`
+	UsedCommitHashes    []string `json:"used_commit_hashes"`
+	UsedSourceBooks     []string `json:"used_source_books"`
+	Limitations         []string `json:"limitations"`
+	NextValidationSteps []string `json:"next_validation_steps"`
+	ComparativeSummary  *string  `json:"comparative_summary"`
+	CreatedAt           string   `json:"created_at"`
+}

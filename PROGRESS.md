@@ -12,7 +12,8 @@
 | **Vector Store (ChromaDB)** | 🟢 Operacional | Podman (`reductor_chromadb:8001`) - 186 livros / 36.976 chunks |
 | **Ollama Local (GPU)** | 🟢 Operacional | Podman (`reductor_ollama:11434`) - RTX 5090 (PTX JIT) \| `qwen2.5:7b` + `nomic-embed-text` |
 | **Segurança & Anti-SSRF** | 🟢 100% Coberto | Validação de IP público, chaves em headers, CORS restrito, Auth Bearer/X-API-Key |
-| **Suíte de Testes** | 🟢 20/20 Passando | Testes unitários, de arquitetura, segurança, adaptive budgeting, memória episódica e hardware advisor |
+| **Motor de Decisão & Evidências** | 🟢 Operacional | Orquestração bilateral determinística, veredictos rastreáveis e inteligência analítica |
+| **Suíte de Testes** | 🟢 53/53 Passando | Domínio, persistência ChromaDB, recuperação bilateral, engine de decisão, APIs e MCP |
 | **Harness Health Check** | 🟢 Operacional | Executável via `python scripts/harness_check.py` (0.8s) |
 
 ---
@@ -78,6 +79,21 @@
       - [`WHEP_WHIP_Protocols_and_Go2rtc_Streaming_Guide.md`](file:///c:/Users/eduar/Documents/reductor-prompt/database/WHEP_WHIP_Protocols_and_Go2rtc_Streaming_Guide.md): Especificação WHEP (draft-ietf-wish-whep) & WHIP (RFC 9308), Ciclo de Vida HTTP POST/PATCH/DELETE, Integração Go2rtc (Pion WebRTC, transmuxing zero-copy, go2rtc.yaml), Cliente Vanilla JavaScript resiliente com Trickle ICE e Proxy Backend autenticado em PHP/Laravel.
     - Vetorização e indexação no ChromaDB concluídas com sucesso.
 
+12. **Motor Bilateral de Evidências & Inteligência de Decisão (Fases 1 a 5 Concluídas)**:
+    - **Domínio & Portas**: `MemoryEpisode` com identificação estável (`experiment_id`, `content_hash`, `commit_hash`, `measured_at`, `environment_context`), `ProvenanceType` e `EvidenceStatus`. Entidade `DecisionReport` e enum `DecisionVerdict`.
+    - **Ingestão Idempotente & Conflitos**: Bloqueio de corrida com detecção determinística de duplicação (`canonical_hash`) e lançamento de `EvidenceConflictException` (HTTP 409) para divergências.
+    - **Recuperação Bilateral**: Separação estrita entre literatura canônica dos livros e evidências empíricas de benchmarks em tempo de busca e síntese.
+    - **Evidence Intelligence**:
+      - `EvidenceQualityEvaluator`: Score de completude baseado em integridade de metadados.
+      - `StalenessDetector`: Detecção de obsolescência por hardware mismatch e tempo (>90 dias).
+      - `ExperimentalComparator`: Normalização de unidades de métricas e ranking técnico.
+    - **Política Determinística de Decisão**: Veredictos formais (`FAVORABLE`, `CONTROVERSIAL`, `INSUFFICIENT`, `REFUTED`) onde a LLM sintetiza a justificativa mas não arbitra o veredicto.
+    - **Interfaces Inbound Unificadas**:
+      - REST API: `POST /api/v1/evidence` e `POST /api/v1/decisions`.
+      - Python CLI: `python query.py decide "<pergunta>" [--project] [--hardware] [--commit]`.
+      - Go CLI: `reductor decide "<pergunta>"`.
+      - MCP Tool: `make_decision` totalmente integrado com sub-módulos desacoplados (<180 linhas/módulo).
+
 ---
 
 ## 🛠️ Comandos Rápidos do Harness
@@ -85,6 +101,7 @@
 ```bash
 # 1. Execução via CLI Nativo em Go (Instantâneo < 3ms)
 ./bin/reductor "Como funciona o índice HNSW no Redis?"
+./bin/reductor decide "Qual codec usar para WebRTC?" --hardware "RTX 5090"
 ./bin/reductor list
 ./bin/reductor advisor
 ./bin/reductor chat
@@ -92,16 +109,19 @@
 # 2. Diagnóstico completo do ambiente e testes (1 segundo)
 python scripts/harness_check.py
 
-# 2. Oráculo de Recursos e Telemetria de Hardware
+# 3. Oráculo de Recursos e Telemetria de Hardware
 python query.py advisor
 
-# 3. Consultar o Cérebro Coletivo e Livros
+# 4. Decisão de Engenharia Bilateral (Python CLI)
+python query.py decide "Qual pipeline de vídeo usar?" --hardware "RTX 5090"
+
+# 5. Consultar o Cérebro Coletivo e Livros
 python query.py "sua pergunta"
 
-# 4. Gerenciar o Cérebro Episódico
+# 6. Gerenciar o Cérebro Episódico
 python query.py brain list
 python query.py brain teach "pergunta" "resposta"
 
-# 5. Execução da suíte de testes
+# 7. Execução da suíte de testes (53 testes)
 pytest -v
 ```

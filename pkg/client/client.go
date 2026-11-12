@@ -227,3 +227,34 @@ func (c *ReductorClient) GetBudgetAdvice(ctx context.Context, provider string) (
 	}
 	return &result, nil
 }
+
+// MakeDecision executa orquestração bilateral de decisão técnica
+func (c *ReductorClient) MakeDecision(ctx context.Context, reqPayload MakeDecisionRequest) (*MakeDecisionResponse, error) {
+	data, err := json.Marshal(reqPayload)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao serializar requisição de decisão: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", c.BaseURL+"/api/v1/decisions", bytes.NewBuffer(data))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("falha ao conectar no backend ReductorPrompt (%s): %w", c.BaseURL, err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("erro na decisão (HTTP %d): %s", resp.StatusCode, string(body))
+	}
+
+	var result MakeDecisionResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, fmt.Errorf("erro ao decodificar resposta JSON: %w", err)
+	}
+	return &result, nil
+}

@@ -24,6 +24,10 @@ var (
 	streamOutput  bool
 	provider      string
 	topicFilter   string
+	projectSource string
+	targetHardware string
+	targetCommit  string
+	policyVersion string
 )
 
 func getClient() *client.ReductorClient {
@@ -166,7 +170,24 @@ func main() {
 		},
 	}
 
-	rootCmd.AddCommand(askCmd, listCmd, advisorCmd, chatCmd)
+	// Subcomando decide
+	var decideCmd = &cobra.Command{
+		Use:   "decide [pergunta]",
+		Short: "Orquestra decisão de engenharia confrontando teoria e benchmarks com política determinística",
+		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			query := strings.Join(args, " ")
+			runDecide(query)
+		},
+	}
+	decideCmd.Flags().StringVarP(&projectSource, "project", "p", "", "Projeto de origem da evidência (ex: HydraStream)")
+	decideCmd.Flags().StringVar(&targetHardware, "hardware", "", "Hardware de referência (ex: RTX 5090)")
+	decideCmd.Flags().StringVar(&targetCommit, "commit", "", "Commit de referência")
+	decideCmd.Flags().StringVar(&policyVersion, "policy", "1.0.0", "Versão da política analítica")
+	decideCmd.Flags().IntVarP(&maxTokens, "max-tokens", "m", 2500, "Limite de tokens de contexto")
+	decideCmd.Flags().StringVarP(&provider, "provider", "P", "", "Provedor LLM")
+
+	rootCmd.AddCommand(askCmd, listCmd, advisorCmd, chatCmd, decideCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(tui.ErrorStyle.Render(fmt.Sprintf("Erro: %v", err)))
@@ -225,5 +246,51 @@ func runAsk(query string) {
 			return
 		}
 		tui.RenderAskResult(resp)
+	}
+}
+
+func runDecide(query string) {
+	c := getClient()
+	ensureBackendRunning(c)
+
+	var proj, hw, cm, prov *string
+	if projectSource != "" {
+		proj = &projectSource
+	}
+	if targetHardware != "" {
+		hw = &targetHardware
+	}
+	if targetCommit != "" {
+		cm = &targetCommit
+	}
+	if provider != "" {
+		prov = &provider
+	}
+
+	reqPayload := client.MakeDecisionRequest{
+		Query:            query,
+		ProjectSource:    proj,
+		TargetHardware:   hw,
+		TargetCommit:     cm,
+		PolicyVersion:    policyVersion,
+		MaxTokens:        maxTokens,
+		ProviderOverride: prov,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	resp, err := c.MakeDecision(ctx, reqPayload)
+	if err != nil {
+		fmt.Println(tui.ErrorStyle.Render(fmt.Sprintf("Erro ao processar decisão: %v", err)))
+		return
+	}
+
+	fmt.Printf("\n%s\n", tui.TitleStyle.Render(fmt.Sprintf("🎯 Veredicto: [%s]", resp.Verdict)))
+	fmt.Printf("%s %s\n\n", tui.WarnStyle.Render("Consulta:"), resp.Query)
+	fmt.Printf("%s\n%s\n\n", tui.SuccessStyle.Render("💡 Recomendação:"), resp.Recommendation)
+	fmt.Printf("ID: %s | Política: v%s | Completude: %.2f | Evidências: %d\n", resp.DecisionID, resp.PolicyVersion, resp.CompletenessScore, resp.EvidenceCount)
+	if len(resp.UsedSourceBooks) > 0 {
+		fmt.Printf("Livros Citados: %s\n", strings.Join(resp.UsedSourceBooks, ", "))
 	}
 }

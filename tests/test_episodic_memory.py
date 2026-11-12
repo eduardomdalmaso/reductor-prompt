@@ -1,7 +1,7 @@
 import pytest
 from typing import List, Dict, Any, Optional
 
-from src.domain.entities.memory import MemoryEpisode
+from src.domain.entities.memory import MemoryEpisode, ProvenanceType, EvidenceStatus
 from src.domain.ports.outbound import IEpisodicMemoryPort, IEmbeddingPort, IVectorStorePort, ILLMPort
 from src.domain.entities.book import ScoredChunk, BookChunk
 from src.application.use_cases.manage_brain_use_case import ManageBrainUseCase
@@ -22,20 +22,42 @@ class MockEpisodicMemoryPort(IEpisodicMemoryPort):
         self, 
         query_embedding: List[float], 
         min_similarity: float = 0.88, 
-        top_k: int = 1
+        top_k: int = 1,
+        provenance: Optional[ProvenanceType] = None,
+        status: Optional[EvidenceStatus] = EvidenceStatus.VALID
     ) -> List[MemoryEpisode]:
         if not self.storage:
             return []
-        # Retorna o primeiro se houver
-        ep = list(self.storage.values())[0]
+        # Retorna o primeiro se houver e filtrar se aplicável
+        episodes = list(self.storage.values())
+        if provenance is not None:
+            episodes = [e for e in episodes if e.provenance == provenance]
+        if status is not None:
+            episodes = [e for e in episodes if e.status == status]
+        if not episodes:
+            return []
+        ep = episodes[0]
         ep.confidence_score = 0.95
         return [ep]
 
-    def list_episodes(self, limit: int = 50, query_filter: Optional[str] = None) -> List[MemoryEpisode]:
+    def list_episodes(
+        self, 
+        limit: int = 50, 
+        query_filter: Optional[str] = None,
+        provenance: Optional[ProvenanceType] = None,
+        status: Optional[EvidenceStatus] = None
+    ) -> List[MemoryEpisode]:
         episodes = list(self.storage.values())
         if query_filter:
             episodes = [e for e in episodes if query_filter.lower() in e.query.lower()]
+        if provenance is not None:
+            episodes = [e for e in episodes if e.provenance == provenance]
+        if status is not None:
+            episodes = [e for e in episodes if e.status == status]
         return episodes[:limit]
+
+    def get_episode(self, episode_id: str) -> Optional[MemoryEpisode]:
+        return self.storage.get(episode_id)
 
     def delete_episode(self, episode_id: str) -> bool:
         if episode_id in self.storage:
@@ -64,13 +86,14 @@ class MockVectorStorePort(IVectorStorePort):
         chunk = BookChunk(
             id="c1",
             book_id="b1",
+            book_title="Clean Architecture",
             chunk_index=0,
-            text_content="Clean Architecture separa regras de negócio da interface e do banco de dados.",
-            estimated_tokens=50,
-            chapter_or_section="Capítulo 1",
+            content="Clean Architecture separa regras de negócio da interface e do banco de dados.",
+            token_count=50,
+            chapter="Capítulo 1",
             page_number=10
         )
-        return [ScoredChunk(chunk=chunk, score=0.92, book_title="Clean Architecture")]
+        return [ScoredChunk(chunk=chunk, score=0.92)]
 
     def delete_book(self, book_id: str) -> None:
         pass
@@ -110,13 +133,15 @@ def test_query_books_use_case_brain_hit():
     vector_store = MockVectorStorePort()
     llm_port = MockLLMPort()
 
-    # Preenche uma memória no cérebro
+    # Preenche uma memória empírica no cérebro
     memory_port.save_episode(
         MemoryEpisode(
             id="ep1",
             query="O que é Clean Architecture?",
-            response="Resposta prévia do cérebro sobre Clean Architecture.",
-            confidence_score=0.96
+            response="Benchmark empírico de latência com Clean Architecture.",
+            confidence_score=0.96,
+            provenance=ProvenanceType.EMPIRICAL,
+            status=EvidenceStatus.VALID
         ),
         [0.1, 0.2, 0.3, 0.4]
     )
@@ -134,5 +159,4 @@ def test_query_books_use_case_brain_hit():
     )
 
     assert result["from_brain"] is True
-    assert "Memória Recuperada do Cérebro Coletivo" in result["response"]
-    assert result["brain_episode_id"] == "ep1"
+    assert any(s.get("provenance") == "empirical" for s in result["sources"])

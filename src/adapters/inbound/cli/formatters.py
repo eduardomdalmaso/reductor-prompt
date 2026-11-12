@@ -107,3 +107,52 @@ def print_brain_table(episodes: List[Dict[str, Any]]):
         )
 
     console.print(table)
+
+
+def print_decision_result(report, json_output: bool = False):
+    if json_output:
+        print(json.dumps(report.model_dump(), ensure_ascii=False, indent=2))
+        return
+
+    verdict_colors = {
+        "FAVORABLE": ("bold green", "🎯"),
+        "CONTROVERSIAL": ("bold yellow", "⚖️"),
+        "INSUFFICIENT": ("bold blue", "ℹ️"),
+        "REFUTED": ("bold red", "❌")
+    }
+    color, icon = verdict_colors.get(report.verdict.value, ("bold white", "🔍"))
+    title = f"{icon} Veredicto da Política: [{color}]{report.verdict.value}[/{color}]"
+    
+    console.print(Panel(
+        f"[bold]Consulta:[/bold] {report.query}\n"
+        f"[bold]Recomendação:[/bold]\n{report.recommendation}\n\n"
+        f"[bold]Justificativa:[/bold] {report.justification}",
+        title=title,
+        border_style=color
+    ))
+
+    if report.empirical_evidence:
+        t_emp = Table(title="📊 Evidências Empíricas Confrontadas", show_header=True, header_style="bold cyan")
+        t_emp.add_column("Experimento", style="cyan")
+        t_emp.add_column("Score Semântico", justify="center")
+        t_emp.add_column("Completude", justify="center")
+        t_emp.add_column("Status / Obsolescência", justify="center")
+        for ev in report.empirical_evidence:
+            st = "[yellow]Obsoleto[/yellow]" if ev.get("is_stale") else "[green]Válido[/green]"
+            t_emp.add_row(
+                ev.get("experiment_id") or ev.get("episode_id", "")[:8],
+                f"{ev.get('semantic_score', 0.0):.2f}",
+                f"{ev.get('completeness_score', 0.0):.2f}",
+                st
+            )
+        console.print(t_emp)
+
+    if report.theoretical_basis:
+        console.print(f"\n[bold]📚 Literatura Teórica Citada ({len(report.theoretical_basis)} trechos):[/bold]")
+        for b in report.used_source_books:
+            console.print(f" • [cyan]{b}[/cyan]")
+
+    console.print(
+        f"\n[dim]ID Decisão: {report.decision_id} | Política: v{report.policy_version} | "
+        f"Data: {report.created_at[:19]}Z[/dim]\n"
+    )

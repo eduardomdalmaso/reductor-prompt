@@ -17,12 +17,14 @@ from src.adapters.outbound.llm.llm_adapters import LLMFactory
 from src.application.use_cases.ingest_books_use_case import IngestBooksUseCase
 from src.application.use_cases.query_books_use_case import QueryBooksUseCase
 from src.application.use_cases.analyze_project_use_case import AnalyzeProjectUseCase
-from src.application.use_cases.manage_brain_use_case import ManageBrainUseCase
-from src.application.services.hardware_budget_advisor_service import hardware_advisor_service
+from src.application.use_cases.make_decision_use_case import MakeDecisionUseCase
+from src.domain.ports.inbound import MakeDecisionCommand
 from src.adapters.inbound.cli.formatters import (
-    print_ask_result, print_analyze_result, print_books_table, print_brain_table, console
+    print_ask_result, print_analyze_result, print_books_table, print_decision_result, console
 )
 from src.adapters.inbound.cli.chat_handler import run_interactive_chat
+from src.adapters.inbound.cli.brain_commands import register_brain_commands
+from src.adapters.inbound.cli.tools_commands import register_tools_commands
 
 app = typer.Typer(help="ReductorPrompt - Otimizador de Prompts, RAG e CLI para Livros Técnicos")
 brain_app = typer.Typer(help="Gerenciamento da Memória Episódica & Cérebro Coletivo")
@@ -146,46 +148,32 @@ def serve(
     uvicorn.run("src.adapters.inbound.api.fastapi_app:app", host=host, port=port, reload=reload)
 
 
-@app.command(name="advisor")
-def advisor(provider: Optional[str] = typer.Option(None, "--provider", "-p", help="Simular provedor")):
-    """Exibe telemetria de hardware e parâmetros ideais de consulta."""
-    advice = hardware_advisor_service.get_runtime_advice(provider_override=provider)
-    console.print(Panel.fit(f"[bold cyan]🔮 Oráculo de Recursos:[/bold cyan] {advice.get('strategy_name', '')}"))
-    console.print(f"[bold]Hardware:[/bold] {advice.get('hardware_detected')} | [bold]Provedor:[/bold] {advice.get('active_provider')}")
-
-
-@app.command(name="fetch")
-def fetch(
-    urls: str = typer.Argument(..., help="URLs separadas por vírgula para download"),
-    workers: int = typer.Option(6, "--workers", "-w", help="Threads concorrentes"),
-    ingest_after: bool = typer.Option(False, "--ingest", "-i", help="Auto-ingestão após download")
+@app.command(name="decide")
+def decide(
+    query: str = typer.Argument(..., help="Dúvida técnica ou proposta arquitetural para decisão"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Nome do projeto (ex: HydraStream)"),
+    hardware: Optional[str] = typer.Option(None, "--hardware", "-hw", help="Hardware alvo (ex: RTX 5090)"),
+    commit: Optional[str] = typer.Option(None, "--commit", "-c", help="Commit hash de referência"),
+    policy_version: str = typer.Option("1.0.0", "--policy", help="Versão da política determinística"),
+    max_tokens: int = typer.Option(2500, "--max-tokens", "-m", help="Limite de tokens do contexto"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="Retorna relatório em JSON"),
+    provider: Optional[str] = typer.Option(None, "--provider", "-P", help="Provedor LLM")
 ):
-    """Baixa dinamicamente livros/docs do GitHub com deduplicação SHA-256."""
-    from scripts.fetch_books import run_pipeline
-    run_pipeline([u.strip() for u in urls.split(",") if u.strip()], max_workers=workers, trigger_ingest=ingest_after)
+    """Executa decisão bilateral confrontando teoria e benchmarks com política determinística."""
+    _, embedding_port, vector_store, memory_port, _, llm_port = get_dependencies(provider)
+    use_case = MakeDecisionUseCase(
+        embedding_port=embedding_port,
+        vector_store=vector_store,
+        memory_port=memory_port,
+        llm_port=llm_port
+    )
+    cmd = MakeDecisionCommand(
+        query=query, project_source=project, target_hardware=hardware,
+        target_commit=commit, policy_version=policy_version, max_tokens=max_tokens
+    )
+    report = use_case.execute(cmd)
+    print_decision_result(report, json_output=json_output)
 
 
-@brain_app.command(name="list")
-def brain_list(limit: int = typer.Option(30, "--limit", "-l"), query: Optional[str] = typer.Option(None, "--filter", "-f")):
-    """Lista memórias do Cérebro Episódico."""
-    _, embedding_port, _, memory_port, _, _ = get_dependencies()
-    use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
-    print_brain_table(use_case.list_knowledge(limit=limit, query_filter=query))
-
-
-@brain_app.command(name="teach")
-def brain_teach(query: str = typer.Argument(...), insight: str = typer.Argument(...), topic: Optional[str] = typer.Option(None, "--topic", "-t")):
-    """Ensina conhecimento diretamente ao Cérebro."""
-    _, embedding_port, _, memory_port, _, _ = get_dependencies()
-    use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
-    episode = use_case.teach_brain(query=query, insight=insight, topic=topic)
-    console.print(f"[bold green]✔ Conhecimento registrado no cérebro! [ID: {episode.id}][/bold green]")
-
-
-@brain_app.command(name="clear")
-def brain_clear():
-    """Limpa a memória do Cérebro Coletivo."""
-    _, embedding_port, _, memory_port, _, _ = get_dependencies()
-    use_case = ManageBrainUseCase(memory_port=memory_port, embedding_port=embedding_port)
-    use_case.clear_brain()
-    console.print("[bold red]✔ Cérebro resetado com sucesso.[/bold red]")
+register_brain_commands(brain_app, get_dependencies)
+register_tools_commands(app)

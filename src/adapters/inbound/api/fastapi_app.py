@@ -18,10 +18,15 @@ from src.application.dtos.evidence_dtos import (
     IngestEvidenceRequestDTO,
     IngestEvidenceResponseDTO
 )
+from src.application.dtos.decision_dtos import (
+    MakeDecisionRequestDTO,
+    DecisionResponseDTO
+)
 from src.domain.entities.memory import ProvenanceType, EvidenceStatus
-from src.domain.ports.inbound import IngestEvidenceCommand
+from src.domain.ports.inbound import IngestEvidenceCommand, MakeDecisionCommand
 from src.domain.exceptions.exceptions import EvidenceConflictException
 from src.application.use_cases.ingest_evidence_use_case import IngestEvidenceUseCase
+from src.application.use_cases.make_decision_use_case import MakeDecisionUseCase
 from src.adapters.outbound.loaders.document_loaders import CompositeDocumentLoader
 from src.adapters.outbound.embeddings.embedding_adapters import ResilientEmbeddingAdapter
 from src.adapters.outbound.vector_store.chroma_vector_store import ChromaVectorStoreAdapter
@@ -291,6 +296,61 @@ async def ingest_evidence_endpoint(
         )
     except Exception as e:
         telemetry_service.log("ERROR", "EvidenceAPI", f"Erro ao processar evidência: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+def get_decision_use_case():
+    embedding_port = ResilientEmbeddingAdapter()
+    vector_store = ChromaVectorStoreAdapter()
+    memory_port = ChromaEpisodicMemoryAdapter()
+    llm_port = LLMFactory.create()
+    return MakeDecisionUseCase(
+        embedding_port=embedding_port,
+        vector_store=vector_store,
+        memory_port=memory_port,
+        llm_port=llm_port
+    )
+
+
+@app.post("/api/v1/decisions", response_model=DecisionResponseDTO, dependencies=[Depends(verify_auth)])
+async def make_decision_endpoint(
+    req: MakeDecisionRequestDTO,
+    use_case: MakeDecisionUseCase = Depends(get_decision_use_case)
+):
+    """
+    Orquestra uma decisão de engenharia formal e rastreável.
+    Aplica política determinística (FAVORABLE, REFUTED, CONTROVERSIAL, INSUFFICIENT)
+    confrontando teoria dos livros e benchmarks reais do HydraStream.
+    """
+    try:
+        cmd = MakeDecisionCommand(
+            query=req.query,
+            target_hardware=req.target_hardware,
+            target_commit=req.target_commit,
+            book_filter=req.book_filter,
+            max_tokens=req.max_tokens,
+            llm_synthesis=req.llm_synthesis
+        )
+        report = await asyncio.to_thread(use_case.execute, cmd)
+
+        return DecisionResponseDTO(
+            decision_id=report.decision_id,
+            query=report.query,
+            verdict=report.verdict.value if hasattr(report.verdict, "value") else str(report.verdict),
+            recommendation=report.recommendation,
+            policy_version=report.policy_version,
+            completeness_score=report.completeness_score,
+            relevance_score=report.relevance_score,
+            evidence_count=len(report.empirical_evidence),
+            used_commit_hashes=report.used_commit_hashes,
+            used_source_books=report.used_source_books,
+            limitations=report.limitations,
+            next_validation_steps=report.next_validation_steps,
+            comparative_summary=report.comparative_summary,
+            created_at=report.created_at
+        )
+    except Exception as e:
+        telemetry_service.log("ERROR", "DecisionAPI", f"Erro ao orquestrar decisão: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
