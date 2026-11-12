@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 from src.domain.entities.book import Book, BookChunk, ScoredChunk
-from src.domain.entities.memory import MemoryEpisode
+from src.domain.entities.memory import MemoryEpisode, ProvenanceType, EvidenceStatus
 
 
 class IDocumentLoaderPort(ABC):
@@ -101,18 +101,31 @@ class IEpisodicMemoryPort(ABC):
         pass
 
     @abstractmethod
+    def get_episode(self, episode_id: str) -> Optional[MemoryEpisode]:
+        """Recupera um episódio específico pelo seu identificador estável."""
+        pass
+
+    @abstractmethod
     def search_episodes(
         self, 
         query_embedding: List[float], 
         min_similarity: float = 0.88, 
-        top_k: int = 1
+        top_k: int = 1,
+        provenance: Optional[ProvenanceType] = None,
+        status: Optional[EvidenceStatus] = EvidenceStatus.VALID
     ) -> List[MemoryEpisode]:
-        """Busca episódios semelhantes no cérebro por limiar de similaridade cosseno."""
+        """Busca episódios semelhantes no cérebro filtrados por proveniência e status."""
         pass
 
     @abstractmethod
-    def list_episodes(self, limit: int = 50, query_filter: Optional[str] = None) -> List[MemoryEpisode]:
-        """Lista episódios armazenados no cérebro."""
+    def list_episodes(
+        self, 
+        limit: int = 50, 
+        query_filter: Optional[str] = None,
+        provenance: Optional[ProvenanceType] = None,
+        status: Optional[EvidenceStatus] = None
+    ) -> List[MemoryEpisode]:
+        """Lista episódios armazenados no cérebro com filtros opcionais."""
         pass
 
     @abstractmethod

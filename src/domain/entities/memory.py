@@ -41,6 +41,7 @@ class MemoryEpisode:
     project_source: Optional[str] = None
     commit_hash: Optional[str] = None
     experiment_id: Optional[str] = None
+    content_hash: Optional[str] = None
     measured_at: Optional[str] = None
     environment_context: Dict[str, Any] = field(default_factory=dict)
     source_hashes: List[str] = field(default_factory=list)
@@ -65,6 +66,7 @@ class MemoryEpisode:
             "project_source": self.project_source,
             "commit_hash": self.commit_hash,
             "experiment_id": self.experiment_id,
+            "content_hash": self.content_hash,
             "measured_at": self.measured_at,
             "environment_context": self.environment_context,
             "source_hashes": self.source_hashes
@@ -103,6 +105,7 @@ class MemoryEpisode:
             project_source=data.get("project_source"),
             commit_hash=data.get("commit_hash"),
             experiment_id=data.get("experiment_id"),
+            content_hash=data.get("content_hash"),
             measured_at=data.get("measured_at"),
             environment_context=data.get("environment_context", {}),
             source_hashes=data.get("source_hashes", [])

@@ -31,3 +31,10 @@ class LLMProviderException(DomainException):
     """Lançada quando a chamada ao modelo LLM falha."""
     def __init__(self, provider: str, reason: str):
         super().__init__(f"Falha na comunicação com o provedor LLM '{provider}': {reason}")
+
+
+class EvidenceConflictException(DomainException):
+    """Lançada quando uma evidência com o mesmo ID possui conteúdo conflitante."""
+    def __init__(self, experiment_id: str, reason: str = ""):
+        detail = f": {reason}" if reason else ""
+        super().__init__(f"Conflito de evidência para o experimento '{experiment_id}'{detail}")
