@@ -1,147 +1,124 @@
 # 📚 ReductorPrompt
 
-**Otimizador Extremo de Prompts e RAG Cognitivo para Livros Técnicos e Documentos Volumosos**  
-Construído sob os princípios de **Arquitetura Hexagonal (Ports & Adapters)** e **Domain-Driven Design (DDD)** em Python.
+**Motor de Recuperação RAG Especializado, Otimização Adaptativa de Contexto e Plataforma de Conhecimento Técnico**  
+Construído sob os princípios de **Arquitetura Hexagonal (Ports & Adapters)** e **Domain-Driven Design (DDD)** em Python, com CLI nativo de alta velocidade em Go.
 
-Economize **>98% de tokens** em consultas a livros técnicos com busca vetorial cirúrgica, deduplicação criptográfica SHA-256 e raciocínio cognitivo (*Chain-of-Thought* e *Self-Reflection*).
-
----
-
-## 🖥️ Guia de Hardware: Qual LLM e Embedding Usar na sua GPU?
-
-O ReductorPrompt funciona de forma modular: você pode rodar **100% offline e local** via [Ollama](https://ollama.com) (custo zero de API) ou na **nuvem** via Google Gemini API.
-
-### 📊 Tabela de Recomendações por Hardware e VRAM
-
-| Hardware / VRAM | Modelo LLM Recomendado | Modelo de Embedding | Desempenho / Velocidade |
-| :--- | :--- | :--- | :--- |
-| **Top-Tier (24GB a 32GB VRAM)**<br>`RTX 5090`, `RTX 4090`, `RTX 3090` | `qwen2.5:32b`<br>`qwen2.5:14b`<br>`deepseek-r1:14b` | `nomic-embed-text`<br>`bge-m3` | 🚀 **Extremo (>100 tokens/s)**<br>Raciocínio profundo, zero alucinação |
-| **Gamer / Pro (12GB a 16GB VRAM)**<br>`RTX 4070 Ti / 4080`, `RTX 3060 12GB` | `qwen2.5:14b-q4`<br>`qwen2.5:7b`<br>`llama3.1:8b` | `nomic-embed-text` | ⚡ **Muito Rápido (60-90 tokens/s)**<br>Excelente para 99% das tarefas de engenharia |
-| **Entrada / Notebook (6GB a 8GB VRAM)**<br>`RTX 3060 6GB`, `RTX 4050 / 4060 8GB` | `qwen2.5:7b-q4`<br>`deepseek-r1:8b-q4`<br>`mistral:7b` | `nomic-embed-text` | 🏎️ **Rápido (30-50 tokens/s)**<br>Bom equilíbrio entre memória e precisão |
-| **Sem GPU / Apenas CPU ou Laptop Leve** | **Google Gemini API** (`gemini-2.0-flash`) | `nomic-embed-text` (CPU) ou `all-MiniLM-L6-v2` | ☁️ **Nuvem (Custo Centavos/Grátis)**<br>Busca vetorial local + inferência na nuvem |
-
-> [!TIP]
-> **Modelo Recomendado Padrão**: O modelo `qwen2.5` (7B, 14B ou 32B) oferece os melhores resultados em raciocínio de código, síntese em português e seguimento estrito de instruções RAG.
+O ReductorPrompt reduz o volume de contexto documental enviado a LLMs de nuvem ou locais através de busca vetorial híbrida, fusão RRF, corte dinâmico por curva de relevância (*Elbow Method*) e **preservação integral de evidências canônicas** (Livro, Capítulo, Página e Score).
 
 ---
 
-## 🛡️ Isolamento do Ambiente (Sistema 100% Limpo)
+## 🖥️ Dimensionamento de Recursos e GPUs Genéricas
 
-1. **Python via Miniconda**: O projeto roda em um ambiente virtual Conda isolado (`reductor-prompt`), mantendo as bibliotecas do sistema intactas.
-2. **ChromaDB via Podman**: O banco vetorial roda isolado em container (`docker.io/chromadb/chroma:latest`) na porta `8001`, persistindo em `./storage/chroma` (com fallback automático para modo local persistente se o container não estiver ativo).
+O ReductorPrompt é agnóstico a hardware: opera desde instâncias de entrada (8 GB VRAM) até servidores de alta densidade (32 GB VRAM), ou 100% via API em nuvem (Google Gemini).
+
+### 📊 Guia de Alocação de Memória e Modelos
+
+| Perfil de Hardware | VRAM Típica | Modelo Local (Ollama) | Embeddings | Latência / Throughput Estimado* |
+| :--- | :--- | :--- | :--- | :--- |
+| **Top-Tier / Workstation**<br>`RTX 5090`, `RTX 4090`, `A5000` | **24 GB a 32 GB** | `qwen2.5:32b`<br>`qwen2.5:14b` | `nomic-embed-text`<br>`bge-m3` | Inferência local de alto paralelismo e múltiplos batches |
+| **Intermediário / Cloud GPU**<br>`RTX 4070 Ti / 4080`, `L4`, `A10` | **12 GB a 16 GB** | `qwen2.5:14b-q4`<br>`qwen2.5:7b` | `nomic-embed-text` | Equilíbrio ideal entre precisão técnica e consumo de VRAM |
+| **Entrada / Instâncias Spot**<br>`RTX 3060`, `RTX 4060`, `T4` | **8 GB a 12 GB** | `qwen2.5:7b-q4`<br>`qwen2.5:3b` | `nomic-embed-text` | Operação econômica com modelos quantizados em Q4_K_M |
+| **Ambientes Sem GPU Dedicada** | **Apenas CPU** | **Google Gemini API** (`gemini-2.5-flash`) | `all-MiniLM-L6-v2` | Busca vetorial local com síntese delegada à API remota |
+
+*\* Medições reais variam conforme o tamanho da janela de contexto (Prompt Tokens), quantidade de tokens gerados e taxa de quantização utilizada.*
+
+---
+
+## 🛡️ Isolamento e Arquitetura do Sistema
+
+1. **Camada de Aplicação (Python)**: Isolada via ambiente virtual (`conda` ou `venv`), com verificação de tipagem estática e sem caminhos acoplados ao sistema operacional.
+2. **Vector Store (ChromaDB)**: Opera prioritariamente em container Podman/Docker (`127.0.0.1:8001`), com persistência em `./storage/chroma` e fallback automático para modo embutido local.
+3. **CLI Nativo em Go (`reductor`)**: Binário compilado em `bin/reductor` para inicialização instantânea (`< 3ms`) no terminal diário, comunicando-se com o daemon via HTTP/REST.
 
 ---
 
 ## 🚀 Como Inicializar e Usar
 
-### 1. Iniciar o ChromaDB no Podman
+### 1. Iniciar o ChromaDB
 ```bash
 ./start_chroma.sh
+# Para encerrar o serviço: ./stop_chroma.sh
 ```
-*(Para parar quando terminar: `./stop_chroma.sh`)*
 
----
-
-### 2. Ativar o Ambiente Conda
+### 2. Ativar o Ambiente
 ```bash
 conda activate reductor-prompt
+# ou ative o seu ambiente virtual Python correspondente
 ```
 
----
-
-### 3. Baixar Livros Automaticamente com o Fetcher Dinâmico
-Você pode baixar pastas do GitHub, arquivos ou links diretos com verificação de deduplicação SHA-256:
-
+### 3. Ingestão e Deduplicação Criptográfica
 ```bash
-# Baixar pastas inteiras do GitHub (ex: repositório de livros de IA):
-python query.py fetch "https://github.com/MinhNguyenDS/AI-pdf-books/tree/Master/Paper,https://github.com/MinhNguyenDS/AI-pdf-books/tree/Master/AI%20books"
+# Ingestão de arquivos na pasta database/ (com deduplicação SHA-256):
+python ingest.py
 
-# Baixar um artigo/livro direto da web e já indexar no ChromaDB (--ingest):
+# Download concorrente e ingestão de repositórios ou papers:
 python query.py fetch "https://arxiv.org/pdf/2401.05566.pdf" --ingest
 ```
 
-*(Você também pode simplesmente copiar arquivos `.pdf`, `.epub`, `.md` diretamente para a pasta `database/` ou `storage/books/`).*
-
 ---
 
-### 4. Indexar os Livros (Deduplicação Inteligente)
+## 🔍 Modos de Consulta e CLI
+
+Você pode consultar via CLI em Python (`query.py`) ou pelo binário nativo em Go (`./bin/reductor`):
+
+#### 🔹 Consulta Padrão (Expansão Multi-Query & Fusão RRF)
 ```bash
-python ingest.py
-```
-- Utiliza **PyMuPDF** para extração ultra-rápida de texto;
-- Calcula hash SHA-256 e **só processa livros novos ou modificados**;
-- Gera embeddings locais e armazena chunks no ChromaDB.
-
----
-
-### 5. Consultas e Modos de Raciocínio
-
-#### 🔹 Modo Padrão (Expansão Multi-Query & Fusão RRF)
-```bash
-python query.py "Qual o padrão de concorrência em Rust e Go?"
+python query.py "Qual o padrão de concorrência recomendado em Go e Rust?"
 ```
 
-#### 🧠 Modo Profundo com Chain-of-Thought e Auto-Reflexão (`--deep`)
+#### 🧠 Raciocínio Profundo (`--deep`)
 ```bash
 python query.py "Como mitigar gargalos de escrita no PostgreSQL?" --deep
 ```
 
-#### ⚡ Modo Direto Ultrarrápido (`--fast`)
-```bash
-python query.py "O que é WAL?" --fast
-```
-
-#### 📄 Apenas Extrair o Contexto Enxuto (Sem chamar LLM)
+#### 📄 Extração de Contexto Canônico (Bypass de LLM)
+Retorna exclusivamente as evidências selecionadas e formatadas, com zero consumo de tokens de resposta:
 ```bash
 python query.py "Princípios de Clean Architecture" --only-context
 ```
 
-#### 📚 Listar Livros Indexados no Banco Vetorial
+#### 💬 Chat Interativo no Terminal (REPL)
 ```bash
-python query.py list
-```
-
-#### 💬 Modo Interativo / Chat no Terminal (REPL)
-```bash
-# Inicia uma sessão contínua de conversação técnica sem reabrir o processo:
 python query.py chat
-
-# Ou filtrando por livro específico:
-python query.py chat --book "Redis Core Architecture"
 ```
 
----
-
-### 6. Análise Cruzada de Projeto (*Diagnóstico Arquitetural*)
-Cruze o código ou arquitetura do seu projeto com as melhores práticas dos livros:
-
+#### 🚀 Análise Cruzada de Projeto vs. Literatura Técnica
 ```bash
 python query.py analyze \
-  --project "Tenho um pipeline analítico em Python que ingere 50k eventos por segundo via Kafka e grava no PostgreSQL" \
-  --topic "gargalos de escrita e particionamento"
+  --project "Pipeline analítico que consome 50k eventos/s do Kafka e persiste em Postgres" \
+  --topic "particionamento e gargalos de escrita"
 ```
 
-O agente retorna:
+Retorno estruturado:
 - 🎯 **Diagnóstico e Alinhamento Teórico**
 - 🚀 **Oportunidades Concretas de Otimização**
-- ⚠️ **Riscos Arquiteturais, Gargalos e Trade-offs**
+- ⚠️ **Riscos Arquiteturais e Trade-offs**
 - 📋 **Plano de Ação Recomendado**
-- 📖 **Referências Citadas (Livro, Capítulo e Página)**
-- 📊 **Taxa de Economia de Tokens (>98%)**
+- 📖 **Fontes Canônicas Citadas (Livro, Capítulo e Página)**
 
 ---
 
-### 7. Benchmark de Performance e Precisão
-Execute a bateria de testes científicos para medir similaridade, latência e economia de tokens:
+## 🧪 Suíte de Benchmarks e Metrologia
+
+O projeto conta com ferramentas dedicadas para auditar tempos e taxas de redução sem suposições teóricas:
 
 ```bash
-python scripts/benchmark_rag.py
+# Executa a aferição detalhada do ciclo de vida da consulta (TTFT, I/O e corte):
+python scripts/benchmark_baseline.py
 ```
+
+O script afere isoladamente:
+- Tempo de expansão de consulta (`t_expand`);
+- Latência de geração de embeddings na GPU (`t_embed`);
+- Varredura e similaridade no ChromaDB (`t_search`);
+- Fusão RRF e corte de ruído por *Elbow Cutoff* (`t_compress`);
+- Proporção real de tokens antes e depois da seleção contextual.
 
 ---
 
-### 8. Servidor MCP (Model Context Protocol) para IDEs e Agentes
-O ReductorPrompt possui suporte nativo ao protocolo MCP. O arquivo `mcp_config.json` já está configurado:
+## 🔌 Servidor MCP (Model Context Protocol)
+
+O ReductorPrompt expõe suas capacidades para Claude Desktop, Cursor e outros agentes de IA via MCP (`mcp_config.json`):
 
 ```json
 {
@@ -157,16 +134,19 @@ O ReductorPrompt possui suporte nativo ao protocolo MCP. O arquivo `mcp_config.j
 }
 ```
 
-Ferramentas MCP expostas:
-- `search_books(query, book_filter, max_tokens)`: busca trechos comprimidos (>95% de economia).
-- `analyze_project_with_books(project_description, topic, book_filter)`: análise cruzada de projetos.
-- `list_indexed_books()`: catálogo de livros disponíveis.
+**Principais ferramentas expostas**:
+- `search_books(query, book_filter, max_tokens)`: Recuperação cirúrgica com orçamento adaptativo.
+- `analyze_project_with_books(project_description, topic)`: Diagnóstico arquitetural cruzado.
+- `consult_brain(query)`: Consulta à memória episódica persistente (<1ms).
+- `validate_reasoning(hypothesis, context)`: Peer-review de decisões técnicas contra os livros.
 
 ---
 
-### 9. API REST FastAPI
-Inicie a API HTTP para integração com backends ou frontends externos:
+## 🌐 API REST FastAPI
+
+Inicie o servidor HTTP para integração com serviços externos ou frontends:
+
 ```bash
 python api.py
-# Documentação Swagger disponível em: http://127.0.0.1:8000/docs
+# Documentação interativa Swagger: http://127.0.0.1:8000/docs
 ```

@@ -1,17 +1,18 @@
 {
-  "venvPath": "C:\\Users\\eduar\\miniconda3\\envs",
-  "venv": "reductor-prompt",
-  "executionEnvironments": [
-    {
-      "root": ".",
-      "extraPaths": [
-        "C:\\Users\\eduar\\miniconda3\\envs\\reductor-prompt\\Lib\\site-packages",
-        "."
-      ]
-    }
+  "include": [
+    "src",
+    "tests"
   ],
-  "pythonPlatform": "Windows",
+  "exclude": [
+    "**/__pycache__",
+    ".git",
+    "storage",
+    "database"
+  ],
   "pythonVersion": "3.11",
   "typeCheckingMode": "basic",
-  "reportMissingImports": "none"
+  "reportMissingImports": "warning",
+  "extraPaths": [
+    "."
+  ]
 }
