@@ -2,10 +2,19 @@ import os
 import re
 from pathlib import Path
 from typing import List, Dict, Any
-from pypdf import PdfReader
-import ebooklib
-from ebooklib import epub
-from bs4 import BeautifulSoup
+try:
+    from pypdf import PdfReader
+except ImportError:
+    PdfReader = None
+
+try:
+    import ebooklib
+    from ebooklib import epub
+    from bs4 import BeautifulSoup
+except ImportError:
+    ebooklib = None
+    epub = None
+    BeautifulSoup = None
 
 from src.domain.ports.outbound import IDocumentLoaderPort
 from src.domain.exceptions.exceptions import IngestionException
@@ -29,6 +38,8 @@ class TextAndMarkdownLoader(IDocumentLoaderPort):
         return ext in ['.txt', '.md', '.markdown']
 
     def load(self, file_path: str) -> List[Dict[str, Any]]:
+        if not epub or not ebooklib or not BeautifulSoup:
+            raise IngestionException(os.path.basename(file_path), "Pacotes 'ebooklib' ou 'beautifulsoup4' não estão instalados.")
         try:
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                 content = f.read()
@@ -108,6 +119,8 @@ class EPUBDocumentLoader(IDocumentLoaderPort):
         return Path(file_path).suffix.lower() == '.epub'
 
     def load(self, file_path: str) -> List[Dict[str, Any]]:
+        if not epub or not ebooklib or not BeautifulSoup:
+            raise IngestionException(os.path.basename(file_path), "Pacotes 'ebooklib' ou 'beautifulsoup4' não estão instalados.")
         try:
             book = epub.read_epub(file_path, options={'ignore_ncx': True})
             docs = []

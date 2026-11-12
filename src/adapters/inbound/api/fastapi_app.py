@@ -233,39 +233,43 @@ async def fetch_materials(req: FetchBooksRequestDTO):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+def get_evidence_use_case():
+    embedding_port = ResilientEmbeddingAdapter()
+    memory_port = ChromaEpisodicMemoryAdapter()
+    return IngestEvidenceUseCase(memory_port=memory_port, embedding_port=embedding_port)
+
+
 @app.post("/api/v1/evidence", response_model=IngestEvidenceResponseDTO, dependencies=[Depends(verify_auth)])
-async def ingest_evidence_endpoint(req: IngestEvidenceRequestDTO, response: Response):
+async def ingest_evidence_endpoint(
+    req: IngestEvidenceRequestDTO,
+    response: Response,
+    use_case: IngestEvidenceUseCase = Depends(get_evidence_use_case)
+):
     """
     Recebe medições, benchmarks e evidências empíricas de projetos externos (ex: HydraStream).
     Retorna 201 Created para novas evidências e 200 OK para reenvios idênticos (idempotência).
     Retorna 409 Conflict se o mesmo experimento for submetido com conteúdo divergente.
     """
     try:
-        def _execute():
-            embedding_port = ResilientEmbeddingAdapter()
-            memory_port = ChromaEpisodicMemoryAdapter()
-            use_case = IngestEvidenceUseCase(memory_port=memory_port, embedding_port=embedding_port)
+        prov = ProvenanceType(req.provenance) if req.provenance in ProvenanceType._value2member_map_ else ProvenanceType.EMPIRICAL
+        stat = EvidenceStatus(req.status) if req.status in EvidenceStatus._value2member_map_ else EvidenceStatus.VALID
 
-            prov = ProvenanceType(req.provenance) if req.provenance in ProvenanceType._value2member_map_ else ProvenanceType.EMPIRICAL
-            stat = EvidenceStatus(req.status) if req.status in EvidenceStatus._value2member_map_ else EvidenceStatus.VALID
+        cmd = IngestEvidenceCommand(
+            query=req.query,
+            response=req.response,
+            project_source=req.project_source,
+            experiment_id=req.experiment_id,
+            commit_hash=req.commit_hash,
+            provenance=prov,
+            status=stat,
+            measured_at=req.measured_at,
+            environment_context=req.environment_context,
+            confidence_score=req.confidence_score,
+            topic=req.topic,
+            source_hashes=req.source_hashes
+        )
 
-            cmd = IngestEvidenceCommand(
-                query=req.query,
-                response=req.response,
-                project_source=req.project_source,
-                experiment_id=req.experiment_id,
-                commit_hash=req.commit_hash,
-                provenance=prov,
-                status=stat,
-                measured_at=req.measured_at,
-                environment_context=req.environment_context,
-                confidence_score=req.confidence_score,
-                topic=req.topic,
-                source_hashes=req.source_hashes
-            )
-            return use_case.execute(cmd)
-
-        episode, is_created = await asyncio.to_thread(_execute)
+        episode, is_created = await asyncio.to_thread(use_case.execute, cmd)
 
         response.status_code = status.HTTP_201_CREATED if is_created else status.HTTP_200_OK
         msg = "Evidência empírica criada com sucesso." if is_created else "Evidência empírica existente retornada (idempotência)."

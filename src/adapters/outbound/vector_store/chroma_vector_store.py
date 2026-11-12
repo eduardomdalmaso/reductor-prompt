@@ -2,8 +2,12 @@ import os
 import re
 import logging
 from typing import List, Dict, Any, Optional
-import chromadb
-from chromadb.config import Settings as ChromaSettings
+try:
+    import chromadb
+    from chromadb.config import Settings as ChromaSettings
+except ImportError:
+    chromadb = None
+    ChromaSettings = None
 
 from src.domain.entities.book import Book, BookChunk, ScoredChunk
 from src.domain.ports.outbound import IVectorStorePort
@@ -40,6 +44,8 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
 
     def _init_client(self):
         """Inicializa HttpClient (Podman) ou PersistentClient (Local)."""
+        if not chromadb:
+            raise ImportError("O pacote 'chromadb' não está instalado no ambiente Python ativo.")
         if self.mode == "http":
             try:
                 client = chromadb.HttpClient(

@@ -211,18 +211,35 @@ class PromptCompressorService:
 
         return fused_chunks
 
+    def format_empirical_evidence(self, episodes: List[Any]) -> str:
+        """Formata evidências empíricas preservando commit, hardware e experimento."""
+        if not episodes:
+            return ""
+        blocks = ["=== EVIDÊNCIAS EMPÍRICAS & BENCHMARKS DE EXECUÇÃO ==="]
+        for ep in episodes:
+            hw = ep.environment_context.get("hardware") or ep.environment_context.get("gpu") or "N/A"
+            commit = f"#{ep.commit_hash[:7]}" if ep.commit_hash else "N/A"
+            exp = ep.experiment_id or ep.id
+            proj = ep.project_source or "Empirical"
+            blocks.append(
+                f"--- [Projeto: {proj} | Experimento: {exp} | Commit: {commit} | Hardware: {hw}] ---\n"
+                f"{ep.response.strip()}"
+            )
+        return "\n\n".join(blocks)
+
     def build_qa_prompt(
         self, 
         query: str, 
         compressed_context: CompressedContext,
-        deep_reasoning: bool = False
+        deep_reasoning: bool = False,
+        empirical_context: Optional[str] = None
     ) -> Tuple[str, str]:
-        """Gera o System Instruction e o User Prompt com suporte a Chain-of-Thought e Self-Reflection."""
+        """Gera o System Instruction e o User Prompt com suporte a Chain-of-Thought e Síntese Bilateral."""
         if deep_reasoning:
             system_instruction = (
                 "Você é um Arquiteto Principal de Software e Pesquisador de IA especialista. "
                 "Sua missão é responder à dúvida do usuário com profundidade analítica, utilizando a metodologia "
-                "de Chain-of-Thought (Cadeia de Raciocínio) e Auto-Reflexão baseada EXCLUSIVAMENTE nos livros fornecidos.\n\n"
+                "de Chain-of-Thought (Cadeia de Raciocínio) e Auto-Reflexão baseada nas fontes fornecidas.\n\n"
                 "Estrutura da Resposta:\n"
                 "1. 🧠 Análise dos Fundamentos e Conceitos-Chave (Explicação teórica com base nas fontes)\n"
                 "2. ⚙️ Aplicação Prática, Padrões e Arquitetura (Exemplos de código e trade-offs)\n"
@@ -232,16 +249,28 @@ class PromptCompressorService:
         else:
             system_instruction = (
                 "Você é um consultor especialista em engenharia de software, arquitetura e análise técnica. "
-                "Responda à pergunta do usuário de forma precisa, concisa e altamente embasada no CONTEXTO DOS LIVROS fornecido. "
+                "Responda à pergunta do usuário de forma precisa, concisa e altamente embasada no CONTEXTO fornecido. "
                 "Diretrizes:\n"
                 "1. Cite os livros e capítulos/páginas de onde as conclusões foram extraídas sempre que relevante.\n"
                 "2. Seja direto e evite enrolação para economizar tokens.\n"
                 "3. Se o contexto não contiver a resposta, informe educadamente o que foi possível encontrar nos livros indexados."
             )
 
+        context_blocks = [
+            f"=== FUNDAMENTAÇÃO TEÓRICA (Livros & Manuais) ===\n{compressed_context.raw_context_text}"
+        ]
+        if empirical_context:
+            context_blocks.append(empirical_context)
+            system_instruction += (
+                "\n\nATENÇÃO - SÍNTESE BILATERAL DE ENGENHARIA:\n"
+                "O contexto contém tanto FUNDAMENTAÇÃO TEÓRICA (livros) quanto EVIDÊNCIAS EMPÍRICAS (benchmarks reais medidos em projetos como HydraStream). "
+                "Confronte explicitamente a teoria com a prática: aponte se as medições confirmam, refutam ou impõem limites às recomendações dos livros."
+            )
+
+        full_context = "\n\n".join(context_blocks)
         user_prompt = (
-            f"CONTEXTO EXTRAÍDO DOS LIVROS:\n"
-            f"{compressed_context.raw_context_text}\n\n"
+            f"CONTEXTO TÉCNICO DISPONÍVEL:\n"
+            f"{full_context}\n\n"
             f"PERGUNTA DO USUÁRIO:\n"
             f"{query}\n\n"
             f"RESPOSTA ESTRUTURADA:"

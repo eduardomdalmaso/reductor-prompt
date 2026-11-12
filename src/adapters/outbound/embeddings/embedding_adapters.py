@@ -1,7 +1,10 @@
 import logging
 from typing import List
 import httpx
-import chromadb.utils.embedding_functions as ef
+try:
+    import chromadb.utils.embedding_functions as ef
+except ImportError:
+    ef = None
 
 from src.domain.ports.outbound import IEmbeddingPort
 from src.domain.exceptions.exceptions import EmbeddingException
@@ -74,6 +77,8 @@ class ChromaDefaultEmbeddingAdapter(IEmbeddingPort):
     """Gera embeddings localmente usando a função default do ChromaDB (ONNX all-MiniLM-L6-v2)."""
     
     def __init__(self):
+        if not ef:
+            raise EmbeddingException("ChromaDefault", "Pacote 'chromadb' não está instalado.")
         self._fn = ef.DefaultEmbeddingFunction()
 
     def embed_text(self, text: str) -> List[float]:
