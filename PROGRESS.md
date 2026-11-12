@@ -13,7 +13,7 @@
 | **Ollama Local (GPU)** | 🟢 Operacional | Podman (`reductor_ollama:11434`) - RTX 5090 (PTX JIT) \| `qwen2.5:7b` + `nomic-embed-text` |
 | **Segurança & Anti-SSRF** | 🟢 100% Coberto | Validação de IP público, chaves em headers, CORS restrito, Auth Bearer/X-API-Key |
 | **Motor de Decisão & Evidências** | 🟢 Operacional | Orquestração bilateral determinística, veredictos rastreáveis e inteligência analítica |
-| **Suíte de Testes** | 🟢 53/53 Passando | Domínio, persistência ChromaDB, recuperação bilateral, engine de decisão, APIs e MCP |
+| **Suíte de Testes** | 🟢 64/64 Passando | Domínio, persistência ChromaDB, recuperação bilateral, engine de decisão, APIs, MCP e matriz adversarial |
 | **Harness Health Check** | 🟢 Operacional | Executável via `python scripts/harness_check.py` (0.8s) |
 
 ---
@@ -94,6 +94,16 @@
       - Go CLI: `reductor decide "<pergunta>"`.
       - MCP Tool: `make_decision` totalmente integrado com sub-módulos desacoplados (<180 linhas/módulo).
 
+13. **Fase 6: Suíte de Testes Adversariais & Blindagem de Decisão (64/64 Passando)**:
+    - **ADV-01 a ADV-05**: Ausência total ou parcial de evidência, vácuo experimental ou injeções de prompt no query/payload nunca alteram o veredicto determinístico `INSUFFICIENT`.
+    - **ADV-04**: Discriminação explícita de `Obsolescência Temporal (>90 dias)` e `Incompatibilidade de Hardware` nas limitações estruturadas.
+    - **ADV-06**: Rigor metrológico mandatário para `REFUTED`: exige completude $\ge 0.70$, métricas quantitativas identificadas e fundamentação teórica prévia. Opiniões informais em texto são descartadas como base de refutação.
+    - **ADV-07**: Controvérsia exige comparabilidade de ambiente: dispersão $>50\%$ sob o mesmo hardware resulta em `CONTROVERSIAL`; sob hardwares distintos, registra limitação de comparabilidade em vez de controvérsia fictícia.
+    - **ADV-08**: Rastreabilidade estruturada de IDs de episódios, hashes de commit e hardware.
+    - **ADV-09**: Inversão de evidência: política reage aos dados quantitativos e métricas de forma simétrica.
+    - **ADV-10**: Deduplicação consciente: repetição da mesma evidência não infla artificialmente o peso probatório.
+    - **ADV-11**: Imunidade contra jailbreak: LLM adversária afirmando veredicto contrário não altera o campo `verdict` do `DecisionReport`.
+
 ---
 
 ## 🛠️ Comandos Rápidos do Harness
@@ -122,6 +132,6 @@ python query.py "sua pergunta"
 python query.py brain list
 python query.py brain teach "pergunta" "resposta"
 
-# 7. Execução da suíte de testes (53 testes)
+# 7. Execução da suíte de testes (64 testes)
 pytest -v
 ```

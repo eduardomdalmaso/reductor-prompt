@@ -39,11 +39,12 @@ class TestDecisionOrchestration(unittest.TestCase):
         self.assertIn("desatualizadas", res.reason)
 
     def test_policy_refuted_on_robust_negative_evidence(self):
-        """Evidência empírica robusta com resultado inviável resulta em REFUTED."""
+        """Evidência empírica robusta com resultado inviável e métricas resulta em REFUTED."""
         ep = MemoryEpisode(
             id="e1", query="q",
             response="A replicação síncrona apresentou degradação severa e se tornou inviável.",
-            status=EvidenceStatus.VALID
+            status=EvidenceStatus.VALID,
+            environment_context={"hardware": "RTX 5090", "metrics": {"packet_loss": 0.40}}
         )
         analysis = StalenessAnalysis(is_stale=False)
 
@@ -144,7 +145,7 @@ class TestDecisionOrchestration(unittest.TestCase):
 
         self.assertIsInstance(report, DecisionReport)
         self.assertEqual(report.verdict, DecisionVerdict.FAVORABLE)
-        self.assertEqual(report.policy_version, "1.0")
+        self.assertEqual(report.policy_version, DecisionPolicyService.POLICY_VERSION)
         self.assertIn("ep_hydra_01", report.used_episode_ids)
         self.assertIn("c891f2c", report.used_commit_hashes)
         self.assertIn("Designing Data-Intensive", report.used_source_books)
