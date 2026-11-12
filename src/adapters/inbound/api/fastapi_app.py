@@ -14,6 +14,14 @@ from src.application.dtos.query_dtos import (
     AnalyzeProjectRequestDTO, 
     AnalyzeProjectResponseDTO
 )
+from src.application.dtos.evidence_dtos import (
+    IngestEvidenceRequestDTO,
+    IngestEvidenceResponseDTO
+)
+from src.domain.entities.memory import ProvenanceType, EvidenceStatus
+from src.domain.ports.inbound import IngestEvidenceCommand
+from src.domain.exceptions.exceptions import EvidenceConflictException
+from src.application.use_cases.ingest_evidence_use_case import IngestEvidenceUseCase
 from src.adapters.outbound.loaders.document_loaders import CompositeDocumentLoader
 from src.adapters.outbound.embeddings.embedding_adapters import ResilientEmbeddingAdapter
 from src.adapters.outbound.vector_store.chroma_vector_store import ChromaVectorStoreAdapter
@@ -222,6 +230,63 @@ async def fetch_materials(req: FetchBooksRequestDTO):
         raise
     except Exception as e:
         telemetry_service.log("ERROR", "Fetcher", f"Erro no download dinâmico: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/v1/evidence", response_model=IngestEvidenceResponseDTO, dependencies=[Depends(verify_auth)])
+async def ingest_evidence_endpoint(req: IngestEvidenceRequestDTO, response: Response):
+    """
+    Recebe medições, benchmarks e evidências empíricas de projetos externos (ex: HydraStream).
+    Retorna 201 Created para novas evidências e 200 OK para reenvios idênticos (idempotência).
+    Retorna 409 Conflict se o mesmo experimento for submetido com conteúdo divergente.
+    """
+    try:
+        def _execute():
+            embedding_port = ResilientEmbeddingAdapter()
+            memory_port = ChromaEpisodicMemoryAdapter()
+            use_case = IngestEvidenceUseCase(memory_port=memory_port, embedding_port=embedding_port)
+
+            prov = ProvenanceType(req.provenance) if req.provenance in ProvenanceType._value2member_map_ else ProvenanceType.EMPIRICAL
+            stat = EvidenceStatus(req.status) if req.status in EvidenceStatus._value2member_map_ else EvidenceStatus.VALID
+
+            cmd = IngestEvidenceCommand(
+                query=req.query,
+                response=req.response,
+                project_source=req.project_source,
+                experiment_id=req.experiment_id,
+                commit_hash=req.commit_hash,
+                provenance=prov,
+                status=stat,
+                measured_at=req.measured_at,
+                environment_context=req.environment_context,
+                confidence_score=req.confidence_score,
+                topic=req.topic,
+                source_hashes=req.source_hashes
+            )
+            return use_case.execute(cmd)
+
+        episode, is_created = await asyncio.to_thread(_execute)
+
+        response.status_code = status.HTTP_201_CREATED if is_created else status.HTTP_200_OK
+        msg = "Evidência empírica criada com sucesso." if is_created else "Evidência empírica existente retornada (idempotência)."
+
+        return IngestEvidenceResponseDTO(
+            id=episode.id,
+            experiment_id=episode.experiment_id or req.experiment_id,
+            project_source=episode.project_source or req.project_source,
+            content_hash=episode.content_hash or "",
+            status=episode.status.value if hasattr(episode.status, "value") else str(episode.status),
+            is_created=is_created,
+            message=msg
+        )
+    except EvidenceConflictException as e:
+        telemetry_service.log("WARNING", "EvidenceAPI", f"Conflito de evidência: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(e)
+        )
+    except Exception as e:
+        telemetry_service.log("ERROR", "EvidenceAPI", f"Erro ao processar evidência: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

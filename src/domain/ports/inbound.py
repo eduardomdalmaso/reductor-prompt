@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass, field
 from src.domain.entities.book import Book, OptimizationInsight
 from src.domain.entities.memory import MemoryEpisode, ProvenanceType, EvidenceStatus
@@ -65,6 +65,9 @@ class IIngestEvidenceUseCase(ABC):
     """Porta de entrada para ingestão de evidências empíricas e benchmarks operacionais."""
     
     @abstractmethod
-    def execute(self, command: IngestEvidenceCommand) -> MemoryEpisode:
-        """Valida, deduplica idempotentemente e persiste a evidência na memória episódica."""
+    def execute(self, command: IngestEvidenceCommand) -> Tuple[MemoryEpisode, bool]:
+        """
+        Valida, deduplica idempotentemente e persiste a evidência.
+        Retorna (MemoryEpisode, is_created: bool).
+        """
         pass

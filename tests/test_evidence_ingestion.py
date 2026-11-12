@@ -32,9 +32,10 @@ class TestEvidenceIngestion(unittest.TestCase):
             environment_context={"gpu": "RTX 5090", "concurrency": 1}
         )
 
-        episode = self.use_case.execute(cmd)
+        episode, is_created = self.use_case.execute(cmd)
 
         self.assertIsNotNone(episode.id)
+        self.assertTrue(is_created)
         self.assertEqual(episode.provenance, ProvenanceType.EMPIRICAL)
         self.assertEqual(episode.status, EvidenceStatus.VALID)
         self.assertEqual(episode.project_source, "HydraStream")
@@ -75,9 +76,10 @@ class TestEvidenceIngestion(unittest.TestCase):
         )
         self.mock_memory.get_episode.return_value = existing_episode
 
-        result = self.use_case.execute(cmd)
+        result, is_created = self.use_case.execute(cmd)
 
         self.assertEqual(result.id, ev_id)
+        self.assertFalse(is_created)
         # Embedding NÃO deve ser chamado em repetição idempotente
         self.mock_embedder.embed_text.assert_not_called()
         self.mock_memory.save_episode.assert_not_called()
@@ -138,7 +140,7 @@ class TestEvidenceIngestion(unittest.TestCase):
 
         def _worker():
             try:
-                res = self.use_case.execute(cmd)
+                res, _ = self.use_case.execute(cmd)
                 results.append(res)
             except Exception as e:
                 errors.append(e)

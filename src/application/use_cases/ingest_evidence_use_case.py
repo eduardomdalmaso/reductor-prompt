@@ -2,7 +2,7 @@ import json
 import hashlib
 import logging
 import threading
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Tuple
 from datetime import datetime, timezone
 
 from src.domain.entities.memory import MemoryEpisode, ProvenanceType, EvidenceStatus
@@ -50,7 +50,7 @@ class IngestEvidenceUseCase(IIngestEvidenceUseCase):
                 self._experiment_locks[evidence_id] = threading.Lock()
             return self._experiment_locks[evidence_id]
 
-    def execute(self, command: IngestEvidenceCommand) -> MemoryEpisode:
+    def execute(self, command: IngestEvidenceCommand) -> Tuple[MemoryEpisode, bool]:
         evidence_id = build_evidence_id(command.project_source, command.experiment_id)
 
         content_payload = {
@@ -69,7 +69,7 @@ class IngestEvidenceUseCase(IIngestEvidenceUseCase):
             if existing:
                 if existing.content_hash == content_hash:
                     logger.info(f"Evidência empírica idêntica já existente (idempotência): {evidence_id}")
-                    return existing
+                    return existing, False
                 logger.warning(f"Conflito detectado no experimento '{command.experiment_id}' ({evidence_id})")
                 raise EvidenceConflictException(
                     command.experiment_id,
@@ -105,4 +105,4 @@ class IngestEvidenceUseCase(IIngestEvidenceUseCase):
 
             self.memory_port.save_episode(episode, embedding)
             logger.info(f"✔ Evidência empírica gravada com sucesso: {evidence_id} [{command.project_source}]")
-            return episode
+            return episode, True
