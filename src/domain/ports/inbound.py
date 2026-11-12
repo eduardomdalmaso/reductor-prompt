@@ -1,6 +1,25 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
-from src.domain.entities.book import Book, CompressedContext, OptimizationInsight
+from dataclasses import dataclass, field
+from src.domain.entities.book import Book, OptimizationInsight
+from src.domain.entities.memory import MemoryEpisode, ProvenanceType, EvidenceStatus
+
+
+@dataclass
+class IngestEvidenceCommand:
+    """Comando de entrada para ingestão de evidências empíricas ou decisões técnicas."""
+    query: str
+    response: str
+    project_source: str
+    experiment_id: str
+    commit_hash: str
+    provenance: ProvenanceType = ProvenanceType.EMPIRICAL
+    status: EvidenceStatus = EvidenceStatus.VALID
+    measured_at: Optional[str] = None
+    environment_context: Dict[str, Any] = field(default_factory=dict)
+    confidence_score: float = 1.0
+    topic: Optional[str] = None
+    source_hashes: List[str] = field(default_factory=list)
 
 
 class IIngestBooksUseCase(ABC):
@@ -39,4 +58,13 @@ class IAnalyzeProjectUseCase(ABC):
         max_tokens: int = 2000
     ) -> OptimizationInsight:
         """Cruza o cenário do projeto com os conceitos do livro e extrai melhorias."""
+        pass
+
+
+class IIngestEvidenceUseCase(ABC):
+    """Porta de entrada para ingestão de evidências empíricas e benchmarks operacionais."""
+    
+    @abstractmethod
+    def execute(self, command: IngestEvidenceCommand) -> MemoryEpisode:
+        """Valida, deduplica idempotentemente e persiste a evidência na memória episódica."""
         pass
