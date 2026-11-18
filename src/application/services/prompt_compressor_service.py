@@ -1,115 +1,44 @@
-import re
 from typing import List, Dict, Any, Tuple, Optional
 from src.domain.entities.book import ScoredChunk, CompressedContext
 from src.application.services.chunking_service import ChunkingService
+from src.application.services.citation_guard import (
+    validate_and_sanitize_urls as _validate_and_sanitize_urls,
+    verify_citation_grounding as _verify_citation_grounding,
+)
+from src.application.services.elbow_budget_service import (
+    apply_elbow_cutoff as _apply_elbow_cutoff,
+    classify_query_complexity as _classify_query_complexity,
+    determine_dynamic_budget as _determine_dynamic_budget,
+    fuse_chunks_rrf as _fuse_chunks_rrf,
+)
+from src.application.services.prompt_templates import (
+    build_cross_analysis_prompt as _build_cross_analysis_prompt,
+    build_qa_prompt as _build_qa_prompt,
+    format_empirical_evidence as _format_empirical_evidence,
+)
 from src.config.settings import settings
 
 
 class PromptCompressorService:
-    """Serviço responsável por comprimir, filtrar e formatar o contexto para economia máxima de tokens com orçamento dinâmico e corte por curva de relevância (Elbow Method)."""
+    """Serviço responsável por comprimir, filtrar e formatar o contexto com orçamento dinâmico."""
 
     def __init__(self, chunking_service: ChunkingService = None):
         self.chunking_service = chunking_service or ChunkingService()
 
     def classify_query_complexity(self, query: str) -> str:
-        """
-        Classifica a complexidade e escopo da consulta para orçamentação dinâmica de tokens:
-        - 'factual': Dúvidas pontuais, comandos, sintaxe, definições diretas (400-800 tokens).
-        - 'architectural': Análise cruzada, comparações estruturais, diagnósticos e trade-offs (3000-4500 tokens).
-        - 'conceptual': Explicações de mecanismos, tutoriais, algoritmos e boas práticas (1200-2000 tokens).
-        """
-        q = query.lower().strip()
-        word_count = len(q.split())
-
-        # Padrões Arquiteturais / Análise Cruzada
-        arch_patterns = [
-            r"\banalys[e|is]\b", r"\barquitetura\b", r"\bcompar[e|ar|ando]\b", r"\btrade-?offs?\b",
-            r"\bbenchmark\b", r"\bscalab\w+\b", r"\bescalabil\w+\b", r"\bmigra\w+\b",
-            r"\bdistribu\w+\b", r"\bconcorr\w+\b", r"\bdiagn[oó]stico\b", r"\bpipeline\b"
-        ]
-        if any(re.search(pat, q) for pat in arch_patterns):
-            return "architectural"
-
-        # Padrões Conceituais / Explicativos Explícitos
-        conceptual_patterns = [
-            r"^como funciona\b", r"^como implementar\b", r"^como usar\b", r"^por que\b",
-            r"^explique\b", r"^tutorial\b", r"^descreva\b", r"\bmecanismo\b", r"\balgoritmo\b"
-        ]
-        if any(re.search(pat, q) for pat in conceptual_patterns):
-            return "conceptual"
-
-        # Padrões Factuais / Pontuais
-        factual_patterns = [
-            r"^o que [eé]\b", r"^qual [eé]\b", r"^quais s[aã]o\b", r"\bcomando\b", r"\bsintaxe\b",
-            r"\bflag\b", r"\bdefina\b", r"\bsignificado\b", r"\bvers[aã]o\b", r"\batalho\b"
-        ]
-        if any(re.search(pat, q) for pat in factual_patterns) or word_count <= 3:
-            return "factual"
-
-        return "conceptual"
+        return _classify_query_complexity(query)
 
     def determine_dynamic_budget(self, query: str, max_tokens_override: Optional[int] = None) -> int:
-        """
-        Calcula o orçamento de tokens dinamicamente para evitar ruído excessivo (Lost in the Middle)
-        ou corte prematuro de respostas profundas.
-        """
-        if max_tokens_override is not None and max_tokens_override != settings.DEFAULT_MAX_CONTEXT_TOKENS:
-            return max_tokens_override
-
-        if not getattr(settings, "DYNAMIC_TOKEN_BUDGET_ENABLED", True):
-            return max_tokens_override or settings.DEFAULT_MAX_CONTEXT_TOKENS
-
-        complexity = self.classify_query_complexity(query)
-        if complexity == "factual":
-            return getattr(settings, "DYNAMIC_MIN_FACTUAL_TOKENS", 800)
-        elif complexity == "architectural":
-            return getattr(settings, "DYNAMIC_MAX_ARCHITECTURAL_TOKENS", 4000)
-        else:
-            return getattr(settings, "DYNAMIC_MAX_CONCEPTUAL_TOKENS", 1800)
+        return _determine_dynamic_budget(query, max_tokens_override)
 
     def apply_elbow_cutoff(
         self,
         sorted_chunks: List[ScoredChunk],
         min_score: float,
         max_relative_drop: float = None,
-        max_step_drop: float = None
+        max_step_drop: float = None,
     ) -> List[ScoredChunk]:
-        """
-        Aplica o método Elbow (curva de declínio de relevância) para descartar a cauda de ruído.
-        Se um chunk tiver queda abrupta em relação ao pico ou ao anterior, corta os subsequentes.
-        """
-        if not sorted_chunks:
-            return []
-
-        rel_drop_threshold = max_relative_drop if max_relative_drop is not None else getattr(settings, "DYNAMIC_ELBOW_MAX_RELATIVE_DROP", 0.35)
-        step_drop_threshold = max_step_drop if max_step_drop is not None else getattr(settings, "DYNAMIC_ELBOW_MAX_STEP_DROP", 0.22)
-
-        top_score = sorted_chunks[0].score
-        if top_score < min_score:
-            return [sorted_chunks[0]]
-
-        selected: List[ScoredChunk] = []
-        prev_score = top_score
-
-        for sc in sorted_chunks:
-            # 1. Filtro absoluto mínimo
-            if sc.score < min_score:
-                break
-
-            # 2. Queda relativa máxima em relação ao melhor chunk (ex: 35% de tolerância)
-            relative_drop = (top_score - sc.score) / max(0.01, top_score)
-            if relative_drop > rel_drop_threshold and len(selected) >= 1:
-                break
-
-            # 3. Queda brusca de degrau em relação ao chunk imediatamente anterior
-            step_drop = prev_score - sc.score
-            if step_drop > step_drop_threshold and len(selected) >= 1:
-                break
-
-            selected.append(sc)
-            prev_score = sc.score
-
-        return selected or [sorted_chunks[0]]
+        return _apply_elbow_cutoff(sorted_chunks, min_score, max_relative_drop, max_step_drop)
 
     _STRATEGY_PARAMS = {
         "conservative": (0.55, 0.35),
@@ -236,183 +165,33 @@ class PromptCompressorService:
         )
 
     @staticmethod
-    def verify_citation_grounding(
-        response: str,
-        sources: List[Dict[str, Any]],
-    ) -> Dict[str, Any]:
-        """Verifica se livros e páginas citados na resposta existem nas fontes recuperadas."""
-        import re as _re
-
-        if not response or not sources:
-            return {"grounded_pages": 0, "cited_pages": 0, "ungrounded_pages": [], "grounding_ratio": 1.0}
-
-        retrieved_pages = {s.get("page") for s in sources if s.get("page") is not None}
-        cited_pages = [int(p) for p in _re.findall(r"(?:P[áa]g\.?|Page|p\.)\s*(\d+)", response, flags=_re.IGNORECASE)]
-        if not cited_pages:
-            return {"grounded_pages": 0, "cited_pages": 0, "ungrounded_pages": [], "grounding_ratio": 1.0}
-
-        grounded = [p for p in cited_pages if p in retrieved_pages]
-        ungrounded = [p for p in cited_pages if p not in retrieved_pages]
-        return {
-            "grounded_pages": len(grounded),
-            "cited_pages": len(cited_pages),
-            "ungrounded_pages": sorted(set(ungrounded)),
-            "grounding_ratio": round(len(grounded) / len(cited_pages), 4),
-        }
+    def verify_citation_grounding(response: str, sources: List[Dict[str, Any]]) -> Dict[str, Any]:
+        return _verify_citation_grounding(response, sources)
 
     @staticmethod
     def validate_and_sanitize_urls(response: str, context_text: str) -> Tuple[str, List[str]]:
-        """Remove URLs fabricadas que não constam literalmente no contexto recuperado."""
-        import re as _re
-
-        if not response:
-            return response, []
-
-        ctx_lower = (context_text or "").lower()
-        found_urls = _re.findall(r"https?://[^\s\)\]>\"']+", response)
-        fabricated: List[str] = []
-        sanitized = response
-        for raw_url in dict.fromkeys(found_urls):
-            clean_url = raw_url.rstrip(".,;:")
-            if clean_url.lower() not in ctx_lower:
-                fabricated.append(clean_url)
-                sanitized = _re.sub(
-                    r"\[([^\]]+)\]\(" + _re.escape(clean_url) + r"[^\)]*\)",
-                    r"\1",
-                    sanitized,
-                )
-                sanitized = sanitized.replace(clean_url, "[link removido: não consta nas fontes]")
-        return sanitized, fabricated
+        return _validate_and_sanitize_urls(response, context_text)
 
     @staticmethod
     def fuse_chunks_rrf(chunk_batches: List[List[ScoredChunk]], rrf_k: int = 60) -> List[ScoredChunk]:
-        """
-        Funde múltiplos conjuntos de resultados de busca vetorial usando Reciprocal Rank Fusion (RRF).
-        Padrão ouro de Information Retrieval (IR) para combinar consultas multi-query.
-        """
-        rrf_scores: Dict[str, float] = {}
-        chunk_map: Dict[str, ScoredChunk] = {}
-
-        for batch in chunk_batches:
-            for rank, sc in enumerate(batch, 1):
-                chunk_id = sc.chunk.id
-                chunk_map[chunk_id] = sc
-                # Fórmula RRF: score = sum(1 / (k + rank))
-                score_increment = 1.0 / (rrf_k + rank)
-                rrf_scores[chunk_id] = rrf_scores.get(chunk_id, 0.0) + score_increment
-
-        # Normaliza e atualiza os scores finais
-        if not rrf_scores:
-            return []
-
-        max_rrf = max(rrf_scores.values())
-        fused_chunks = []
-        for chunk_id, total_rrf in sorted(rrf_scores.items(), key=lambda item: item[1], reverse=True):
-            orig_sc = chunk_map[chunk_id]
-            normalized_score = min(1.0, max(orig_sc.score, total_rrf / max_rrf))
-            fused_chunks.append(ScoredChunk(chunk=orig_sc.chunk, score=normalized_score))
-
-        return fused_chunks
+        return _fuse_chunks_rrf(chunk_batches, rrf_k)
 
     def format_empirical_evidence(self, episodes: List[Any]) -> str:
-        """Formata evidências empíricas preservando commit, hardware e experimento."""
-        if not episodes:
-            return ""
-        blocks = ["=== EVIDÊNCIAS EMPÍRICAS & BENCHMARKS DE EXECUÇÃO ==="]
-        for ep in episodes:
-            hw = ep.environment_context.get("hardware") or ep.environment_context.get("gpu") or "N/A"
-            commit = f"#{ep.commit_hash[:7]}" if ep.commit_hash else "N/A"
-            exp = ep.experiment_id or ep.id
-            proj = ep.project_source or "Empirical"
-            blocks.append(
-                f"--- [Projeto: {proj} | Experimento: {exp} | Commit: {commit} | Hardware: {hw}] ---\n"
-                f"{ep.response.strip()}"
-            )
-        return "\n\n".join(blocks)
+        return _format_empirical_evidence(episodes)
 
     def build_qa_prompt(
-        self, 
-        query: str, 
+        self,
+        query: str,
         compressed_context: CompressedContext,
         deep_reasoning: bool = False,
-        empirical_context: Optional[str] = None
+        empirical_context: Optional[str] = None,
     ) -> Tuple[str, str]:
-        """Gera o System Instruction e o User Prompt com suporte a Chain-of-Thought e Síntese Bilateral."""
-        if deep_reasoning:
-            system_instruction = (
-                "Você é um Arquiteto Principal de Software e Pesquisador de IA especialista. "
-                "Sua missão é responder à dúvida do usuário com profundidade analítica, utilizando a metodologia "
-                "de Chain-of-Thought (Cadeia de Raciocínio) e Auto-Reflexão baseada nas fontes fornecidas.\n\n"
-                "REGRA DE RECUSA ECONÔMICA: Antes de escrever qualquer seção, verifique se o CONTEXTO TÉCNICO "
-                "contém evidências suficientes para responder à pergunta. Se NÃO houver evidências suficientes, "
-                "NÃO gere as 4 seções nem justificativas longas: responda apenas em 1 ou 2 frases curtas: "
-                "'Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta.' "
-                "(mencionando brevemente o tema dos trechos recuperados apenas se útil).\n\n"
-                "Estrutura da Resposta (somente quando houver evidências suficientes):\n"
-                "1. 🧠 Análise dos Fundamentos e Conceitos-Chave (Explicação teórica com base nas fontes)\n"
-                "2. ⚙️ Aplicação Prática, Padrões e Arquitetura (Exemplos de código e trade-offs)\n"
-                "3. 🔍 Auto-Validação e Integridade (Garantir que cada afirmação decorre estritamente dos trechos)\n"
-                "4. 📖 Citações Exatas (Nome do Livro, Capítulo e Página)"
-            )
-        else:
-            system_instruction = (
-                "Você é um consultor especialista em engenharia de software. "
-                "Responda de forma precisa e concisa estritamente com base no CONTEXTO fornecido. "
-                "Cite os livros e páginas utilizados. Nunca invente, complete ou presuma URLs/links; "
-                "só inclua links presentes literalmente no CONTEXTO. "
-                "Se o contexto não contiver a resposta, recuse em 1 ou 2 frases curtas."
-            )
-
-        context_blocks = [
-            f"=== FUNDAMENTAÇÃO TEÓRICA (Livros & Manuais) ===\n{compressed_context.raw_context_text}"
-        ]
-        if empirical_context:
-            context_blocks.append(empirical_context)
-            system_instruction += (
-                "\n\nATENÇÃO - SÍNTESE BILATERAL DE ENGENHARIA:\n"
-                "O contexto contém tanto FUNDAMENTAÇÃO TEÓRICA (livros) quanto EVIDÊNCIAS EMPÍRICAS (benchmarks reais medidos em projetos como HydraStream). "
-                "Confronte explicitamente a teoria com a prática: aponte se as medições confirmam, refutam ou impõem limites às recomendações dos livros."
-            )
-
-        full_context = "\n\n".join(context_blocks)
-        user_prompt = (
-            f"CONTEXTO TÉCNICO DISPONÍVEL:\n"
-            f"{full_context}\n\n"
-            f"PERGUNTA DO USUÁRIO:\n"
-            f"{query}\n\n"
-            f"RESPOSTA ESTRUTURADA:"
-        )
-
-        return system_instruction, user_prompt
+        return _build_qa_prompt(query, compressed_context, deep_reasoning, empirical_context)
 
     def build_cross_analysis_prompt(
-        self, 
-        project_description: str, 
+        self,
+        project_description: str,
         compressed_context: CompressedContext,
-        focus_topic: str = None
+        focus_topic: str = None,
     ) -> Tuple[str, str]:
-        """Gera o prompt especializado para Análise Cruzada de Projeto vs. Conceitos do Livro."""
-        system_instruction = (
-            "Você é um Arquiteto Principal de Software e Engenharia de Dados. "
-            "Sua missão é realizar uma Análise Cruzada Estratégica entre o PROJETO informado pelo usuário "
-            "e os CONCEITOS/MELHORES PRÁTICAS extraídos dos livros técnicos de referência.\n\n"
-            "Estruture sua resposta estritamente nas seguintes seções:\n"
-            "1. 🎯 Diagnóstico e Alinhamento Teórico (O que o livro diz sobre essa abordagem)\n"
-            "2. 🚀 Oportunidades Concretas de Otimização (O que e como melhorar no projeto)\n"
-            "3. ⚠️ Riscos Arquiteturais, Gargalos e Trade-offs (Alertas apontados na literatura)\n"
-            "4. 📋 Plano de Ação Recomendado (Passos prioritários)\n"
-            "5. 📖 Referências Citadas (Livros e capítulos referenciados)"
-        )
-
-        topic_instruction = f"Foco principal da análise: {focus_topic}\n" if focus_topic else ""
-
-        user_prompt = (
-            f"DESCRIÇÃO DO MEU PROJETO:\n"
-            f"{project_description}\n\n"
-            f"{topic_instruction}"
-            f"CONCEITOS E PRÁTICAS EXTRAÍDAS DOS LIVROS DE REFERÊNCIA:\n"
-            f"{compressed_context.raw_context_text}\n\n"
-            f"ANÁLISE ESTRATÉGICA CRUZADA:"
-        )
-
-        return system_instruction, user_prompt
+        return _build_cross_analysis_prompt(project_description, compressed_context, focus_topic)
