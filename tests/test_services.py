@@ -337,3 +337,26 @@ def test_lexical_port_contract_and_prometheus_metrics(monkeypatch):
     assert "reductor_metrics_scrape_duration_seconds" in resp.text
     assert "reductor_metrics_scrape_errors_total" in resp.text
 
+
+def test_embedding_lru_cache_isolation_and_ttl():
+    import time
+    from src.adapters.outbound.embeddings.embedding_adapters import EmbeddingLRUCache
+
+    cache = EmbeddingLRUCache(maxsize=2, ttl_s=0.1)
+    cache.set("ollama", "nomic-embed-text", "v1", "  Hello   World ", [1.0, 2.0])
+    assert cache.get("ollama", "nomic-embed-text", "v1", "hello world") == [1.0, 2.0]
+    # Isolamento por modelo/versão
+    assert cache.get("ollama", "other-model", "v1", "hello world") is None
+    assert cache.get("ollama", "nomic-embed-text", "v2", "hello world") is None
+
+    # Evicção LRU
+    cache.set("ollama", "nomic-embed-text", "v1", "q2", [2.0])
+    cache.set("ollama", "nomic-embed-text", "v1", "q3", [3.0])
+    st = cache.stats()
+    assert st["size"] == 2
+    assert st["evictions"] >= 1
+
+    # Expiração TTL
+    time.sleep(0.15)
+    assert cache.get("ollama", "nomic-embed-text", "v1", "q3") is None
+

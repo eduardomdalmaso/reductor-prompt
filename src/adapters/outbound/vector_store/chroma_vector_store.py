@@ -41,6 +41,7 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
             name=self.collection_name,
             metadata={"hnsw:space": "cosine"}
         )
+        self._cached_count: Optional[int] = None
 
     def _init_client(self):
         """Inicializa HttpClient (Podman) ou PersistentClient (Local)."""
@@ -97,6 +98,7 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
                 embeddings=embeddings[i:end],
                 metadatas=metadatas[i:end]
             )
+        self._cached_count = None
 
     def search(
         self, 
@@ -108,13 +110,24 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
         if book_title_filter:
             where_filter = {"book_title": {"$eq": book_title_filter}}
 
-        # Consulta no Chroma
-        results = self.collection.query(
-            query_embeddings=[query_embedding],
-            n_results=min(top_k, max(1, self.collection.count())),
-            where=where_filter,
-            include=["documents", "metadatas", "distances"]
-        )
+        n_results = top_k if self._cached_count is None else min(top_k, max(1, self._cached_count))
+        try:
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=n_results,
+                where=where_filter,
+                include=["documents", "metadatas", "distances"]
+            )
+        except Exception:
+            self._cached_count = self.collection.count()
+            if self._cached_count == 0:
+                return []
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=min(top_k, self._cached_count),
+                where=where_filter,
+                include=["documents", "metadatas", "distances"]
+            )
 
         scored_chunks: List[ScoredChunk] = []
         
@@ -180,6 +193,7 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
 
     def delete_book(self, book_id: str) -> None:
         self.collection.delete(where={"book_id": {"$eq": book_id}})
+        self._cached_count = None
 
     def list_indexed_books(self) -> List[Dict[str, Any]]:
         from src.adapters.outbound.vector_store.chroma_catalog_helper import list_indexed_books_from_storage

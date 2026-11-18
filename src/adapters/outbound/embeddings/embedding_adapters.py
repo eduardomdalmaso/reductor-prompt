@@ -1,5 +1,8 @@
 import logging
-from typing import List
+import threading
+import time
+from collections import OrderedDict
+from typing import Dict, List, Optional, Tuple
 import httpx
 try:
     import chromadb.utils.embedding_functions as ef
@@ -96,23 +99,95 @@ class ChromaDefaultEmbeddingAdapter(IEmbeddingPort):
             raise EmbeddingException("ChromaDefault", str(e))
 
 
+class EmbeddingLRUCache:
+    """Cache LRU thread-safe com TTL e isolamento por provedor, modelo e versão."""
+
+    def __init__(self, maxsize: int = 512, ttl_s: float = 1800.0):
+        self.maxsize = maxsize
+        self.ttl_s = ttl_s
+        self._lock = threading.Lock()
+        self._store: "OrderedDict[Tuple[str, str, str, str], Tuple[float, List[float]]]" = OrderedDict()
+        self.hits = 0
+        self.misses = 0
+        self.evictions = 0
+
+    @staticmethod
+    def _norm(text: str) -> str:
+        return " ".join(text.strip().lower().split())
+
+    def get(self, provider: str, model: str, version: str, text: str) -> Optional[List[float]]:
+        key = (provider, model, version, self._norm(text))
+        now = time.monotonic()
+        with self._lock:
+            item = self._store.get(key)
+            if item is None:
+                self.misses += 1
+                return None
+            exp, vec = item
+            if now > exp:
+                del self._store[key]
+                self.misses += 1
+                return None
+            self._store.move_to_end(key)
+            self.hits += 1
+            return list(vec)
+
+    def set(self, provider: str, model: str, version: str, text: str, vec: List[float]) -> None:
+        key = (provider, model, version, self._norm(text))
+        with self._lock:
+            self._store[key] = (time.monotonic() + self.ttl_s, list(vec))
+            self._store.move_to_end(key)
+            while len(self._store) > self.maxsize:
+                self._store.popitem(last=False)
+                self.evictions += 1
+
+    def invalidate(self) -> None:
+        with self._lock:
+            self._store.clear()
+
+    def stats(self) -> Dict[str, int]:
+        with self._lock:
+            return {"size": len(self._store), "hits": self.hits, "misses": self.misses, "evictions": self.evictions}
+
+
+_QUERY_EMBED_CACHE = EmbeddingLRUCache(maxsize=512, ttl_s=1800.0)
+
+
 class ResilientEmbeddingAdapter(IEmbeddingPort):
-    """Adaptador inteligente com fallback automático (Ollama -> Chroma Default)."""
+    """Adaptador inteligente com cache LRU+TTL e fallback automático (Ollama -> Chroma Default)."""
     
-    def __init__(self):
+    def __init__(self, cache: Optional[EmbeddingLRUCache] = None):
         self.ollama_adapter = OllamaEmbeddingAdapter()
         self.default_adapter = ChromaDefaultEmbeddingAdapter()
         self._active_provider = "ollama" if settings.EMBEDDING_PROVIDER == "ollama" else "default"
+        self._cache = cache or _QUERY_EMBED_CACHE
+
+    def _model_key(self) -> Tuple[str, str, str]:
+        if self._active_provider == "ollama":
+            return ("ollama", self.ollama_adapter.model, "v1")
+        return ("default", "all-MiniLM-L6-v2", "v1")
 
     def embed_text(self, text: str) -> List[float]:
+        prov, model, ver = self._model_key()
+        cached = self._cache.get(prov, model, ver, text)
+        if cached is not None:
+            return cached
+
         if self._active_provider == "ollama":
             try:
-                return self.ollama_adapter.embed_text(text)
+                vec = self.ollama_adapter.embed_text(text)
+                self._cache.set("ollama", self.ollama_adapter.model, "v1", text, vec)
+                return vec
             except Exception as e:
                 logger.warning(f"Ollama embedding indisponível ({e}). Alternando para Chroma Default.")
                 self._active_provider = "default"
-                return self.default_adapter.embed_text(text)
-        return self.default_adapter.embed_text(text)
+                vec = self.default_adapter.embed_text(text)
+                self._cache.set("default", "all-MiniLM-L6-v2", "v1", text, vec)
+                return vec
+
+        vec = self.default_adapter.embed_text(text)
+        self._cache.set("default", "all-MiniLM-L6-v2", "v1", text, vec)
+        return vec
 
     def embed_batch(self, texts: List[str]) -> List[List[float]]:
         if self._active_provider == "ollama":

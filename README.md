@@ -150,3 +150,24 @@ Inicie o servidor HTTP para integração com serviços externos ou frontends:
 python api.py
 # Documentação interativa Swagger: http://127.0.0.1:8000/docs
 ```
+
+---
+
+## 🏷️ Release v1.0.0 — Arquitetura Modular, Capacidade Operacional e Observabilidade
+
+### Arquitetura Modular (Ports & Adapters)
+- **Inbound (`src/adapters/inbound/`):** API REST FastAPI modularizada (`fastapi_app.py`, `dependencies.py`, `observability.py`, `routes/`), CLI e Servidor MCP (`reductor-books`).
+- **Application (`src/application/`):** casos de uso (`query_books_use_case.py`, `make_decision_use_case.py`, `ingest_evidence_use_case.py`), compressão com *Elbow Cutoff*, guarda de citações e recuperação híbrida (`hybrid_retrieval_helpers.py`).
+- **Domain (`src/domain/`):** entidades e contratos explícitos (`IVectorStorePort`, `ILexicalIndexPort`, `ILLMPort`, `IEmbeddingPort`, `IEpisodicMemoryPort`).
+- **Outbound (`src/adapters/outbound/`):** ChromaDB (`ChromaVectorStoreAdapter`), SQLite FTS5 (`BM25SqliteIndex`), Ollama/Gemini com fila controlada (`GenerationQueue`) e cache LRU+TTL de embeddings (`EmbeddingLRUCache`).
+
+### Capacidade Operacional Medida (RTX 5090 + `qwen2.5:14b`)
+- **Recuperação híbrida (`only_context=true`):** `p50 = 416.86 ms` / `p95 = 585.30 ms` em cache frio (`max = 2465.59 ms` no cold start); `p50 = 68.18 ms` / `p95 = 89.48 ms` em cache quente.
+- **Geração GPU (`only_context=false`):** capacidade sustentada de `~0.74–0.85 req/s` (`0.60–0.70 req/s` recomendado para dimensionamento conservador), protegida por `GenerationQueue` (`max_concurrent=1`, `max_pending=12`, rejeição `HTTP 429` em saturação).
+- **Observabilidade Prometheus (`GET /metrics`):** scrape baseado em snapshot em memória (`~0.1 ms`), expondo fila ativa/pendente, rejeições, timeouts, cancelamentos, RSS do processo e status de sincronização ChromaDB ↔ FTS5.
+- **Relatório completo & Histórico:** veja [docs/releases/v1.0.0-validation-report.md](docs/releases/v1.0.0-validation-report.md) e [CHANGELOG.md](CHANGELOG.md).
+
+### Limitações Conhecidas (`v1.0.0`)
+- O dataset rotulado da Rodada 18 (25 perguntas) avaliou relevância em nível de **livro** (`book_title`), não precisão em nível de chunk ou página específica.
+- O estresse concorrente do `EmbeddingLRUCache` (20 workers, 60 tarefas) foi executado em processo Python isolado; os benchmarks HTTP frio/quente rodaram sequencialmente.
+- O soak pós-modularização durou 5 minutos (`300.66s`); o soak de 60 minutos foi homologado antes da modularização (Rodada 13).

@@ -1,10 +1,19 @@
 import os
 import re
 import sqlite3
+import threading
 from typing import List, Optional
 
 from src.domain.entities.book import BookChunk, ScoredChunk
 from src.domain.ports.outbound import ILexicalIndexPort
+
+_FTS_STOPWORDS = frozenset({
+    "de", "da", "do", "dos", "das", "em", "no", "na", "nos", "nas", "para", "com",
+    "que", "uma", "um", "os", "as", "se", "por", "ou", "como", "qual", "quais",
+    "is", "are", "was", "were", "the", "of", "in", "to", "and", "or", "how",
+    "does", "do", "what", "why", "when", "where", "for", "on", "with", "an", "as",
+    "at", "by", "from", "this", "that", "it", "be", "can", "explain",
+})
 
 
 class BM25SqliteIndex(ILexicalIndexPort):
@@ -12,11 +21,21 @@ class BM25SqliteIndex(ILexicalIndexPort):
 
     def __init__(self, db_path: str = "./storage/bm25_fts5.db"):
         self.db_path = db_path
+        self._local = threading.local()
         os.makedirs(os.path.dirname(db_path) or ".", exist_ok=True)
         self._init_schema()
 
     def _connect(self) -> sqlite3.Connection:
-        return sqlite3.connect(self.db_path)
+        conn = getattr(self._local, "conn", None)
+        if conn is None:
+            conn = sqlite3.connect(self.db_path, timeout=10.0)
+            conn.execute("PRAGMA journal_mode = WAL;")
+            conn.execute("PRAGMA synchronous = NORMAL;")
+            conn.execute("PRAGMA cache_size = -64000;")
+            conn.execute("PRAGMA mmap_size = 268435456;")
+            conn.execute("PRAGMA temp_store = MEMORY;")
+            self._local.conn = conn
+        return conn
 
     def _init_schema(self) -> None:
         with self._connect() as conn:
@@ -122,8 +141,10 @@ class BM25SqliteIndex(ILexicalIndexPort):
         tokens = re.findall(r"[A-Za-z0-9_]{2,}", query)
         if not tokens:
             return ""
-        # Limita a 16 termos para consultas FTS5 rápidas e seguras
-        unique = list(dict.fromkeys(tokens))[:16]
+        filtered = [t for t in tokens if t.lower() not in _FTS_STOPWORDS]
+        chosen = filtered if filtered else tokens
+        # Limita a 12 termos informativos para consultas FTS5 rápidas e seguras
+        unique = list(dict.fromkeys(chosen))[:12]
         return " OR ".join(f'"{t}"' for t in unique)
 
     def search(
