@@ -1,0 +1,15 @@
+{
+  "soak_type": "scaled_120s_steady_plus_saturation_bursts (NOT 60m)",
+  "actual_duration_s": 126.7,
+  "cycles": 15,
+  "http_200": 85,
+  "http_429_controlled_saturation": 10,
+  "other_errors": 0,
+  "index_sync_end": {
+    "chroma_chunks": 72360,
+    "bm25_chunks": 72360,
+    "in_sync": true,
+    "delta": 0
+  },
+  "queue_drained": true
+}

@@ -1,9 +1,12 @@
 import asyncio
+import os
 import time
+import tracemalloc
+import uuid
 import secrets
 from typing import Optional, List, Dict, Any, Union
 from pydantic import BaseModel, Field
-from fastapi import FastAPI, HTTPException, status, Query, Security, Depends
+from fastapi import FastAPI, HTTPException, status, Query, Security, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, FileResponse
 from fastapi.security import APIKeyHeader, HTTPBearer, HTTPAuthorizationCredentials
@@ -33,6 +36,12 @@ from src.adapters.outbound.vector_store.chroma_vector_store import ChromaVectorS
 from src.adapters.outbound.memory.chroma_episodic_memory import ChromaEpisodicMemoryAdapter
 from src.adapters.outbound.storage.file_book_repository import FileBookRepositoryAdapter
 from src.adapters.outbound.llm.llm_adapters import LLMFactory
+from src.adapters.outbound.llm.generation_queue import (
+    GenerationQueue,
+    QueueSaturatedError,
+    QueueTimeoutError,
+    QueueCancelledError,
+)
 
 from src.application.use_cases.ingest_books_use_case import IngestBooksUseCase
 from src.application.use_cases.query_books_use_case import QueryBooksUseCase
@@ -42,6 +51,12 @@ from src.application.services.hardware_budget_advisor_service import hardware_ad
 from src.application.services.system_telemetry_service import telemetry_service
 from src.application.services.llm_manager_service import llm_manager_service
 from src.config.settings import settings
+
+generation_queue = GenerationQueue(
+    max_concurrent=int(os.getenv("LLM_MAX_CONCURRENT", "1")),
+    max_pending=int(os.getenv("LLM_MAX_PENDING_QUEUE", "12")),
+    acquire_timeout_s=float(os.getenv("LLM_QUEUE_TIMEOUT_S", "45.0")),
+)
 
 app = FastAPI(
     title="ReductorPrompt API",
@@ -152,7 +167,25 @@ def _check_and_reconcile_indexes() -> dict:
 
 @app.on_event("startup")
 async def startup_index_check():
+    if not tracemalloc.is_tracing():
+        tracemalloc.start()
     asyncio.create_task(asyncio.to_thread(_check_and_reconcile_indexes))
+
+
+def _get_process_memory_mb() -> Dict[str, float]:
+    rss_mb = 0.0
+    try:
+        import psutil
+        rss_mb = round(psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024), 2)
+    except Exception:
+        pass
+    cur_heap, peak_heap = tracemalloc.get_traced_memory() if tracemalloc.is_tracing() else (0, 0)
+    return {
+        "pid": os.getpid(),
+        "rss_mb": rss_mb,
+        "heap_current_mb": round(cur_heap / (1024 * 1024), 2),
+        "heap_peak_mb": round(peak_heap / (1024 * 1024), 2),
+    }
 
 
 @app.get("/health")
@@ -173,6 +206,8 @@ async def health():
         "llm_enabled": llm_manager_service.llm_enabled,
         "active_provider": llm_manager_service.active_provider,
         "index_sync": idx_sync,
+        "generation_queue": generation_queue.get_metrics(),
+        "process_memory": _get_process_memory_mb(),
     }
 
 
@@ -396,39 +431,59 @@ async def make_decision_endpoint(
 # Rotas de Consulta & RAG com Telemetria (Assíncrona)
 # ==========================================
 @app.post("/api/v1/query", response_model=QueryResponseDTO)
-async def query_knowledge(req: QueryRequestDTO):
+async def query_knowledge(req: QueryRequestDTO, raw_request: Request):
     """Realiza consulta semântica cirúrgica aplicando compressão de tokens e inferência sem travar o loop."""
     start_time = time.time()
-    telemetry_service.log("INFO", "QueryEngine", f"Recebida consulta: '{req.query[:60]}...'")
+    request_id = str(uuid.uuid4())[:8]
+    telemetry_service.log("INFO", "QueryEngine", f"[{request_id}] Consulta: '{req.query[:60]}...'")
 
     try:
+        import threading
         effective_provider = req.llm_provider or llm_manager_service.active_provider
         effective_only_context = req.only_context or not llm_manager_service.llm_enabled
+        cancel_event = threading.Event()
 
         def _execute():
             embedding_port = ResilientEmbeddingAdapter()
             vector_store = ChromaVectorStoreAdapter()
             memory_port = ChromaEpisodicMemoryAdapter()
             llm_port = LLMFactory.create(effective_provider)
-            
             use_case = QueryBooksUseCase(
                 embedding_port=embedding_port,
                 vector_store=vector_store,
                 llm_port=llm_port,
                 memory_port=memory_port
             )
-            
-            return use_case.execute(
-                query=req.query,
-                book_filter=req.book_filter,
-                max_tokens=req.max_tokens,
-                only_context=effective_only_context,
-                use_brain=True,
-                auto_learn=True,
-                profile=req.profile
-            )
 
-        res = await asyncio.to_thread(_execute)
+            def _run_uc():
+                return use_case.execute(
+                    query=req.query,
+                    book_filter=req.book_filter,
+                    max_tokens=req.max_tokens,
+                    only_context=effective_only_context,
+                    use_brain=True,
+                    auto_learn=True,
+                    profile=req.profile
+                )
+
+            if effective_only_context:
+                return _run_uc()
+            with generation_queue.slot(is_cancelled=cancel_event.is_set):
+                return _run_uc()
+
+        async def _watch_disconnect():
+            while not cancel_event.is_set():
+                if await raw_request.is_disconnected():
+                    cancel_event.set()
+                    break
+                await asyncio.sleep(0.1)
+
+        watcher = asyncio.create_task(_watch_disconnect())
+        try:
+            res = await asyncio.to_thread(_execute)
+        finally:
+            cancel_event.set()
+            watcher.cancel()
         
         duration_ms = (time.time() - start_time) * 1000
         telemetry_service.record_query_metric(
@@ -450,6 +505,15 @@ async def query_knowledge(req: QueryRequestDTO):
             reduction_percentage=res["reduction_percentage"],
             llm_provider="context-only" if effective_only_context else effective_provider
         )
+    except QueueCancelledError as e:
+        telemetry_service.log("INFO", "GenerationQueue", f"[{request_id}] {e}")
+        raise HTTPException(status_code=499, detail=str(e))
+    except QueueSaturatedError as e:
+        telemetry_service.log("WARNING", "GenerationQueue", str(e))
+        raise HTTPException(status_code=429, detail=str(e))
+    except QueueTimeoutError as e:
+        telemetry_service.log("WARNING", "GenerationQueue", str(e))
+        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         telemetry_service.log("ERROR", "QueryEngine", f"Erro ao processar consulta: {str(e)}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

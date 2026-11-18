@@ -1,0 +1,60 @@
+{
+  "pid": 25032,
+  "rss_start_mb": 434.16,
+  "rss_peak_mb": 505.37,
+  "rss_end_after_drain_mb": 505.37,
+  "rss_delta_mb": 71.21,
+  "heap_current_end_mb": 7.16,
+  "heap_peak_mb": 7.45,
+  "samples": [
+    {
+      "phase": "baseline_before_soak",
+      "t_s": 0.0,
+      "rss_mb": 434.16,
+      "heap_current_mb": 2.29,
+      "heap_peak_mb": 2.54
+    },
+    {
+      "phase": "post_burst_3",
+      "t_s": 24.9,
+      "rss_mb": 0.0,
+      "heap_current_mb": 4.25,
+      "heap_peak_mb": 4.64
+    },
+    {
+      "phase": "post_burst_6",
+      "t_s": 47.6,
+      "rss_mb": 0.0,
+      "heap_current_mb": 5.66,
+      "heap_peak_mb": 6.04
+    },
+    {
+      "phase": "post_burst_9",
+      "t_s": 70.5,
+      "rss_mb": 0.0,
+      "heap_current_mb": 4.17,
+      "heap_peak_mb": 6.65
+    },
+    {
+      "phase": "post_burst_12",
+      "t_s": 96.0,
+      "rss_mb": 0.0,
+      "heap_current_mb": 5.6,
+      "heap_peak_mb": 6.65
+    },
+    {
+      "phase": "post_burst_15",
+      "t_s": 125.1,
+      "rss_mb": 0.0,
+      "heap_current_mb": 7.09,
+      "heap_peak_mb": 7.45
+    },
+    {
+      "phase": "after_drain",
+      "t_s": 126.5,
+      "rss_mb": 505.37,
+      "heap_current_mb": 7.16,
+      "heap_peak_mb": 7.45
+    }
+  ]
+}

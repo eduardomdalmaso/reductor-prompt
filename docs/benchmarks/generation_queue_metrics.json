@@ -1,0 +1,26 @@
+{
+  "status": "ok",
+  "service": "ReductorPrompt",
+  "version": "2.0.0",
+  "llm_enabled": true,
+  "active_provider": "ollama",
+  "index_sync": {
+    "chroma_chunks": 72360,
+    "bm25_chunks": 72360,
+    "in_sync": true,
+    "delta": 0
+  },
+  "generation_queue": {
+    "max_concurrent": 1,
+    "max_pending": 12,
+    "acquire_timeout_s": 45.0,
+    "active_generations": 0,
+    "pending_in_queue": 0,
+    "total_acquired": 57,
+    "total_rejected_saturation": 2,
+    "total_timeouts": 0,
+    "avg_queue_wait_ms": 2779.05,
+    "max_queue_wait_ms": 14807.21,
+    "last_queue_wait_ms": 14807.21
+  }
+}

@@ -1,0 +1,483 @@
+{
+  "summary": {
+    "n_total": 25,
+    "http_200": 25,
+    "avg_latency_ms": 1232.9,
+    "avg_tokens_used": 706.8,
+    "expected_book_hit_15q": "13/15 (86.7%)",
+    "refusal_10q": "10/10 (100.0%)",
+    "fabricated_example_com_urls": 0
+  },
+  "runs": [
+    {
+      "id": "Q002_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1157.27,
+      "tokens_used": 1141,
+      "sources_top3": [
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ]
+      ],
+      "response_preview": "O contexto fornecido não contém informações sobre a criação de um documento JSON no banco de dados Redis para um exemplo de tutorial JSON. Portanto, não posso fornecer detalhes específicos sobre essa operação com base no"
+    },
+    {
+      "id": "Q003_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1567.92,
+      "tokens_used": 1374,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          57
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ]
+      ],
+      "response_preview": "The command that can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, is `HINCRBY`. This command allows you to increment the integer va"
+    },
+    {
+      "id": "Q005_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1647.8,
+      "tokens_used": 304,
+      "sources_top3": [
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          738
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          742
+        ]
+      ],
+      "response_preview": "In Python, the data structure that is most similar to Redis hashes is a dictionary (`dict`). A Redis hash is a collection of field-value pairs, which maps directly to the key-value pairs in a Python dictionary. For examp"
+    },
+    {
+      "id": "Q006_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1393.08,
+      "tokens_used": 49,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          103
+        ]
+      ],
+      "response_preview": "The JSON array used in the ReJSONBenchmark test located at [/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json) has a size of 1.4 kB. This informatio"
+    },
+    {
+      "id": "Q008_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 2643.3,
+      "tokens_used": 1238,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          111
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ]
+      ],
+      "response_preview": "The file names of the charts that compare the rate and latency of Lua pass operations with different JSON files are as follows:\n\n- For `pass-100.json`:\n  - Rate: `bench_lua_pass_100.png`\n  - Average Latency: `bench_lua_p"
+    },
+    {
+      "id": "Q009_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 869.43,
+      "tokens_used": 66,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ]
+      ],
+      "response_preview": "Redis sorted sets are collections of unique strings where each member is associated with a floating-point score. The order of the members in the set is determined by their scores, from the lowest to the highest. For more"
+    },
+    {
+      "id": "Q011_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 37.84,
+      "tokens_used": 291,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          11
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          2433
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          11
+        ]
+      ],
+      "response_preview": "Strings in a Redis list are sorted by insertion order. This means that the order of the elements is maintained based on the sequence in which they were added to the list.\n\nReferência:\n- [Redis Core Architecture And Data "
+    },
+    {
+      "id": "Q012_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1490.02,
+      "tokens_used": 67,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          64
+        ]
+      ],
+      "response_preview": "The timestamp returned when using the HEXPIRETIME command on the field \"air_quality\" for the key \"sensor:sensor1\" is `4102444800`. This timestamp indicates the expiration time set for the \"air_quality\" field in the hash "
+    },
+    {
+      "id": "Q014_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 918.47,
+      "tokens_used": 78,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          24
+        ]
+      ],
+      "response_preview": "To extend Redis features beyond the included data types, you can use one of the following options:\n\n1. Write your own custom server-side functions in Lua.\n2. Write your own Redis module using the modules API or explore c"
+    },
+    {
+      "id": "Q015_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1203.38,
+      "tokens_used": 518,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          22
+        ],
+        [
+          "Learningsystemsthinking",
+          127
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          22
+        ]
+      ],
+      "response_preview": "The purpose of Redis time series structures is to store and query timestamped data points efficiently. This allows for effective management and analysis of time-based data. For more information, refer to the Redis time s"
+    },
+    {
+      "id": "Q017_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1731.21,
+      "tokens_used": 351,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          29
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          29
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          36
+        ]
+      ],
+      "response_preview": "The `ARNEXT` command in Redis is used to inspect where the next insert would land in the context of sequential insertion using the `ARINSERT` command. After each call to `ARINSERT`, the internal cursor advances automatic"
+    },
+    {
+      "id": "Q018_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1125.63,
+      "tokens_used": 71,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          75
+        ]
+      ],
+      "response_preview": "To install Redis Open Source and enable the Redis JSON data type, follow the instructions provided in the documentation:\n\n- For Redis Open Source installation: [Install Redis Open Source](/content/operate/oss_and_stack/i"
+    },
+    {
+      "id": "Q020_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1719.69,
+      "tokens_used": 1463,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          109
+        ],
+        [
+          "Introducingpython3Rdedition",
+          21
+        ],
+        [
+          "Introducingpython3Rdedition",
+          437
+        ]
+      ],
+      "response_preview": "According to the provided context from the book \"Redis Core Architecture And Data Types\" (Section 109, Page 109), while storing raw JSON in Redis performs best, a more meaningful comparison for processing and storing inc"
+    },
+    {
+      "id": "Q021_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 871.61,
+      "tokens_used": 159,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          23
+        ]
+      ],
+      "response_preview": "Redis vector sets support the [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) (hierarchical navigable small world) algorithm for storing and querying vectors based on cosine similarity. This algo"
+    },
+    {
+      "id": "Q023_factual",
+      "is_answerable": true,
+      "status": 200,
+      "latency_ms": 1181.33,
+      "tokens_used": 113,
+      "sources_top3": [
+        [
+          "Redis Core Architecture And Data Types",
+          203
+        ]
+      ],
+      "response_preview": "Redis Bloom filters serve as an alternative to traditional sets for membership checks on large datasets or streaming data when memory usage is a concern and perfect precision is not required. They provide a space-efficie"
+    },
+    {
+      "id": "Q091_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1095.87,
+      "tokens_used": 1080,
+      "sources_top3": [
+        [
+          "Architecturepatternswithpython",
+          6
+        ],
+        [
+          "Architecturepatternswithpython",
+          8
+        ]
+      ],
+      "response_preview": "The provided context does not contain any information about the secret API password or Slack channel used by the Komtek K-Monitor team in 2026. Please provide the relevant details or context for a precise answer."
+    },
+    {
+      "id": "Q092_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1118.07,
+      "tokens_used": 1162,
+      "sources_top3": [
+        [
+          "Learningapistyles",
+          35
+        ],
+        [
+          "Learningapistyles",
+          166
+        ],
+        [
+          "Learningapistyles",
+          163
+        ]
+      ],
+      "response_preview": "O contexto técnico fornecido não contém informações sobre o protocolo HydraX-999 ou qualquer detalhe sobre seu cabeçalho de pacote binário. Portanto, não é possível fornecer uma explicação baseada no material fornecido."
+    },
+    {
+      "id": "Q093_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1254.19,
+      "tokens_used": 1199,
+      "sources_top3": [
+        [
+          "Causalinferenceinpython",
+          100
+        ],
+        [
+          "Causalinferenceinpython",
+          101
+        ],
+        [
+          "Causalinferenceinpython",
+          123
+        ]
+      ],
+      "response_preview": "O contexto técnico fornecido não contém informações sobre o salário anual do CTO da Acme Robotics Corp em 2025. Recuso-me a responder com informações presumidas ou inventadas."
+    },
+    {
+      "id": "Q094_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 974.48,
+      "tokens_used": 874,
+      "sources_top3": [
+        [
+          "Softwarearchitectelevator",
+          94
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          404
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          453
+        ]
+      ],
+      "response_preview": "O contexto fornecido não contém informações específicas sobre o internal pricing formula do StarlightDB 2028 cloud tier. Recuso-me a fornecer uma resposta que não está baseada no contexto dado."
+    },
+    {
+      "id": "Q095_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1392.13,
+      "tokens_used": 1297,
+      "sources_top3": [
+        [
+          "Php 8 4 Complete Reference And Migration Manual",
+          11
+        ],
+        [
+          "Architecturepatternswithpython",
+          137
+        ]
+      ],
+      "response_preview": "O contexto fornecido não contém informações sobre um kernel patch do PostgreSQL 19.4 que corrigiu a vulnerabilidade CVE-2029-88123 em Solaris SPARC. Portanto, não posso fornecer uma resposta precisa com base no material "
+    },
+    {
+      "id": "Q096_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1060.23,
+      "tokens_used": 717,
+      "sources_top3": [
+        [
+          "Buildinggreensoftware",
+          132
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          392
+        ]
+      ],
+      "response_preview": "The provided context does not contain the Wi-Fi SSID and WPA3 passphrase for the Komtek Data Center floor 3."
+    },
+    {
+      "id": "Q097_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1181.65,
+      "tokens_used": 1093,
+      "sources_top3": [
+        [
+          "Facilitatingsoftwarearchitecture",
+          91
+        ],
+        [
+          "Pythoninanutshell4Thedition",
+          232
+        ]
+      ],
+      "response_preview": "The provided context does not contain information about Chapter 14 of the unreleased book 'Quantum COBOL for Serverless GPUs' (2029). Therefore, I cannot summarize it based on the given information."
+    },
+    {
+      "id": "Q098_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 814.54,
+      "tokens_used": 396,
+      "sources_top3": [
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          6
+        ],
+        [
+          "Elasticsearch Text Analysis Mapping And Plugins",
+          47
+        ]
+      ],
+      "response_preview": "The provided context does not contain any information about the blood pressure measurements of the author of \"Building Multi-Tenant SaaS Architectures\" or any other author. Therefore, I cannot answer this question based "
+    },
+    {
+      "id": "Q099_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1234.7,
+      "tokens_used": 1140,
+      "sources_top3": [
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          293
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          294
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          295
+        ]
+      ],
+      "response_preview": "O contexto fornecido não contém informações sobre o ReductorPrompt CI runner ou sobre a impressão digital de uma chave privada RSA-4096. Portanto, não é possível fornecer a resposta solicitada com base nas informações di"
+    },
+    {
+      "id": "Q100_no_evidence",
+      "is_answerable": false,
+      "status": 200,
+      "latency_ms": 1138.18,
+      "tokens_used": 1428,
+      "sources_top3": [
+        [
+          "Buildingevent Drivenmicroservices2Ndedition",
+          226
+        ],
+        [
+          "Buildingevent Drivenmicroservices2Ndedition",
+          476
+        ],
+        [
+          "Causalinferenceinpython",
+          194
+        ]
+      ],
+      "response_preview": "O contexto fornecido não contém informações sobre os GPS coordenados do cofre subterrâneo da Acme Bank. Recuso-me a fornecer uma resposta que não está baseada no contexto dado."
+    }
+  ]
+}

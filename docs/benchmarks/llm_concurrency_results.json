@@ -1,0 +1,70 @@
+{
+  "vram_before_mb": 12188,
+  "tiers": [
+    {
+      "concurrency": 1,
+      "http_200": 1,
+      "http_429_saturated": 0,
+      "http_503_timeout": 0,
+      "other_errors": 0,
+      "total_wall_s": 1.66,
+      "completed_rps": 0.6,
+      "p50_ms": 1656.71,
+      "p95_ms": 1656.71,
+      "p99_ms": 1656.71,
+      "vram_used_mb": 12208
+    },
+    {
+      "concurrency": 2,
+      "http_200": 2,
+      "http_429_saturated": 0,
+      "http_503_timeout": 0,
+      "other_errors": 0,
+      "total_wall_s": 3.06,
+      "completed_rps": 0.65,
+      "p50_ms": 1409.78,
+      "p95_ms": 3061.18,
+      "p99_ms": 3061.18,
+      "vram_used_mb": 12203
+    },
+    {
+      "concurrency": 5,
+      "http_200": 5,
+      "http_429_saturated": 0,
+      "http_503_timeout": 0,
+      "other_errors": 0,
+      "total_wall_s": 6.0,
+      "completed_rps": 0.83,
+      "p50_ms": 3974.53,
+      "p95_ms": 5998.06,
+      "p99_ms": 5998.06,
+      "vram_used_mb": 12191
+    },
+    {
+      "concurrency": 10,
+      "http_200": 10,
+      "http_429_saturated": 0,
+      "http_503_timeout": 0,
+      "other_errors": 0,
+      "total_wall_s": 11.58,
+      "completed_rps": 0.86,
+      "p50_ms": 5761.47,
+      "p95_ms": 11574.07,
+      "p99_ms": 11574.07,
+      "vram_used_mb": 12194
+    },
+    {
+      "concurrency": 15,
+      "http_200": 13,
+      "http_429_saturated": 2,
+      "http_503_timeout": 0,
+      "other_errors": 0,
+      "total_wall_s": 16.68,
+      "completed_rps": 0.78,
+      "p50_ms": 7853.45,
+      "p95_ms": 15332.31,
+      "p99_ms": 16676.6,
+      "vram_used_mb": 12190
+    }
+  ]
+}

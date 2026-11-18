@@ -243,3 +243,75 @@ def test_url_sanitization_and_default_economy_profile():
     assert "https://fake-url.local/test" not in cleaned
     assert len(blocked) == 2
 
+
+def test_generation_queue_limits_and_saturation():
+    import threading
+    import time
+    import pytest
+    from src.adapters.outbound.llm.generation_queue import GenerationQueue, QueueSaturatedError
+
+    q = GenerationQueue(max_concurrent=1, max_pending=1, acquire_timeout_s=2.0)
+    entered = threading.Event()
+    release = threading.Event()
+
+    def worker():
+        with q.slot():
+            entered.set()
+            release.wait(timeout=2.0)
+
+    t1 = threading.Thread(target=worker)
+    t2 = threading.Thread(target=worker)
+    t1.start()
+    entered.wait(timeout=1.0)
+    t2.start()
+    time.sleep(0.05)
+
+    with pytest.raises(QueueSaturatedError):
+        with q.slot():
+            pass
+
+    release.set()
+    t1.join(timeout=2.0)
+    t2.join(timeout=2.0)
+    m = q.get_metrics()
+    assert m["total_acquired"] == 2
+    assert m["generation_rejected_total"] == 1
+    assert m["generation_active"] == 0
+
+
+def test_generation_queue_cooperative_cancellation():
+    import threading
+    import time
+    import pytest
+    from src.adapters.outbound.llm.generation_queue import GenerationQueue, QueueCancelledError
+
+    q = GenerationQueue(max_concurrent=1, max_pending=4, acquire_timeout_s=5.0)
+    entered = threading.Event()
+    release = threading.Event()
+    cancel_flag = threading.Event()
+
+    def active_worker():
+        with q.slot():
+            entered.set()
+            release.wait(timeout=2.0)
+
+    t_active = threading.Thread(target=active_worker)
+    t_active.start()
+    entered.wait(timeout=1.0)
+
+    # Dispara cancelamento enquanto a segunda requisição aguarda na fila
+    threading.Timer(0.15, cancel_flag.set).start()
+    with pytest.raises(QueueCancelledError):
+        with q.slot(is_cancelled=cancel_flag.is_set):
+            pass
+
+    # Garante que a geração ativa manteve o slot até liberar
+    assert q.get_metrics()["generation_active"] == 1
+    release.set()
+    t_active.join(timeout=2.0)
+
+    m = q.get_metrics()
+    assert m["generation_cancelled_total"] == 1
+    assert m["generation_active"] == 0
+    assert m["generation_pending"] == 0
+

@@ -1,0 +1,21 @@
+{
+  "max_concurrent": 1,
+  "max_pending": 12,
+  "acquire_timeout_s": 45.0,
+  "generation_active": 0,
+  "generation_pending": 0,
+  "total_acquired": 87,
+  "generation_rejected_total": 10,
+  "generation_timeout_total": 0,
+  "generation_cancelled_total": 3,
+  "generation_queue_wait_seconds": {
+    "avg": 6.6678,
+    "max": 19.7575,
+    "last": 19.7575
+  },
+  "generation_duration_seconds": {
+    "avg": 1.4938,
+    "max": 6.5452,
+    "last": 1.4171
+  }
+}
