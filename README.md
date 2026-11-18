@@ -26,9 +26,9 @@ O ReductorPrompt é agnóstico a hardware: opera desde instâncias de entrada (8
 
 ## 🛡️ Isolamento e Arquitetura do Sistema
 
-1. **Camada de Aplicação (Python)**: Isolada via ambiente virtual (`conda` ou `venv`), com verificação de tipagem estática e sem caminhos acoplados ao sistema operacional.
-2. **Vector Store (ChromaDB)**: Opera prioritariamente em container Podman/Docker (`127.0.0.1:8001`), com persistência em `./storage/chroma` e fallback automático para modo embutido local.
-3. **CLI Nativo em Go (`reductor`)**: Binário compilado em `bin/reductor` para inicialização instantânea (`< 3ms`) no terminal diário, comunicando-se com o daemon via HTTP/REST.
+1. **Camada de Aplicação (Python)**: Isolada via ambiente Python (`conda`/`miniconda`), com contratos hexagonais (`Ports & Adapters`) e módulos decompostos.
+2. **Vector Store & Índice Léxico**: ChromaDB (`./storage/chroma` local ou Podman `127.0.0.1:8001`) sincronizado com SQLite FTS5 (`./storage/bm25_fts5.db` via `ILexicalIndexPort`), totalizando **186 livros / 72.360 chunks** na baseline `v1.0.0`.
+3. **API & CLI**: FastAPI gerenciado por PM2 (`127.0.0.1:8002`) com fila controlada (`GenerationQueue`), `GET /metrics` Prometheus e CLI Python/Go.
 
 ---
 

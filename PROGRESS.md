@@ -4,17 +4,17 @@
 
 ---
 
-## 📌 Status Atual do Sistema
+## 📌 Status Atual do Sistema (Release `v1.0.0`)
 
 | Componente | Status | Detalhes |
 | :--- | :--- | :--- |
-| **Runtime & Ambiente** | 🟢 Operacional | Python 3.11 (`reductor-prompt` Conda env) |
-| **Vector Store (ChromaDB)** | 🟢 Operacional | Podman (`reductor_chromadb:8001`) - 186 livros / 36.976 chunks |
-| **Ollama Local (GPU)** | 🟢 Operacional | Podman (`reductor_ollama:11434`) - RTX 5090 (PTX JIT) \| `qwen2.5:7b` + `nomic-embed-text` |
-| **Segurança & Anti-SSRF** | 🟢 100% Coberto | Validação de IP público, chaves em headers, CORS restrito, Auth Bearer/X-API-Key |
-| **Motor de Decisão & Evidências** | 🟢 Operacional | Orquestração bilateral determinística, veredictos rastreáveis e inteligência analítica |
-| **Suíte de Testes** | 🟢 64/64 Passando | Domínio, persistência ChromaDB, recuperação bilateral, engine de decisão, APIs, MCP e matriz adversarial |
-| **Harness Health Check** | 🟢 Operacional | Executável via `python scripts/harness_check.py` (0.8s) |
+| **Runtime & Ambiente** | 🟢 Operacional | Python 3.14.9 (`miniconda3`), FastAPI via PM2 (`reductor-api` na porta `8002`) |
+| **Vector Store & Léxico** | 🟢 Sincronizado | ChromaDB local (`./storage/chroma`) + SQLite FTS5 (`./storage/bm25_fts5.db`) — **186 livros / 72.360 chunks** (`delta=0`) |
+| **Ollama Local (GPU)** | 🟢 Operacional | Nativo (`127.0.0.1:11434`) - RTX 5090 (32 GB VRAM) \| `qwen2.5:14b` + `nomic-embed-text` |
+| **Fila & Cancelamento** | 🟢 Operacional | `GenerationQueue` (`max_concurrent=1`, `max_pending=12`, timeout `45s`, `HTTP 429` + cancelamento cooperativo) |
+| **Observabilidade & Cache** | 🟢 Operacional | `GET /metrics` (Prometheus snapshot `~0.1ms`) + `EmbeddingLRUCache` (`maxsize=512`, `ttl=1800s`) |
+| **Suíte de Testes** | 🟢 78/78 Passando | `pytest -q` cobrindo domínio, contratos (`ILexicalIndexPort`), cache, fila, segurança e APIs |
+| **Release & Relatório** | 🟢 Congelado (`v1.0.0`) | [CHANGELOG.md](CHANGELOG.md) e [docs/releases/v1.0.0-validation-report.md](docs/releases/v1.0.0-validation-report.md) |
 
 ---
 
