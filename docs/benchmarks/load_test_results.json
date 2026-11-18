@@ -1,0 +1,52 @@
+{
+  "mode": "API + Retrieval (only_context=true, default economy profile)",
+  "tiers": [
+    {
+      "concurrency": 10,
+      "http_200": 10,
+      "errors": 0,
+      "total_wall_s": 2.92,
+      "throughput_rps": 3.42,
+      "p50_ms": 2756.83,
+      "p95_ms": 2920.02,
+      "p99_ms": 2920.02
+    },
+    {
+      "concurrency": 25,
+      "http_200": 25,
+      "errors": 0,
+      "total_wall_s": 1.12,
+      "throughput_rps": 22.37,
+      "p50_ms": 668.81,
+      "p95_ms": 1105.21,
+      "p99_ms": 1105.81
+    },
+    {
+      "concurrency": 50,
+      "http_200": 50,
+      "errors": 0,
+      "total_wall_s": 2.05,
+      "throughput_rps": 24.44,
+      "p50_ms": 1103.12,
+      "p95_ms": 1367.2,
+      "p99_ms": 1416.44
+    },
+    {
+      "concurrency": 100,
+      "http_200": 100,
+      "errors": 0,
+      "total_wall_s": 4.11,
+      "throughput_rps": 24.32,
+      "p50_ms": 1293.44,
+      "p95_ms": 1374.86,
+      "p99_ms": 1412.45
+    }
+  ],
+  "concurrent_mutation_errors": 0,
+  "post_mutation_index_sync": {
+    "chroma_chunks": 72360,
+    "bm25_chunks": 72360,
+    "in_sync": true,
+    "delta": 0
+  }
+}

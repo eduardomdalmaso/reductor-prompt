@@ -226,3 +226,20 @@ def test_hybrid_bm25_query_use_case_profiles(tmp_path):
     res_leg = uc.execute("SqlAlchemyRepository", use_brain=False, auto_learn=False, profile="legacy")
     assert not any(s.get("chunk_id") == "c_bm25" for s in res_leg["sources"])
 
+
+def test_url_sanitization_and_default_economy_profile():
+    from src.application.dtos.query_dtos import QueryRequestDTO
+
+    assert QueryRequestDTO(query="test").profile == "economy"
+
+    ctx = "Veja a doc oficial em https://redis.io/docs/latest/develop/data-types/sorted-sets/."
+    resp = (
+        "Use [Redis Docs](https://redis.io/docs/latest/develop/data-types/sorted-sets/) "
+        "e evite [Fake](https://example.com/redis#hincrby) ou https://fake-url.local/test."
+    )
+    cleaned, blocked = PromptCompressorService.validate_and_sanitize_urls(resp, ctx)
+    assert "https://redis.io/docs/latest/develop/data-types/sorted-sets/" in cleaned
+    assert "https://example.com/redis#hincrby" not in cleaned
+    assert "https://fake-url.local/test" not in cleaned
+    assert len(blocked) == 2
+

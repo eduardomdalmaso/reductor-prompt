@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "id": "Q009_factual",
+      "profile": "economy",
+      "ascending_semantic_ok": true,
+      "inverted_error_detected": false,
+      "sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ]
+      ],
+      "response": "Redis sorted sets are collections of unique strings where each member is associated with a floating-point score. The order of the members in the set is determined by their scores, from the lowest to the highest. For more information, see [Overview of Redis sorted sets](/content/develop/data-types/sorted-sets.md)."
+    },
+    {
+      "id": "Q009_factual",
+      "profile": "fidelity",
+      "ascending_semantic_ok": true,
+      "inverted_error_detected": false,
+      "sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ]
+      ],
+      "response": "Redis sorted sets are collections of unique strings (members) that maintain order based on each member's associated score. Members with the same score are ordered lexicographically. This data structure is implemented using a dual-ported data structure containing both a skip list and a hash table, allowing for efficient O(log(N)) operations for insertions and retrievals in sorted order. For more information, see:\n\n* [Overview of Redis sorted sets](/content/develop/data-types/sorted-sets.md)\n* [Redis sorted set command reference](/commands/?group=sorted-set)"
+    },
+    {
+      "id": "ZRANGE_ZREVRANGE",
+      "profile": "economy",
+      "ascending_semantic_ok": true,
+      "inverted_error_detected": false,
+      "sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ]
+      ],
+      "response": "In Redis sorted sets, the commands `ZRANGE` and `ZREVRANGE` are used to retrieve members in ascending and descending order, respectively. Specifically:\n\n- `ZRANGE` returns the elements in the sorted set in order of their scores, from the lowest score to the highest score.\n- `ZREVRANGE` returns the elements in the sorted set in reverse order of their scores, from the highest score to the lowest score.\n\nBoth commands do not require any sorting to be performed since the elements in a sorted set are inherently stored in order. The commands simply traverse the internal data structure in the specified order.\n\nFor more details, refer to the Redis documentation on sorted sets:\n- [ZRANGE](/content/commands/zrange.md)\n- [ZREVRANGE](/content/commands/zrevrange.md)"
+    },
+    {
+      "id": "ZRANGE_ZREVRANGE",
+      "profile": "fidelity",
+      "ascending_semantic_ok": true,
+      "inverted_error_detected": false,
+      "sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          662
+        ]
+      ],
+      "response": "Em Redis sorted sets, a diferença na ordenação entre `ZRANGE` e `ZREVRANGE` é que:\n\n- `ZRANGE` retorna os elementos em ordem crescente (do menor para o maior score).\n- `ZREVRANGE` retorna os elementos em ordem decrescente (do maior para o menor score).\n\nAmbas as funções retornam os elementos já ordenados, pois os elementos em um sorted set são armazenados em ordem de score e, em caso de empate, em ordem lexicográfica. Portanto, não há necessidade de ordenação adicional quando essas funções são chamadas.\n\nReferência: Livro: Redis Core Architecture And Data Types (Seção 205, Pág 205)"
+    }
+  ]
+}

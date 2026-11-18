@@ -261,6 +261,30 @@ class PromptCompressorService:
         }
 
     @staticmethod
+    def validate_and_sanitize_urls(response: str, context_text: str) -> Tuple[str, List[str]]:
+        """Remove URLs fabricadas que não constam literalmente no contexto recuperado."""
+        import re as _re
+
+        if not response:
+            return response, []
+
+        ctx_lower = (context_text or "").lower()
+        found_urls = _re.findall(r"https?://[^\s\)\]>\"']+", response)
+        fabricated: List[str] = []
+        sanitized = response
+        for raw_url in dict.fromkeys(found_urls):
+            clean_url = raw_url.rstrip(".,;:")
+            if clean_url.lower() not in ctx_lower:
+                fabricated.append(clean_url)
+                sanitized = _re.sub(
+                    r"\[([^\]]+)\]\(" + _re.escape(clean_url) + r"[^\)]*\)",
+                    r"\1",
+                    sanitized,
+                )
+                sanitized = sanitized.replace(clean_url, "[link removido: não consta nas fontes]")
+        return sanitized, fabricated
+
+    @staticmethod
     def fuse_chunks_rrf(chunk_batches: List[List[ScoredChunk]], rrf_k: int = 60) -> List[ScoredChunk]:
         """
         Funde múltiplos conjuntos de resultados de busca vetorial usando Reciprocal Rank Fusion (RRF).
@@ -334,7 +358,9 @@ class PromptCompressorService:
             system_instruction = (
                 "Você é um consultor especialista em engenharia de software. "
                 "Responda de forma precisa e concisa estritamente com base no CONTEXTO fornecido. "
-                "Cite os livros e páginas utilizados. Se o contexto não contiver a resposta, recuse em 1 ou 2 frases curtas."
+                "Cite os livros e páginas utilizados. Nunca invente, complete ou presuma URLs/links; "
+                "só inclua links presentes literalmente no CONTEXTO. "
+                "Se o contexto não contiver a resposta, recuse em 1 ou 2 frases curtas."
             )
 
         context_blocks = [

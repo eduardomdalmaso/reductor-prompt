@@ -19,7 +19,7 @@ _QUERY_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
 _CACHE_MAX_SIZE = 128
 _CACHE_EPOCH = 1
 RETRIEVAL_ALGO_VERSION = "hybrid-bm25-v4"
-PROMPT_TEMPLATE_VERSION = "qa-v3-concise"
+PROMPT_TEMPLATE_VERSION = "qa-v4-strict-urls"
 
 
 def fuse_hybrid_dense_bm25(
@@ -156,7 +156,16 @@ class QueryBooksUseCase(IQueryBooksUseCase):
             if os.path.exists(db_path):
                 from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
                 idx = BM25SqliteIndex(db_path=db_path)
-                if idx.count() > 0:
+                bm25_cnt = idx.count()
+                if bm25_cnt > 0:
+                    if hasattr(self.vector_store, "collection"):
+                        chroma_cnt = self.vector_store.collection.count()
+                        if chroma_cnt > 0 and bm25_cnt != chroma_cnt:
+                            logger.warning(
+                                f"BM25 FTS5 dessincronizado (Chroma={chroma_cnt}, BM25={bm25_cnt}); "
+                                "bloqueando busca híbrida e usando Dense-only."
+                            )
+                            return None
                     self.bm25_index = idx
                     return idx
         except Exception as e:
@@ -172,7 +181,7 @@ class QueryBooksUseCase(IQueryBooksUseCase):
         deep: bool,
         enable_rewriting: bool,
         use_brain: bool,
-        profile: str = "fidelity",
+        profile: str = "economy",
     ) -> str:
         active_llm_model = (
             settings.OLLAMA_LLM_MODEL
@@ -210,7 +219,7 @@ class QueryBooksUseCase(IQueryBooksUseCase):
         enable_rewriting: bool = True,
         use_brain: bool = True,
         auto_learn: bool = True,
-        profile: str = "fidelity",
+        profile: str = "economy",
     ) -> Dict[str, Any]:
         cache_key = self._get_cache_key(
             query, book_filter, max_tokens, only_context, deep_reasoning, enable_rewriting, use_brain, profile
@@ -360,7 +369,11 @@ class QueryBooksUseCase(IQueryBooksUseCase):
                 deep_reasoning=deep_reasoning, empirical_context=empirical_text
             )
             llm_response = self.llm_port.generate_response(system_instruction=sys_inst, prompt=user_prompt)
+            llm_response, fabricated_urls = self.compressor.validate_and_sanitize_urls(
+                llm_response, full_context_text
+            )
             grounding = self.compressor.verify_citation_grounding(llm_response, all_sources)
+            grounding["fabricated_urls_blocked"] = fabricated_urls
 
             result = {
                 "query": query,

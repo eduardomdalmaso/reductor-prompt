@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "id": "Q003_factual",
+      "profile": "economy",
+      "has_example_com": false,
+      "remaining_urls": [],
+      "fabricated_urls_blocked": [],
+      "response_preview": "The command that can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, is `HINCRBY`. This command allows you to increment the integer value of a specified field by the given nu"
+    },
+    {
+      "id": "Q003_factual",
+      "profile": "fidelity",
+      "has_example_com": false,
+      "remaining_urls": [],
+      "fabricated_urls_blocked": [],
+      "response_preview": "The command that can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, is `HINCRBY`. This command is documented in the Redis Core Architecture And Data Types book, specifically"
+    },
+    {
+      "id": "Q017_factual",
+      "profile": "economy",
+      "has_example_com": false,
+      "remaining_urls": [],
+      "fabricated_urls_blocked": [],
+      "response_preview": "The `ARNEXT` command in Redis is used to inspect where the next insert would land in the context of sequential insertion using the `ARINSERT` command. After each `ARINSERT` operation, the internal cursor advances automatically. The `ARNEXT` command allows you "
+    },
+    {
+      "id": "Q017_factual",
+      "profile": "fidelity",
+      "has_example_com": false,
+      "remaining_urls": [],
+      "fabricated_urls_blocked": [],
+      "response_preview": "The `ARNEXT` command in Redis is used to inspect where the next insert would land when using the `ARINSERT` command for sequential insertion. After each call to `ARINSERT`, an internal cursor is automatically advanced. `ARNEXT` allows you to see the position o"
+    },
+    {
+      "id": "Q023_factual",
+      "profile": "economy",
+      "has_example_com": false,
+      "remaining_urls": [],
+      "fabricated_urls_blocked": [],
+      "response_preview": "Redis Bloom filters serve as an alternative to traditional sets for membership checks on large datasets or streaming data when memory usage is a concern and perfect precision is not required. They provide a space-efficient way to determine if an element is a m"
+    },
+    {
+      "id": "Q023_factual",
+      "profile": "fidelity",
+      "has_example_com": false,
+      "remaining_urls": [],
+      "fabricated_urls_blocked": [],
+      "response_preview": "Redis Bloom filters are used for set membership checks to determine if an element is likely present in a set. They are particularly useful when dealing with large datasets or streaming data, as they provide a space-efficient and fast way to check for membershi"
+    }
+  ]
+}

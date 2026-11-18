@@ -134,14 +134,45 @@ class TeachBrainDTO(BaseModel):
 # ==========================================
 # Rotas de Saúde & Livros (Não Bloqueantes)
 # ==========================================
+def _check_and_reconcile_indexes() -> dict:
+    try:
+        from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+        vs = ChromaVectorStoreAdapter()
+        chroma_cnt = vs.collection.count()
+        bm25 = BM25SqliteIndex()
+        status = bm25.verify_consistency(chroma_cnt)
+        if not status["in_sync"] and chroma_cnt > 0:
+            telemetry_service.log("WARNING", "IndexSync", f"Desvio detectado ({status}); iniciando rebuild FTS5.")
+            bm25.rebuild_from_chroma(vs.collection)
+            status = bm25.verify_consistency(chroma_cnt)
+        return status
+    except Exception as e:
+        return {"in_sync": False, "error": str(e)}
+
+
+@app.on_event("startup")
+async def startup_index_check():
+    asyncio.create_task(asyncio.to_thread(_check_and_reconcile_indexes))
+
+
 @app.get("/health")
 async def health():
+    def _sync_status():
+        try:
+            from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+            vs = ChromaVectorStoreAdapter()
+            return BM25SqliteIndex().verify_consistency(vs.collection.count())
+        except Exception as e:
+            return {"in_sync": False, "error": str(e)}
+
+    idx_sync = await asyncio.to_thread(_sync_status)
     return {
-        "status": "ok",
+        "status": "ok" if idx_sync.get("in_sync", False) else "degraded",
         "service": "ReductorPrompt",
         "version": "2.0.0",
         "llm_enabled": llm_manager_service.llm_enabled,
-        "active_provider": llm_manager_service.active_provider
+        "active_provider": llm_manager_service.active_provider,
+        "index_sync": idx_sync,
     }
 
 
