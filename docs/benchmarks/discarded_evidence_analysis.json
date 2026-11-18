@@ -1,0 +1,225 @@
+{
+  "E1": {
+    "profile": "E1_top10_conservative_5pct",
+    "total_dropped": 9,
+    "redundant_same_book_kept": 7,
+    "indispensable_book_lost": 2,
+    "cases": [
+      {
+        "id": "Q002_factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 92,
+        "full_fused_rank": 23,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q005_factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 9,
+        "full_fused_rank": 11,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": false,
+        "classification": "indispensable_book_lost"
+      },
+      {
+        "id": "Q029_code",
+        "expected_book": "Programmingrust2Ndedition",
+        "expected_page": 55,
+        "full_fused_rank": 27,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q038_code",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 69,
+        "full_fused_rank": 19,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q062_architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 45,
+        "full_fused_rank": 11,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q063_architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 37,
+        "full_fused_rank": 19,
+        "final_kept_count": 9,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q071_contradiction",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 97,
+        "full_fused_rank": 13,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q083_structure",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 17,
+        "full_fused_rank": 15,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": false,
+        "classification": "indispensable_book_lost"
+      },
+      {
+        "id": "Q084_structure",
+        "expected_book": "Softwarearchitecture Thehardparts",
+        "expected_page": 113,
+        "full_fused_rank": 21,
+        "final_kept_count": 10,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      }
+    ]
+  },
+  "E4": {
+    "profile": "E4_top12_balanced",
+    "total_dropped": 14,
+    "redundant_same_book_kept": 10,
+    "indispensable_book_lost": 4,
+    "cases": [
+      {
+        "id": "Q002_factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 92,
+        "full_fused_rank": 23,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q005_factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 9,
+        "full_fused_rank": 11,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": false,
+        "classification": "indispensable_book_lost"
+      },
+      {
+        "id": "Q023_factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 13,
+        "full_fused_rank": 3,
+        "final_kept_count": 1,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q027_code",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 88,
+        "full_fused_rank": 5,
+        "final_kept_count": 1,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q029_code",
+        "expected_book": "Programmingrust2Ndedition",
+        "expected_page": 55,
+        "full_fused_rank": 27,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q032_code",
+        "expected_book": "Programmingrust2Ndedition",
+        "expected_page": 32,
+        "full_fused_rank": 5,
+        "final_kept_count": 1,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q038_code",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 69,
+        "full_fused_rank": 19,
+        "final_kept_count": 3,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q041_code",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 46,
+        "full_fused_rank": 5,
+        "final_kept_count": 4,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q053_architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 29,
+        "full_fused_rank": 5,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": false,
+        "classification": "indispensable_book_lost"
+      },
+      {
+        "id": "Q062_architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 45,
+        "full_fused_rank": 11,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": false,
+        "classification": "indispensable_book_lost"
+      },
+      {
+        "id": "Q063_architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 37,
+        "full_fused_rank": 19,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q071_contradiction",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 97,
+        "full_fused_rank": 13,
+        "final_kept_count": 1,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      },
+      {
+        "id": "Q083_structure",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 17,
+        "full_fused_rank": 15,
+        "final_kept_count": 5,
+        "same_book_kept_in_final": false,
+        "classification": "indispensable_book_lost"
+      },
+      {
+        "id": "Q084_structure",
+        "expected_book": "Softwarearchitecture Thehardparts",
+        "expected_page": 113,
+        "full_fused_rank": 21,
+        "final_kept_count": 2,
+        "same_book_kept_in_final": true,
+        "classification": "redundant_same_book_kept"
+      }
+    ]
+  }
+}

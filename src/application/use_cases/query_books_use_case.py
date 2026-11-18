@@ -18,8 +18,33 @@ logger = logging.getLogger(__name__)
 _QUERY_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
 _CACHE_MAX_SIZE = 128
 _CACHE_EPOCH = 1
-RETRIEVAL_ALGO_VERSION = "rrf-elbow-v3-grounded"
-PROMPT_TEMPLATE_VERSION = "qa-v2"
+RETRIEVAL_ALGO_VERSION = "hybrid-bm25-v4"
+PROMPT_TEMPLATE_VERSION = "qa-v3-concise"
+
+
+def fuse_hybrid_dense_bm25(
+    dense: List[ScoredChunk],
+    bm25: List[ScoredChunk],
+    w_dense: float = 0.4,
+    w_bm25: float = 0.6,
+) -> List[ScoredChunk]:
+    """Fusão calibrada Dense + BM25 com deduplicação por chunk_id."""
+    scores: Dict[str, float] = {}
+    chunks: Dict[str, ScoredChunk] = {}
+    if dense:
+        max_d = max(sc.score for sc in dense) or 1.0
+        for rank, sc in enumerate(dense, 1):
+            cid = sc.chunk.id
+            chunks[cid] = sc
+            scores[cid] = scores.get(cid, 0.0) + w_dense * ((sc.score / max_d) * 0.5 + 0.5 / rank)
+    if bm25:
+        for rank, sc in enumerate(bm25, 1):
+            cid = sc.chunk.id
+            if cid not in chunks:
+                chunks[cid] = sc
+            scores[cid] = scores.get(cid, 0.0) + w_bm25 * (1.0 / rank)
+    merged = [ScoredChunk(chunk=chunks[cid].chunk, score=s) for cid, s in scores.items()]
+    return sorted(merged, key=lambda x: x.score, reverse=True)
 
 
 def _norm_title(text: str) -> str:
@@ -111,7 +136,8 @@ class QueryBooksUseCase(IQueryBooksUseCase):
         llm_port: ILLMPort,
         memory_port: Optional[IEpisodicMemoryPort] = None,
         compressor_service: Optional[PromptCompressorService] = None,
-        rewriter_service: Optional[QueryRewriterService] = None
+        rewriter_service: Optional[QueryRewriterService] = None,
+        bm25_index: Optional[Any] = None,
     ):
         self.embedding_port = embedding_port
         self.vector_store = vector_store
@@ -119,6 +145,23 @@ class QueryBooksUseCase(IQueryBooksUseCase):
         self.memory_port = memory_port
         self.compressor = compressor_service or PromptCompressorService()
         self.rewriter = rewriter_service or QueryRewriterService()
+        self.bm25_index = bm25_index
+
+    def _get_bm25_index(self):
+        if self.bm25_index is not None:
+            return self.bm25_index
+        try:
+            import os
+            db_path = os.path.join(settings.STORAGE_DIR, "bm25_fts5.db")
+            if os.path.exists(db_path):
+                from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+                idx = BM25SqliteIndex(db_path=db_path)
+                if idx.count() > 0:
+                    self.bm25_index = idx
+                    return idx
+        except Exception as e:
+            logger.warning(f"BM25 FTS5 indisponível (fallback para Dense-only): {e}")
+        return None
 
     def _get_cache_key(
         self,
@@ -128,7 +171,8 @@ class QueryBooksUseCase(IQueryBooksUseCase):
         only_ctx: bool,
         deep: bool,
         enable_rewriting: bool,
-        use_brain: bool
+        use_brain: bool,
+        profile: str = "fidelity",
     ) -> str:
         active_llm_model = (
             settings.OLLAMA_LLM_MODEL
@@ -143,6 +187,7 @@ class QueryBooksUseCase(IQueryBooksUseCase):
             str(deep),
             str(enable_rewriting),
             str(use_brain),
+            profile,
             settings.LLM_PROVIDER,
             active_llm_model,
             settings.EMBEDDING_PROVIDER,
@@ -164,10 +209,11 @@ class QueryBooksUseCase(IQueryBooksUseCase):
         deep_reasoning: bool = False,
         enable_rewriting: bool = True,
         use_brain: bool = True,
-        auto_learn: bool = True
+        auto_learn: bool = True,
+        profile: str = "fidelity",
     ) -> Dict[str, Any]:
         cache_key = self._get_cache_key(
-            query, book_filter, max_tokens, only_context, deep_reasoning, enable_rewriting, use_brain
+            query, book_filter, max_tokens, only_context, deep_reasoning, enable_rewriting, use_brain, profile
         )
 
         if cache_key in _QUERY_CACHE:
@@ -216,38 +262,66 @@ class QueryBooksUseCase(IQueryBooksUseCase):
             except Exception as e:
                 logger.warning(f"Busca empírica falhou: {e}")
 
-        # 3. Busca Vetorial nos Livros (batch embedding) + Fallback Lexical para Identificadores
-        top_k = max(16, settings.DEFAULT_TOP_K * 2)
-        batch_results: List[List] = []
-        if len(variations) > 1 and hasattr(self.embedding_port, "embed_batch"):
-            q_vecs = self.embedding_port.embed_batch(variations)
+        # 3. Recuperação Híbrida (Dense + BM25 FTS5) ou Legacy (RRF)
+        bm25 = None if profile == "legacy" else self._get_bm25_index()
+        if bm25 is not None:
+            q_vec = self.embedding_port.embed_text(query)
+            dense_hits = self.vector_store.search(query_embedding=q_vec, top_k=16, book_title_filter=effective_filter)
+            try:
+                bm25_hits = bm25.search(query=query, top_k=16, book_title_filter=effective_filter)
+            except Exception as e:
+                logger.warning(f"Busca BM25 falhou (usando Dense): {e}")
+                bm25_hits = []
+            scored_chunks = fuse_hybrid_dense_bm25(dense_hits, bm25_hits, w_dense=0.4, w_bm25=0.6)
+            if hasattr(self.vector_store, "search_by_identifier"):
+                extra_ids = {sc.chunk.id for sc in scored_chunks}
+                for ident in extract_technical_identifiers(query)[:2]:
+                    for lh in self.vector_store.search_by_identifier(ident, top_k=4, book_title_filter=effective_filter):
+                        if lh.chunk.id not in extra_ids:
+                            scored_chunks.append(lh)
+                            extra_ids.add(lh.chunk.id)
+            scored_chunks = apply_lexical_identifier_boost(query, scored_chunks)
         else:
-            q_vecs = [self.embedding_port.embed_text(q_var) for q_var in variations]
-        for q_vec in q_vecs:
-            scored = self.vector_store.search(query_embedding=q_vec, top_k=top_k, book_title_filter=effective_filter)
-            if scored:
-                batch_results.append(scored)
+            top_k = max(16, settings.DEFAULT_TOP_K * 2)
+            batch_results: List[List] = []
+            if len(variations) > 1 and hasattr(self.embedding_port, "embed_batch"):
+                q_vecs = self.embedding_port.embed_batch(variations)
+            else:
+                q_vecs = [self.embedding_port.embed_text(q_var) for q_var in variations]
+            for q_vec in q_vecs:
+                scored = self.vector_store.search(query_embedding=q_vec, top_k=top_k, book_title_filter=effective_filter)
+                if scored:
+                    batch_results.append(scored)
 
-        if hasattr(self.vector_store, "search_by_identifier"):
-            for ident in extract_technical_identifiers(query)[:2]:
-                lex_hits = self.vector_store.search_by_identifier(
-                    identifier=ident, top_k=4, book_title_filter=effective_filter
-                )
-                if lex_hits:
-                    batch_results.append(lex_hits)
+            if hasattr(self.vector_store, "search_by_identifier"):
+                for ident in extract_technical_identifiers(query)[:2]:
+                    lex_hits = self.vector_store.search_by_identifier(
+                        identifier=ident, top_k=4, book_title_filter=effective_filter
+                    )
+                    if lex_hits:
+                        batch_results.append(lex_hits)
 
-        scored_chunks = self.compressor.fuse_chunks_rrf(batch_results) if batch_results else []
-        scored_chunks = apply_lexical_identifier_boost(query, scored_chunks)
+            scored_chunks = self.compressor.fuse_chunks_rrf(batch_results) if batch_results else []
+            scored_chunks = apply_lexical_identifier_boost(query, scored_chunks)
 
         if not scored_chunks and not empirical_episodes:
             return {
                 "query": query, "response": "Nenhum conteúdo técnico relevante foi localizado.",
                 "sources": [], "tokens_used": 0, "tokens_saved": 0, "reduction_percentage": 0.0,
-                "context_text": "", "query_variations": variations, "from_brain": False
+                "context_text": "", "query_variations": variations, "from_brain": False, "cache_hit": False
             }
 
-        # 4. Formata contexto teórico e empírico bilateral
-        compressed_ctx = self.compressor.compress_and_format(query=query, scored_chunks=scored_chunks, max_tokens=max_tokens)
+        # 4. Seleção de Pool + Compressão conforme perfil ('fidelity', 'economy', 'legacy')
+        if profile == "economy":
+            compressed_ctx = self.compressor.compress_and_format(
+                query=query, scored_chunks=scored_chunks[:12], max_tokens=min(max_tokens, 2500), strategy="balanced"
+            )
+        elif profile == "fidelity":
+            compressed_ctx = self.compressor.compress_and_format(
+                query=query, scored_chunks=scored_chunks[:10], max_tokens=max(max_tokens, 10000), strategy="conservative", max_cut_percent=5.0
+            )
+        else:
+            compressed_ctx = self.compressor.compress_and_format(query=query, scored_chunks=scored_chunks, max_tokens=max_tokens)
         empirical_text = self.compressor.format_empirical_evidence(empirical_episodes)
 
         all_sources = list(compressed_ctx.sources)

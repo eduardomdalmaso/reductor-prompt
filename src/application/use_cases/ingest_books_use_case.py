@@ -109,6 +109,11 @@ class IngestBooksUseCase(IIngestBooksUseCase):
             )
 
             self.book_repo.save_book_metadata(book)
+            try:
+                from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+                BM25SqliteIndex().upsert_chunks(book.id, book.title, chunks)
+            except Exception as e:
+                logger.warning(f"Falha ao sincronizar BM25 FTS5 na ingestão de '{book.title}': {e}")
             processed_books.append(book)
 
         if processed_books:

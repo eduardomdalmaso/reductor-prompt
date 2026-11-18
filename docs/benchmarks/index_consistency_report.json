@@ -1,0 +1,22 @@
+{
+  "initial_consistency": {
+    "chroma_chunks": 72360,
+    "bm25_chunks": 72360,
+    "in_sync": true,
+    "delta": 0
+  },
+  "after_upsert_consistency": {
+    "chroma_chunks": 72361,
+    "bm25_chunks": 72361,
+    "in_sync": true,
+    "delta": 0
+  },
+  "bm25_found_upserted_chunk": true,
+  "after_delete_consistency": {
+    "chroma_chunks": 72360,
+    "bm25_chunks": 72360,
+    "in_sync": true,
+    "delta": 0
+  },
+  "cache_epoch_after_invalidation": 2
+}

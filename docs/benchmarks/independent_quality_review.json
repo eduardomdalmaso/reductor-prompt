@@ -1,0 +1,720 @@
+{
+  "note": "No separate external LLM API key configured; provides deterministic citation/overlap verification plus full 15 responses for human review.",
+  "items_count": 15,
+  "items": [
+    {
+      "id": "Q002_factual",
+      "query": "What JSON document is created in the Redis database for the JSON tutorial example?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 92,
+      "evidence_snippet": "First, create the JSON document in your database:\n\n{{< clients-example set=\"json_tutorial\" step=\"set_bikes\" description=\"Setup: Create a complex JSON document with nested objects and arrays to use in JSONPath examples\" max_lines=\"10\" prereq=\"true\" >}}\n> JSON.SET bikes:inventory $",
+      "fidelity_sources": [
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ],
+        [
+          "Architecturepatternswithpython",
+          150
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          73
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.167,
+      "fidelity_response": "In the Redis JSON tutorial example, a JSON document is created for a bike with the key `bike`. The initial document is a JSON string:\n\n```json\n\"Hyperion\"\n```\n\nThis is set using the `JSON.SET` command:\n\n```shell\nJSON.SET bike $ '\"Hyperion\"'\n```\n\nLater, another string is appended to it:\n\n```shell\nJSON.STRAPPEND bike $ '\" (Enduro bikes)\"'\n```\n\nAfter appending, the JSON document becomes:\n\n```json\n\"Hyperion (Enduro bikes)\"\n```\n\nAdditionally, the tutorial sets a JSON document for `crashes` with an initial value of `0` and then increments it:\n\n```shell\nJSON.SET crashes $ 0\nJSON.NUMINCRBY crashes $ 1\nJSON.NUMINCRBY crashes $ 1.5\nJSON.NUMINCRBY crashes $ -0.75\nJSON.NUMMULTBY crashes $ 24\n```\n\nAfter these operations, the JSON document for `crashes` is:\n\n```json\n42.0\n```\n\nThe tutorial also sets a more complex JSON document for `newbike`:\n\n```shell\nJSON.SET newbike $ '[\"Deimos\", {\"crashes\": 0}, null]'\n```\n\nThis creates the following JSON document:\n\n```json\n[\"Deimos\", {\"crashes\": 0}, null]\n```\n\nSubsequently, the last element is deleted:\n\n```shell\nJSON.DEL newbike $[-1]\n```\n\nAfter deletion, the JSON document for `newbike` is:\n\n```json\n[\"Deimos\", {\"crashes\": 0}]\n```\n\nThese examples illustrate how JSON documents can be created, manipulated, and queried in Redis using the JSON data type.",
+      "economy_sources": [
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ],
+        [
+          "Architecturepatternswithpython",
+          150
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          73
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.0,
+      "economy_response": "The JSON tutorial example in Redis creates several JSON documents, each demonstrating different operations. Here are the key JSON documents created:\n\n1. **String Example**:\n   ```json\n   \"Hyperion\"\n   ```\n\n2. **String with Append**:\n   ```json\n   \"Hyperion (Enduro bikes)\"\n   ```\n\n3. **Numeric Example**:\n   ```json\n   42.0\n   ```\n\n4. **Array and Object Example**:\n   ```json\n   [\n     \"Deimos\",\n     {\"crashes\": 1.75},\n     null\n   ]\n   ```\n\n5. **Floating Point Homogeneous Array (FPHA)**:\n   ```json\n   [\n     [1.0, 2.0, 3.0, 4000.0],\n     [5.0, 6.0, 7.0, 8.0]\n   ]\n   ```\n\n6. **Array Manipulation Example**:\n   ```json\n   [\n     \"Norem\",\n     \"Prickett\",\n     \"Royce\",\n     \"Castilla\"\n   ]\n   ```\n\n7. **Object Example**:\n   ```json\n   {\n     \"model\": \"Deimos\",\n     \"brand\": \"Ergonom\",\n     \"price\": 4972\n   }\n   ```\n\nEach of these JSON documents is stored in a Redis key with the corresponding path specified. For example, the string \"Hyperion\" is stored at the root path `$` of the key `bike`.",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q003_factual",
+      "query": "What command can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 57,
+      "evidence_snippet": "# Recreate the bike:1 hash so this example runs on its own.\n> DEL bike:1\n(integer) 1\n> HSET bike:1 model Deimos brand Ergonom type 'Enduro bikes' price 4972\n(integer) 4\n> HMGET bike:1 model price no-such-field\n1) \"Deimos\"\n2) \"4972\"\n3) (nil)\n{{< /clients-example >}}\n\nThere are com",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          57
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          57
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          68
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.0,
+      "fidelity_response": "The command that can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, is `HINCRBY`. This command is documented in the Redis Core Architecture And Data Types book, specifically in the section related to hash commands.\n\nReference:\n- [Redis Core Architecture And Data Types (Seção 57, Pág 57)](https://example.com/redis-core-architecture-data-types#hincrby)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          57
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.0,
+      "economy_response": "The command that can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, is `HINCRBY`. This command allows you to increment the integer value of a specified field by the given number, automatically creating the field if it does not already exist and setting its value to 0 before incrementing.\n\nReferência:\n- Livro: Redis Core Architecture And Data Types (Seção 57, Pág 57) | Relevância: 0.60",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q005_factual",
+      "query": "What data structure in Python is similar to Redis hashes?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 9,
+      "evidence_snippet": "### Hashes\n\n[Redis hashes](/content/develop/data-types/hashes.md) are record types modeled as collections of field-value pairs.\nAs such, Redis hashes resemble [Python dictionaries](https://docs.python.org/3/tutorial/datastructures.html#dictionaries), [Java HashMaps](https://docs.",
+      "fidelity_sources": [
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          738
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          742
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          1329
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          1325
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          1962
+        ]
+      ],
+      "fidelity_citation_ok": false,
+      "fidelity_lexical_overlap": 0.188,
+      "fidelity_response": "In Python, the data structure that is similar to Redis hashes is a dictionary. A Redis hash is a collection of field-value pairs, which can be directly mapped to a Python dictionary where keys are fields and values are the corresponding values in the hash.\n\n**Referência:**\n- Livro: Redis Ai Vector Search And Semantic Caching (Seção 738, Pág 738) | Relevância: 0.60",
+      "economy_sources": [
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          738
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          742
+        ]
+      ],
+      "economy_citation_ok": false,
+      "economy_lexical_overlap": 0.188,
+      "economy_response": "In Python, the data structure that is most similar to Redis hashes is a dictionary (`dict`). A Redis hash is essentially a collection of field-value pairs, which maps directly to the key-value pairs in a Python dictionary. For example, a Redis hash like this:\n\n```json\n{\n    \"model\": \"Deimos\",\n    \"brand\": \"Ergonom\",\n    \"type\": \"Enduro bikes\",\n    \"price\": 4972,\n}\n```\n\ncan be represented in Python as:\n\n```python\nhash_dict = {\n    \"model\": \"Deimos\",\n    \"brand\": \"Ergonom\",\n    \"type\": \"Enduro bikes\",\n    \"price\": 4972,\n}\n```\n\nThis dictionary can be used to interact with Redis hashes through the Redis Python client by setting and getting hash fields.\n\n*Referência: Redis Ai Vector Search And Semantic Caching, Seção 742, Pág 742.*",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q006_factual",
+      "query": "What is the size of the JSON array used in the ReJSONBenchmark test located at [/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json)?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 103,
+      "evidence_snippet": "### A bigger array\n\nMoving on to bigger values, we use the 1.4 kB array in\n[/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json):\n\n\n![ReJSONBenchmark pass-jsonsl-1.json](images/bench_pass_jsonsl_1.png)\n\n![ReJSO",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          103
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          103
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.625,
+      "fidelity_response": "The JSON array used in the ReJSONBenchmark test located at [/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json) has a size of 1.4 kB.\n\nCitação:\n--- [Livro: Redis Core Architecture And Data Types (Seção 103, Pág 103) | Relevância: 1.45] ---\nMoving on to bigger values, we use the 1.4 kB array in\n[/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json):",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          103
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.125,
+      "economy_response": "The JSON array used in the ReJSONBenchmark test located at [/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json) is 1.4 kB in size.\n\nReferência: Redis Core Architecture And Data Types, Seção 103, Página 103.",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q008_factual",
+      "query": "What are the file names of the charts that compare the rate and latency of Lua pass operations with different JSON files?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 111,
+      "evidence_snippet": "### Even more charts\n\nThese charts are more of the same but independent for each file (value):\n\n![VS. Lua pass-100.json rate](images/bench_lua_pass_100.png)\n\n![VS. Lua pass-100.json average latency](images/bench_lua_pass_100_l.png)\n\n![VS. Lua pass-jsonsl-1.json rate](images/bench",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          111
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ],
+        [
+          "Architecturepatternswithpython",
+          150
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.091,
+      "fidelity_response": "The file names of the charts that compare the rate and latency of Lua pass operations with different JSON files are:\n\n- `bench_lua_pass_100.png` (rate)\n- `bench_lua_pass_100_l.png` (average latency)\n- `bench_lua_pass_jsonsl_1.png` (rate)\n- `bench_lua_pass_jsonsl_1_l.png` (average latency)\n- `bench_lua_pass_json_parser_0000.png` (rate)\n- `bench_lua_pass_json_parser_0000_l.png` (latency)\n- `bench_lua_pass_jsonsl_yahoo2.png` (rate)\n- `bench_lua_pass_jsonsl_yahoo2_l.png` (latency)\n- `bench_lua_pass_jsonsl_yelp.png` (rate)\n- `bench_lua_pass_jsonsl_yelp_l.png` (latency)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          111
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ],
+        [
+          "Architecturepatternswithpython",
+          150
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.182,
+      "economy_response": "The file names of the charts that compare the rate and latency of Lua pass operations with different JSON files are as follows:\n\n- For `pass-100.json`:\n  - Rate: `bench_lua_pass_100.png`\n  - Average Latency: `bench_lua_pass_100_l.png`\n\n- For `pass-jsonsl-1.json`:\n  - Rate: `bench_lua_pass_jsonsl_1.png`\n  - Average Latency: `bench_lua_pass_jsonsl_1_l.png`\n\n- For `pass-json-parser-0000.json`:\n  - Rate: `bench_lua_pass_json_parser_0000.png`\n  - Latency: `bench_lua_pass_json_parser_0000_l.png`\n\n- For `pass-jsonsl-yahoo2.json`:\n  - Rate: `bench_lua_pass_jsonsl_yahoo2.png`\n  - Latency: `bench_lua_pass_jsonsl_yahoo2_l.png`\n\n- For `pass-jsonsl-yelp.json`:\n  - Rate: `bench_lua_pass_jsonsl_yelp.png`\n  - Latency: `bench_lua_pass_jsonsl_yelp_l.png`\n\nCitação: Livro: Redis Core Architecture And Data Types (Seção 111, Pág 111)",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q009_factual",
+      "query": "What are Redis sorted sets and how do they maintain order?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 20,
+      "evidence_snippet": "### Sorted sets\n\n[Redis sorted sets](/content/develop/data-types/sorted-sets.md) are collections of unique strings that maintain order by each string's associated score.\nFor more information, see:\n\n* [Overview of Redis sorted sets](/content/develop/data-types/sorted-sets.md)\n* [R",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          205
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          212
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.786,
+      "fidelity_response": "Redis sorted sets are collections of unique string elements, each associated with a floating-point score. The order of elements in a sorted set is determined primarily by their scores, with higher scores preceding lower scores. When two elements have the same score, they are ordered lexicographically (alphabetically).\n\nElements are added to a sorted set using the `ZADD` command, which takes the score and the element as arguments. Once added, elements are automatically stored in a sorted order, eliminating the need for additional sorting operations when retrieving them.\n\nSorted sets are implemented using a dual-ported data structure that includes both a skip list and a hash table, allowing for efficient insertion and retrieval operations. This structure supports commands like `ZRANGE` and `ZREVRANGE` to retrieve elements in ascending or descending order, respectively, without needing to sort the data.\n\nFor more detailed information, refer to the Redis documentation on sorted sets: [Overview of Redis sorted sets](/content/develop/data-types/sorted-sets.md) and [Redis sorted set command reference](/commands/?group=sorted-set).\n\n**Referências:**\n- Redis Core Architecture And Data Types, Seção 20, Pág 20\n- Redis Core Architecture And Data Types, Seção 205, Pág 205",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          20
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.571,
+      "economy_response": "Redis sorted sets are collections of unique strings where each member is associated with a floating-point score. The order of the members in the set is determined by their scores, from the lowest to the highest. This allows for efficient retrieval of elements in a specific range based on their scores.\n\nReferência:\n- Redis Core Architecture And Data Types, Seção 20, Página 20",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q011_factual",
+      "query": "What is the order of strings in a Redis list?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 11,
+      "evidence_snippet": "### Lists\n\n[Redis lists](/content/develop/data-types/lists.md) are lists of strings sorted by insertion order.\nFor more information, see:\n\n* [Overview of Redis lists](/content/develop/data-types/lists.md)\n* [Redis list command reference](/commands/?group=list)",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          11
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          2433
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          11
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          2433
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          4
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.167,
+      "fidelity_response": "In Redis, the order of strings in a list is determined by the order of insertion. Each string is added to the list in the sequence it is inserted, maintaining that order for subsequent operations and retrievals.\n\nReferência:\n[Livro: Redis Core Architecture And Data Types (Seção 11, Pág 11)](https://github.com/redis/docs/blob/main/content/develop/data-types/lists.md)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          11
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          2433
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          11
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.5,
+      "economy_response": "The strings in a Redis list are sorted by insertion order. This means that the order of the elements in the list corresponds to the order in which they were added to the list.\n\nReferência:\n- [Redis Core Architecture And Data Types](https://github.com/redis/docs/blob/main/content/develop/data-types/lists.md), Seção 11, Página 11",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q012_factual",
+      "query": "What is the timestamp returned when using the HEXPIRETIME command on the field \"air_quality\" for the key \"sensor:sensor1\"?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 64,
+      "evidence_snippet": "# (4102444800 is just an example; use a timestamp appropriate for your use case).\n> HEXPIREAT sensor:sensor1 4102444800 FIELDS 1 air_quality\n1) (integer) 1\n> HEXPIRETIME sensor:sensor1 FIELDS 1 air_quality\n1) (integer) 4102444800\n{{< /clients-example >}}",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          64
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          1238
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          64
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          62
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          62
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.077,
+      "fidelity_response": "The timestamp returned when using the `HEXPIRETIME` command on the field \"air_quality\" for the key \"sensor:sensor1\" is `4102444800`. This timestamp is an example provided in the context and represents the Unix timestamp when the field \"air_quality\" for the key \"sensor:sensor1\" will expire.\n\nReferência:\n- Livro: Redis Core Architecture And Data Types (Seção 64, Pág 64)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          64
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.154,
+      "economy_response": "The timestamp returned when using the HEXPIRETIME command on the field \"air_quality\" for the key \"sensor:sensor1\" is `4102444800`. This timestamp represents the expiration time set for the \"air_quality\" field in seconds since the Unix epoch.\n\nReferência:\n- Livro: Redis Core Architecture And Data Types (Seção 64, Pág 64)",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q014_factual",
+      "query": "How can you extend Redis features beyond the included data types?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 24,
+      "evidence_snippet": "## Adding extensions\n\nTo extend the features provided by the included data types, use one of these options:\n\n1. Write your own custom [server-side functions in Lua](/content/develop/programmability/_index.md).\n1. Write your own Redis module using the [modules API](/content/develo",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          24
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          24
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          37
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          37
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          1223
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.579,
+      "fidelity_response": "To extend Redis features beyond the included data types, you can use one of the following options:\n\n1. Write your own custom server-side functions in Lua.\n2. Write your own Redis module using the modules API or check out community-supported modules.\n\nReferências:\n- Livro: Redis Core Architecture And Data Types (Seção 24, Pág 24)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          24
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.526,
+      "economy_response": "To extend Redis features beyond the included data types, you can use one of the following methods:\n\n1. Write your own custom server-side functions in Lua.\n2. Write your own Redis module using the modules API or explore community-supported modules.\n\nReferência: Redis Core Architecture And Data Types, Seção 24, Página 24.",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q015_factual",
+      "query": "What is the purpose of Redis time series structures?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 22,
+      "evidence_snippet": "### Time series\n\n[Redis time series](/content/develop/data-types/timeseries/_index.md)\nstructures let you store and query timestamped data points.\nFor more information, see:\n\n- [Redis time series overview](/content/develop/data-types/timeseries/_index.md)\n- [Time series command r",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          22
+        ],
+        [
+          "Learningsystemsthinking",
+          127
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          22
+        ],
+        [
+          "Learningsystemsthinking",
+          127
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          346
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.5,
+      "fidelity_response": "Redis time series structures are designed to store and query timestamped data points efficiently. They allow for the management of time-based data, enabling users to perform operations such as data aggregation, downsampling, and range queries on time series data. This makes Redis time series structures particularly useful for applications that require real-time analytics, monitoring, and logging of time-based data.\n\nReferência:\n- [Redis Core Architecture And Data Types](/content/develop/data-types/timeseries/_index.md), Seção 22, Página 22",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          22
+        ],
+        [
+          "Learningsystemsthinking",
+          127
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          22
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.583,
+      "economy_response": "The purpose of Redis time series structures is to store and query timestamped data points efficiently. This allows for effective management and analysis of time-based data. For more detailed information, refer to the Redis time series overview and command reference in the Redis Core Architecture And Data Types book, section 22, page 22.",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q017_factual",
+      "query": "How does the `ARNEXT` command function in the context of sequential insertion using the `ARINSERT` command in Redis?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 29,
+      "evidence_snippet": "## Sequential insertion\n\n[`ARINSERT`](/content/commands/arinsert.md) appends values using an internal cursor that advances automatically after each call. Use [`ARNEXT`](/content/commands/arnext.md) to inspect where the next insert would land, and [`ARSEEK`](/content/commands/arse",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          29
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          29
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          36
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          36
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          725
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.579,
+      "fidelity_response": "The `ARNEXT` command in Redis is used to inspect where the next insert would land when using the `ARINSERT` command for sequential insertion. After each call to `ARINSERT`, an internal cursor is automatically advanced. `ARNEXT` allows you to see the position of this cursor, indicating where the next insertion would occur if `ARINSERT` were called again. This is useful for understanding the current state of the array and planning subsequent insertions.\n\nReferência:\n- [Redis Core Architecture And Data Types, Seção 29, Pág 29](https://example.com/redis-core-architecture-and-data-types#sequential-insertion)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          29
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          29
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          36
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.316,
+      "economy_response": "The `ARNEXT` command in Redis is used to inspect the position where the next insertion would occur after using the `ARINSERT` command. This allows you to see the index of the next element that would be added to the array if another `ARINSERT` command were executed immediately after. This is useful for understanding the current state of the array and planning subsequent insertions.\n\nReferência:\n- Livro: Redis Core Architecture And Data Types (Seção 29, Pág 29)",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q018_factual",
+      "query": "How can you install Redis Open Source to enable the Redis JSON data type?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 75,
+      "evidence_snippet": "## Enable Redis JSON\n\nThe Redis JSON data type is part of Redis Open Source and it is also available in Redis Software and Redis Cloud.\nSee\n[Install Redis Open Source](/content/operate/oss_and_stack/install/install-stack/_index.md) or\n[Install Redis Software](/content/operate/rs/",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          75
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ],
+        [
+          "Architecturepatternswithpython",
+          104
+        ],
+        [
+          "Architecturepatternswithpython",
+          150
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.556,
+      "fidelity_response": "To install Redis Open Source and enable the Redis JSON data type, follow the instructions provided in the documentation:\n\n- For Redis Open Source: See [Install Redis Open Source](/content/operate/oss_and_stack/install/install-stack/_index.md)\n- For Redis Software: See [Install Redis Software](/content/operate/rs/installing-upgrading/install/_index.md)\n\nThese guides will provide you with the necessary steps to install Redis and enable the JSON data type.",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          75
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.444,
+      "economy_response": "To install Redis Open Source and enable the Redis JSON data type, follow the instructions provided in the documentation:\n\n- For Redis Open Source installation, refer to the guide: [Install Redis Open Source](/content/operate/oss_and_stack/install/install-stack/_index.md).\n\nEnsure that the Redis JSON module is included in your installation process to utilize the JSON data type. Consult the specific installation steps detailed in the link above for comprehensive guidance.\n\n**Referência:** Redis Core Architecture And Data Types, Seção 75, Pág 75",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q020_factual",
+      "query": "How does the performance of Redis JSON compare to MessagePack when processing and storing incoming JSON values?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 109,
+      "evidence_snippet": "### Setting and getting the root\n\nStoring raw JSON performs best in this test, but that isn't really surprising as all it does is\nserve unprocessed strings. While you can and should use Redis for caching opaque data, and JSON\n\"blobs\" are just one example, this does not allow any ",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          109
+        ],
+        [
+          "Introducingpython3Rdedition",
+          21
+        ],
+        [
+          "Introducingpython3Rdedition",
+          437
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.2,
+      "fidelity_response": "According to the provided context from the book \"Redis Core Architecture And Data Types\" (Section 109, Page 109), the performance of Redis JSON compared to MessagePack when processing and storing incoming JSON values shows similar rates and latencies. However, the absolute measurements suggest that Redis JSON's performance may be further improved. This comparison is meaningful because both Redis JSON and MessagePack process the incoming JSON value before storing it, unlike storing raw JSON which merely serves unprocessed strings.",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          109
+        ],
+        [
+          "Introducingpython3Rdedition",
+          21
+        ],
+        [
+          "Introducingpython3Rdedition",
+          437
+        ],
+        [
+          "Architecturepatternswithpython",
+          91
+        ],
+        [
+          "Architecturepatternswithpython",
+          94
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.2,
+      "economy_response": "According to the provided context from the book \"Redis Core Architecture And Data Types\" (Section 109, Page 109), the performance of Redis JSON compared to MessagePack when processing and storing incoming JSON values shows similar rates and latencies. However, the absolute measurements suggest that Redis JSON's performance may be further improved. This comparison is meaningful because both Redis JSON and MessagePack process the incoming JSON value before storing it, unlike storing raw JSON which merely serves unprocessed strings.",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q021_factual",
+      "query": "What algorithm does Redis vector sets support for storing and querying vectors based on cosine similarity?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 23,
+      "evidence_snippet": "### Vector sets\n\n[Redis vector sets](/content/develop/data-types/vector-sets/_index.md) are a specialized data type designed for managing high-dimensional vector data, enabling fast and efficient vector similarity search within Redis. Vector sets are optimized for use cases invol",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          23
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          23
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          388
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          388
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          45
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.294,
+      "fidelity_response": "Redis vector sets support the Hierarchical Navigable Small World (HNSW) algorithm for storing and querying vectors based on cosine similarity. This algorithm allows for efficient vector similarity search in high-dimensional spaces.\n\nCitação:\n[Livro: Redis Core Architecture And Data Types (Seção 23, Pág 23)](https://redis.io/docs/develop/data-types/vector-sets/)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          23
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.353,
+      "economy_response": "Redis vector sets support the [HNSW](https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world) (Hierarchical Navigable Small World) algorithm for storing and querying vectors based on cosine similarity. This algorithm is optimized for efficient vector similarity search in high-dimensional spaces.\n\nCitação: Redis Core Architecture And Data Types, Seção 23, Pág 23.",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    },
+    {
+      "id": "Q023_factual",
+      "query": "What is the purpose of Redis Bloom filters in terms of set membership checks?",
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 13,
+      "evidence_snippet": "### Bloom filter\n\n[Redis Bloom filters](/content/develop/data-types/probabilistic/bloom-filter.md)\nlet you check for the presence or absence of an element in a set. For more\ninformation, see:\n\n- [Overview of Redis Bloom filters](/content/develop/data-types/probabilistic/bloom-fil",
+      "fidelity_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          203
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          203
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          13
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          13
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          137
+        ]
+      ],
+      "fidelity_citation_ok": true,
+      "fidelity_lexical_overlap": 0.5,
+      "fidelity_response": "Redis Bloom filters are used for set membership checks to determine if an element is likely present in a set. They are particularly useful when dealing with large datasets or streaming data due to their space efficiency and fast performance. A Bloom filter can guarantee the absence of an item from a set but can only give an estimation about its presence, meaning it may produce false positives but never false negatives. This makes them ideal for scenarios where a negative answer can prevent more costly operations, such as checking if a username is available or if a credit card has been reported as stolen.\n\n**Referência:**\n- [Redis Core Architecture And Data Types (Seção 13, Pág 13)](https://example.com/redis-core-architecture-data-types#bloom-filter)\n- [Redis Core Architecture And Data Types (Seção 134, Pág 134)](https://example.com/redis-core-architecture-data-types#bloom-filter)",
+      "economy_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          203
+        ]
+      ],
+      "economy_citation_ok": true,
+      "economy_lexical_overlap": 0.167,
+      "economy_response": "Redis Bloom filters serve as an alternative to traditional sets for membership checks on large datasets or streaming data when memory usage is a concern. They provide an approximate solution that uses less memory compared to exact set implementations, though they may introduce a small probability of false positives. This makes them suitable for scenarios where perfect precision is not required but efficient memory usage and fast query performance are crucial.\n\nReferência: Redis Core Architecture And Data Types, Seção 203, Página 203",
+      "human_review_status": "PENDING_HUMAN_SIGN_OFF"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ class QueryRequestDTO(BaseModel):
     max_tokens: int = Field(default=1500, description="Limite máximo de tokens de contexto")
     only_context: bool = Field(default=False, description="Se True, retorna apenas o contexto sem chamar o LLM")
     llm_provider: Optional[str] = Field(None, description="Provedor de LLM ('gemini' ou 'ollama')")
+    profile: str = Field(default="fidelity", description="Perfil de operação: 'fidelity' (E1), 'economy' (E4) ou 'legacy'")
 
 
 class QueryResponseDTO(BaseModel):

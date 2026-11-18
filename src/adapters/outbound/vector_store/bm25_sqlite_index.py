@@ -39,6 +39,47 @@ class BM25SqliteIndex:
             row = conn.execute("SELECT COUNT(*) FROM chunks_fts").fetchone()
             return int(row[0]) if row else 0
 
+    def upsert_chunks(self, book_id: str, book_title: str, chunks: List[BookChunk]) -> int:
+        """Atualiza os chunks de um livro no índice FTS5 de forma idempotente."""
+        if not chunks:
+            return 0
+        with self._connect() as conn:
+            conn.execute("DELETE FROM chunks_fts WHERE book_id = ?", (book_id,))
+            rows = [
+                (
+                    c.id,
+                    book_id,
+                    book_title,
+                    c.chapter or "",
+                    int(c.page_number) if c.page_number is not None else -1,
+                    int(c.token_count) if c.token_count else len(c.content.split()),
+                    c.content,
+                )
+                for c in chunks
+                if c.content
+            ]
+            conn.executemany(
+                "INSERT INTO chunks_fts(chunk_id, book_id, book_title, chapter, page_number, token_count, content) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                rows,
+            )
+            conn.commit()
+            return len(rows)
+
+    def delete_book(self, book_id: str) -> None:
+        """Remove todos os chunks de um livro do índice FTS5."""
+        with self._connect() as conn:
+            conn.execute("DELETE FROM chunks_fts WHERE book_id = ?", (book_id,))
+            conn.commit()
+
+    def verify_consistency(self, chroma_count: int) -> dict:
+        bm25_count = self.count()
+        return {
+            "chroma_chunks": chroma_count,
+            "bm25_chunks": bm25_count,
+            "in_sync": chroma_count == bm25_count,
+            "delta": chroma_count - bm25_count,
+        }
+
     def rebuild_from_chroma(self, collection, batch_size: int = 2000) -> int:
         """Constrói o índice FTS5 lendo diretamente os chunks canônicos do ChromaDB."""
         total = collection.count()

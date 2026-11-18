@@ -192,3 +192,37 @@ def test_bm25_sqlite_index_search(tmp_path):
     assert hits[0].chunk.id == "c1"
     assert hits[0].chunk.page_number == 54
 
+    idx.upsert_chunks("b1", "Architecturepatternswithpython", [
+        BookChunk("c3", "b1", "Architecturepatternswithpython", 0, "def allocate(line, batches): pass", 12, 46, "Cap 1")
+    ])
+    assert idx.count() == 2
+    idx.delete_book("b1")
+    assert idx.count() == 1
+    assert idx.verify_consistency(1)["in_sync"] is True
+
+
+def test_hybrid_bm25_query_use_case_profiles(tmp_path):
+    from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+    from src.application.use_cases.query_books_use_case import QueryBooksUseCase, invalidate_query_cache
+    from tests.test_episodic_memory import MockEmbeddingPort, MockVectorStorePort, MockLLMPort
+
+    idx = BM25SqliteIndex(db_path=str(tmp_path / "bm25_uc.db"))
+    idx.upsert_chunks("b1", "Book 1", [
+        BookChunk("c_bm25", "b1", "Book 1", 0, "SqlAlchemyRepository uses session.add and session.query", 15, 54, "Cap 2")
+    ])
+    uc = QueryBooksUseCase(
+        embedding_port=MockEmbeddingPort(),
+        vector_store=MockVectorStorePort(),
+        llm_port=MockLLMPort(),
+        bm25_index=idx,
+    )
+    invalidate_query_cache()
+    res_fid = uc.execute("SqlAlchemyRepository", use_brain=False, auto_learn=False, profile="fidelity")
+    assert any(s.get("chunk_id") == "c_bm25" for s in res_fid["sources"])
+
+    res_eco = uc.execute("SqlAlchemyRepository", use_brain=False, auto_learn=False, profile="economy")
+    assert any(s.get("chunk_id") == "c_bm25" for s in res_eco["sources"])
+
+    res_leg = uc.execute("SqlAlchemyRepository", use_brain=False, auto_learn=False, profile="legacy")
+    assert not any(s.get("chunk_id") == "c_bm25" for s in res_leg["sources"])
+

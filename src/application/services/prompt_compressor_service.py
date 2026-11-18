@@ -192,8 +192,12 @@ class PromptCompressorService:
                 if selected_chunks and (selected_raw_tokens + chunk_raw_tokens > target_keep or current_tokens + block_tokens > limit_tokens):
                     break
             elif current_tokens + block_tokens > limit_tokens and selected_chunks:
-                # Atingiu o limite do TokenBudget dinâmico
-                break
+                # Protege a única evidência de um livro distinto antes de truncar no modo balanced
+                seen_books = {s.chunk.book_title for s in selected_chunks}
+                if strategy != "aggressive" and chunk.book_title not in seen_books:
+                    pass
+                else:
+                    break
 
             selected_chunks.append(sc)
             current_tokens += block_tokens
@@ -328,12 +332,9 @@ class PromptCompressorService:
             )
         else:
             system_instruction = (
-                "Você é um consultor especialista em engenharia de software, arquitetura e análise técnica. "
-                "Responda à pergunta do usuário de forma precisa, concisa e altamente embasada no CONTEXTO fornecido. "
-                "Diretrizes:\n"
-                "1. Cite os livros e capítulos/páginas de onde as conclusões foram extraídas sempre que relevante.\n"
-                "2. Seja direto e evite enrolação para economizar tokens.\n"
-                "3. Se o contexto não contiver a resposta, informe educadamente o que foi possível encontrar nos livros indexados."
+                "Você é um consultor especialista em engenharia de software. "
+                "Responda de forma precisa e concisa estritamente com base no CONTEXTO fornecido. "
+                "Cite os livros e páginas utilizados. Se o contexto não contiver a resposta, recuse em 1 ou 2 frases curtas."
             )
 
         context_blocks = [

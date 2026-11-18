@@ -195,6 +195,11 @@ async def delete_book_endpoint(book_id: str):
             from src.application.use_cases.query_books_use_case import invalidate_query_cache
             vector_store = ChromaVectorStoreAdapter()
             vector_store.delete_book(book_id)
+            try:
+                from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+                BM25SqliteIndex().delete_book(book_id)
+            except Exception as e:
+                telemetry_service.log("WARNING", "BM25Index", f"Falha ao remover {book_id} do FTS5: {e}")
             invalidate_query_cache()
             return True
         await asyncio.to_thread(_delete)
@@ -388,7 +393,8 @@ async def query_knowledge(req: QueryRequestDTO):
                 max_tokens=req.max_tokens,
                 only_context=effective_only_context,
                 use_brain=True,
-                auto_learn=True
+                auto_learn=True,
+                profile=req.profile
             )
 
         res = await asyncio.to_thread(_execute)
