@@ -47,17 +47,33 @@ def get_process_memory_mb() -> Dict[str, float]:
     }
 
 
+_INDEX_SYNC_SNAPSHOT: Dict[str, object] = {
+    "in_sync": 1,
+    "updated_at": 0.0,
+    "refreshing": False,
+    "errors_total": 0,
+}
+
+
+def _refresh_index_sync_snapshot() -> dict:
+    try:
+        from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+        vs = ChromaVectorStoreAdapter()
+        res = BM25SqliteIndex().verify_consistency(vs.collection.count())
+        _INDEX_SYNC_SNAPSHOT["in_sync"] = 1 if res.get("in_sync") else 0
+        _INDEX_SYNC_SNAPSHOT["updated_at"] = time.time()
+        return res
+    except Exception as e:
+        _INDEX_SYNC_SNAPSHOT["in_sync"] = 0
+        _INDEX_SYNC_SNAPSHOT["errors_total"] = int(_INDEX_SYNC_SNAPSHOT["errors_total"]) + 1
+        return {"in_sync": False, "error": str(e)}
+    finally:
+        _INDEX_SYNC_SNAPSHOT["refreshing"] = False
+
+
 @router.get("/health")
 async def health():
-    def _sync_status():
-        try:
-            from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
-            vs = ChromaVectorStoreAdapter()
-            return BM25SqliteIndex().verify_consistency(vs.collection.count())
-        except Exception as e:
-            return {"in_sync": False, "error": str(e)}
-
-    idx_sync = await asyncio.to_thread(_sync_status)
+    idx_sync = await asyncio.to_thread(_refresh_index_sync_snapshot)
     return {
         "status": "ok" if idx_sync.get("in_sync", False) else "degraded",
         "service": "ReductorPrompt",
@@ -77,13 +93,15 @@ async def get_metrics():
 
 @router.get("/metrics", include_in_schema=False)
 async def prometheus_metrics():
+    t0 = time.perf_counter()
+    # Snapshot em memória; se expirado (>30s), atualiza em background sem bloquear o scrape
+    if (time.time() - float(_INDEX_SYNC_SNAPSHOT["updated_at"])) > 30.0 and not _INDEX_SYNC_SNAPSHOT["refreshing"]:
+        _INDEX_SYNC_SNAPSHOT["refreshing"] = True
+        asyncio.create_task(asyncio.to_thread(_refresh_index_sync_snapshot))
+
     q = generation_queue.get_metrics()
     mem = get_process_memory_mb()
-    try:
-        from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
-        in_sync = 1 if BM25SqliteIndex().verify_consistency(ChromaVectorStoreAdapter().collection.count()).get("in_sync") else 0
-    except Exception:
-        in_sync = 0
+    scrape_s = round(time.perf_counter() - t0, 6)
     lines = [
         f"reductor_generation_active {q['generation_active']}",
         f"reductor_generation_pending {q['generation_pending']}",
@@ -92,8 +110,10 @@ async def prometheus_metrics():
         f"reductor_generation_cancelled_total {q['generation_cancelled_total']}",
         f"reductor_generation_queue_wait_seconds_avg {q['generation_queue_wait_seconds']['avg']}",
         f"reductor_generation_duration_seconds_avg {q['generation_duration_seconds']['avg']}",
-        f"reductor_index_in_sync {in_sync}",
+        f"reductor_index_in_sync {_INDEX_SYNC_SNAPSHOT['in_sync']}",
         f"reductor_process_rss_bytes {int(mem['rss_mb'] * 1024 * 1024)}",
+        f"reductor_metrics_scrape_duration_seconds {scrape_s}",
+        f"reductor_metrics_scrape_errors_total {_INDEX_SYNC_SNAPSHOT['errors_total']}",
     ]
     return Response(content="\n".join(lines) + "\n", media_type="text/plain; version=0.0.4")
 
