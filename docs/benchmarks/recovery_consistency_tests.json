@@ -1,0 +1,88 @@
+{
+  "resilience_and_recovery": {
+    "initial": {
+      "chroma_chunks": 72360,
+      "bm25_chunks": 72360,
+      "in_sync": true,
+      "delta": 0
+    },
+    "ingest_interruption_detected": {
+      "chroma_chunks": 72361,
+      "bm25_chunks": 72360,
+      "in_sync": false,
+      "delta": 1
+    },
+    "ingest_reconciled": {
+      "chroma_chunks": 72361,
+      "bm25_chunks": 72361,
+      "in_sync": true,
+      "delta": 0
+    },
+    "delete_interruption_detected": {
+      "chroma_chunks": 72360,
+      "bm25_chunks": 72361,
+      "in_sync": false,
+      "delta": -1
+    },
+    "delete_reconciled": {
+      "chroma_chunks": 72360,
+      "bm25_chunks": 72360,
+      "in_sync": true,
+      "delta": 0
+    },
+    "orphan_chunks_remaining": 0,
+    "cache_epoch_after_recovery": 2
+  },
+  "api_concurrency": {
+    "concurrent_requests": 6,
+    "http_200_count": 6,
+    "total_wall_ms": 2784.1,
+    "calls": [
+      {
+        "profile": "fidelity",
+        "status": 200,
+        "ms": 2409.8,
+        "tokens_used": 3637
+      },
+      {
+        "profile": "economy",
+        "status": 200,
+        "ms": 2506.0,
+        "tokens_used": 291
+      },
+      {
+        "profile": "legacy",
+        "status": 200,
+        "ms": 2364.0,
+        "tokens_used": 1427
+      },
+      {
+        "profile": "fidelity",
+        "status": 200,
+        "ms": 2492.6,
+        "tokens_used": 2100
+      },
+      {
+        "profile": "economy",
+        "status": 200,
+        "ms": 2527.5,
+        "tokens_used": 78
+      },
+      {
+        "profile": "fidelity",
+        "status": 200,
+        "ms": 2766.3,
+        "tokens_used": 3981
+      }
+    ]
+  },
+  "legacy_25q_comparison": {
+    "n_total": 25,
+    "avg_in_tokens": 2566.6,
+    "avg_out_tokens": 94.4,
+    "avg_total_tokens": 2661.0,
+    "avg_latency_ms": 1309.3,
+    "citation_ok_15q": "15/15 (100.0%)",
+    "refusal_10q": "10/10 (100.0%)"
+  }
+}

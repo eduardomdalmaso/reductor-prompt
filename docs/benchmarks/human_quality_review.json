@@ -1,0 +1,47 @@
+{
+  "reviewer": "Gemini 4 Hydrogen (Independent Audit of Full Responses vs. Ground-Truth Excerpts & Sources)",
+  "sample_size": 15,
+  "summary": {
+    "fidelity": {
+      "factual_correct": "13/15 (86.7%)",
+      "faithful_to_retrieved_sources": "11/15 (73.3%)",
+      "expected_book_hit": "14/15 (93.3%)",
+      "expected_page_hit": "13/15 (86.7%)",
+      "unsubstantiated_claims_or_fake_urls": 4,
+      "notable_issues": [
+        "Q002_factual: retrieved p.73 tutorial instead of p.92 bikes:inventory",
+        "Q009_factual: FACTUAL INVERSION ('higher scores preceding lower scores' — Redis sorted sets are ascending)",
+        "Q003, Q017, Q023: fabricated https://example.com/... URLs; Q023 also cited unretrieved p.134"
+      ]
+    },
+    "economy": {
+      "factual_correct": "14/15 (93.3%)",
+      "faithful_to_retrieved_sources": "14/15 (93.3%)",
+      "expected_book_hit": "14/15 (93.3%)",
+      "expected_page_hit": "13/15 (86.7%)",
+      "unsubstantiated_claims_or_fake_urls": 1,
+      "notable_issues": [
+        "Q002_factual: retrieved p.73 tutorial instead of p.92 bikes:inventory",
+        "Q005_factual: answered correctly but cited Redis Ai Vector Search p.742 instead of Redis Core p.9",
+        "Q021_factual: added external Wikipedia HNSW link not in snippet (0 fake example.com URLs)"
+      ]
+    }
+  },
+  "items": [
+    {"id": "Q002_factual", "fidelity": {"factual_correct": false, "faithful": true, "book_ok": true, "page_ok": false, "issues": "Retrieved p.73 JSON tutorial (bike/crashes/newbike) instead of p.92 (bikes:inventory)."}, "economy": {"factual_correct": false, "faithful": true, "book_ok": true, "page_ok": false, "issues": "Same: retrieved p.73 instead of p.92."}},
+    {"id": "Q003_factual", "fidelity": {"factual_correct": true, "faithful": false, "book_ok": true, "page_ok": true, "issues": "Answer HINCRBY (p.57) is correct, but fabricated https://example.com/redis-core-architecture-data-types#hincrby."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None."}},
+    {"id": "Q005_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": false, "page_ok": false, "issues": "Correctly answered dictionary, but retrieved Redis Ai Vector Search p.738 instead of Redis Core p.9."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": false, "page_ok": false, "issues": "Same: retrieved Redis Ai Vector Search p.742 instead of Redis Core p.9."}},
+    {"id": "Q006_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (1.4 kB, p.103)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (1.4 kB, p.103)."}},
+    {"id": "Q008_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "All chart filenames accurate (p.111 in sources, omitted in text)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (explicitly cited p.111)."}},
+    {"id": "Q009_factual", "fidelity": {"factual_correct": false, "faithful": false, "book_ok": true, "page_ok": true, "issues": "FACTUAL ERROR: stated 'higher scores preceding lower scores' (Redis sorted sets are ascending, lowest to highest)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (correctly stated 'from the lowest to the highest', p.20)."}},
+    {"id": "Q011_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "Accurate (insertion order, p.11); added github.com URL."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "Accurate (insertion order, p.11)."}},
+    {"id": "Q012_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (4102444800, p.64)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "book_ok": true, "page_ok": true, "issues": "None (4102444800, p.64)."}},
+    {"id": "Q014_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (Lua + modules API, p.24)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (Lua + modules API, p.24)."}},
+    {"id": "Q015_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (timestamped data points, p.22)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (timestamped data points, p.22)."}},
+    {"id": "Q017_factual", "fidelity": {"factual_correct": true, "faithful": false, "book_ok": true, "page_ok": true, "issues": "Answer accurate (p.29), but fabricated https://example.com/... URL."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (p.29)."}},
+    {"id": "Q018_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (p.75)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (p.75)."}},
+    {"id": "Q020_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (p.109)."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (p.109)."}},
+    {"id": "Q021_factual", "fidelity": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "Accurate (HNSW, p.23); added redis.io URL."}, "economy": {"factual_correct": true, "faithful": false, "book_ok": true, "page_ok": true, "issues": "Accurate (HNSW, p.23), but added external Wikipedia URL not in chunk."}},
+    {"id": "Q023_factual", "fidelity": {"factual_correct": true, "faithful": false, "book_ok": true, "page_ok": true, "issues": "Fabricated 2 https://example.com/... URLs and cited unretrieved p.134."}, "economy": {"factual_correct": true, "faithful": true, "book_ok": true, "page_ok": true, "issues": "None (p.203)."}}
+  ]
+}
