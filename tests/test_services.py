@@ -172,3 +172,23 @@ def test_citation_grounding_and_span_traceability():
     g_bad = compressor.verify_citation_grounding("Conforme Book 1 (Pág 999).", ctx.sources)
     assert g_bad["grounding_ratio"] == 0.0 and g_bad["ungrounded_pages"] == [999]
 
+
+def test_bm25_sqlite_index_search(tmp_path):
+    from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+
+    idx = BM25SqliteIndex(db_path=str(tmp_path / "bm25_test.db"))
+    with idx._connect() as conn:
+        conn.execute(
+            "INSERT INTO chunks_fts(chunk_id, book_id, book_title, chapter, page_number, token_count, content) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("c1", "b1", "Architecturepatternswithpython", "Cap 2", 54, 20, "class SqlAlchemyRepository: def add(self, batch): pass"),
+        )
+        conn.execute(
+            "INSERT INTO chunks_fts(chunk_id, book_id, book_title, chapter, page_number, token_count, content) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("c2", "b2", "Introducingpython3Rdedition", "Cap 1", 10, 15, "Python lists and dictionaries tutorial"),
+        )
+        conn.commit()
+    hits = idx.search("SqlAlchemyRepository add", top_k=5)
+    assert len(hits) >= 1
+    assert hits[0].chunk.id == "c1"
+    assert hits[0].chunk.page_number == 54
+

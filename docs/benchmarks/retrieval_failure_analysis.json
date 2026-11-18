@@ -1,0 +1,246 @@
+{
+  "audit_11_failures": {
+    "total_audited": 11,
+    "failure_stage_counts": {
+      "NEVER_RETRIEVED": 7,
+      "DROPPED_BY_COMPRESSOR": 3,
+      "PRESENT_IN_FINAL_CONTEXT": 1
+    },
+    "cases": [
+      {
+        "id": "Q002_factual",
+        "category": "factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 92,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Redis Core Architecture And Data Types"
+        ],
+        "llm_response_preview": "Based on the provided context, there isn't a specific JSON document example mentioned for the Redis JSON tutorial. The documentation references the ability to import JSON text into"
+      },
+      {
+        "id": "Q003_factual",
+        "category": "factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 57,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Redis Core Architecture And Data Types"
+        ],
+        "llm_response_preview": "To increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, you should use the `HINCRBY` command. However, based o"
+      },
+      {
+        "id": "Q004_factual",
+        "category": "factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 33,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Redis Core Architecture And Data Types"
+        ],
+        "llm_response_preview": "When the last element in a Redis key is deleted, the key is automatically destroyed if it is an aggregate data type (such as a list, set, sorted set, or hash). This behavior is sum"
+      },
+      {
+        "id": "Q005_factual",
+        "category": "factual",
+        "expected_book": "Redis Core Architecture And Data Types",
+        "expected_page": 9,
+        "auto_routed_book": null,
+        "dense_top20_rank": 9,
+        "dense_similarity": 0.7889,
+        "rrf_rank": 9,
+        "elbow_final_rank": 9,
+        "in_final_context": true,
+        "failure_stage": "PRESENT_IN_FINAL_CONTEXT",
+        "top_retrieved_books": [
+          "Redis Ai Vector Search And Semantic Caching"
+        ],
+        "llm_response_preview": "The data structure in Python that is similar to Redis hashes is the **dictionary**. Redis hashes are collections of field-value pairs, which can be directly mapped to Python dictio"
+      },
+      {
+        "id": "Q027_code",
+        "category": "code",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 88,
+        "auto_routed_book": null,
+        "dense_top20_rank": 7,
+        "dense_similarity": 0.7178,
+        "rrf_rank": 7,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "DROPPED_BY_COMPRESSOR",
+        "top_retrieved_books": [
+          "Pythoninanutshell4Thedition"
+        ],
+        "llm_response_preview": "The excerpt does not specifically mention the use of \"fakes\" at the service layer in unit testing. However, it discusses the use of stubs, also known as mocks, which are fake imple"
+      },
+      {
+        "id": "Q029_code",
+        "category": "code",
+        "expected_book": "Programmingrust2Ndedition",
+        "expected_page": 55,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Designingdistributedsystems2Ndedition",
+          "Introducingpython3Rdedition",
+          "Nightly Release Notes"
+        ],
+        "llm_response_preview": "Para escrever arquivos PNG usando Rust, você deve adicionar a dependência do crate `image` ao seu `Cargo.toml`. Infelizmente, o contexto fornecido não especifica uma versão específ"
+      },
+      {
+        "id": "Q046_architecture",
+        "category": "architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 11,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Facilitatingsoftwarearchitecture",
+          "Learningdomain Drivendesign",
+          "Softwarearchitecturemetrics"
+        ],
+        "llm_response_preview": "The excerpt mentions several architectural approaches that aim to make applications easier to test:\n\n1. **Layered Architecture**: This common architecture style ensures separation "
+      },
+      {
+        "id": "Q048_architecture",
+        "category": "architecture",
+        "expected_book": "Architecturepatternswithpython",
+        "expected_page": 67,
+        "auto_routed_book": null,
+        "dense_top20_rank": 1,
+        "dense_similarity": 0.7242,
+        "rrf_rank": 5,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "DROPPED_BY_COMPRESSOR",
+        "top_retrieved_books": [
+          "Architecturepatternswithpython"
+        ],
+        "llm_response_preview": "A pergunta do usuário sobre \"code kata\" não está diretamente relacionada ao contexto técnico fornecido nos livros e capítulos indexados. No entanto, posso fornecer uma explicação g"
+      },
+      {
+        "id": "Q066_contradiction",
+        "category": "contradiction",
+        "expected_book": "Softwarearchitecture Thehardparts",
+        "expected_page": 81,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Softwarearchitecture Thehardparts"
+        ],
+        "llm_response_preview": "To effectively decompose a large monolithic application like the Sysops Squad application into a distributed architecture, starting with the reporting module, follow these steps ba"
+      },
+      {
+        "id": "Q067_contradiction",
+        "category": "contradiction",
+        "expected_book": "Softwarearchitecture Thehardparts",
+        "expected_page": 42,
+        "auto_routed_book": null,
+        "dense_top20_rank": null,
+        "dense_similarity": null,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "NEVER_RETRIEVED",
+        "top_retrieved_books": [
+          "Softwarearchitecture Thehardparts"
+        ],
+        "llm_response_preview": "According to Chapter 7 of \"Software Architecture: The Hard Parts,\" the forces that encourage a larger or smaller service size and boundary are referred to as granularity disintegra"
+      },
+      {
+        "id": "Q081_structure",
+        "category": "structure",
+        "expected_book": "Buildingmicroservices2Ndedition",
+        "expected_page": 8,
+        "auto_routed_book": null,
+        "dense_top20_rank": 19,
+        "dense_similarity": 0.6584,
+        "rrf_rank": null,
+        "elbow_final_rank": null,
+        "in_final_context": false,
+        "failure_stage": "DROPPED_BY_COMPRESSOR",
+        "top_retrieved_books": [
+          "Learningapistyles",
+          "Architecturepatternswithpython"
+        ],
+        "llm_response_preview": "Based on the provided context, the advantages of using REST for microservice communication are not explicitly detailed, but REST is commonly used for its simplicity and statelessne"
+      }
+    ]
+  },
+  "ablation_90q": {
+    "1_dense_only": {
+      "n_queries": 90,
+      "recall_at_5": 0.6111,
+      "recall_at_10": 0.6889,
+      "mrr": 0.5249,
+      "book_at_4_rate": 0.8889,
+      "page_at_4_rate": 0.5556
+    },
+    "2_dense_lexical": {
+      "n_queries": 90,
+      "recall_at_5": 0.6444,
+      "recall_at_10": 0.7333,
+      "mrr": 0.5385,
+      "book_at_4_rate": 0.8778,
+      "page_at_4_rate": 0.5778
+    },
+    "3_dense_rrf": {
+      "n_queries": 90,
+      "recall_at_5": 0.6111,
+      "recall_at_10": 0.6778,
+      "mrr": 0.5236,
+      "book_at_4_rate": 0.8889,
+      "page_at_4_rate": 0.5556
+    },
+    "4_dense_rrf_elbow": {
+      "n_queries": 90,
+      "recall_at_5": 0.5889,
+      "recall_at_10": 0.6111,
+      "mrr": 0.5128,
+      "book_at_4_rate": 0.8778,
+      "page_at_4_rate": 0.5556
+    },
+    "5_full_pipeline_routing": {
+      "n_queries": 90,
+      "recall_at_5": 0.5889,
+      "recall_at_10": 0.6111,
+      "mrr": 0.5269,
+      "book_at_4_rate": 0.8667,
+      "page_at_4_rate": 0.5778
+    }
+  }
+}

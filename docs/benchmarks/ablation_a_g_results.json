@@ -1,0 +1,477 @@
+{
+  "bm25_chunks": 72360,
+  "dev_weight_sweep_30q": {
+    "0.7_0.3": {
+      "n": 30,
+      "precision_at_5": 0.26,
+      "recall_at_5": 0.6667,
+      "recall_at_10": 0.6667,
+      "mrr": 0.625,
+      "book_at_4": 0.9,
+      "page_at_4": 0.6667
+    },
+    "0.6_0.4": {
+      "n": 30,
+      "precision_at_5": 0.28,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7667,
+      "mrr": 0.6689,
+      "book_at_4": 0.9,
+      "page_at_4": 0.7
+    },
+    "0.5_0.5": {
+      "n": 30,
+      "precision_at_5": 0.28,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7667,
+      "mrr": 0.675,
+      "book_at_4": 0.9333,
+      "page_at_4": 0.7667
+    },
+    "0.4_0.6": {
+      "n": 30,
+      "precision_at_5": 0.2933,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7667,
+      "mrr": 0.7067,
+      "book_at_4": 0.9333,
+      "page_at_4": 0.7333
+    }
+  },
+  "chosen_weights": {
+    "dense": 0.4,
+    "bm25": 0.6
+  },
+  "ir_eval_heldout_60q": {
+    "A_dense_no_cut": {
+      "n": 60,
+      "precision_at_5": 0.23,
+      "recall_at_5": 0.6,
+      "recall_at_10": 0.7167,
+      "mrr": 0.5195,
+      "book_at_4": 0.8833,
+      "page_at_4": 0.55
+    },
+    "B_dense_lexical_no_cut": {
+      "n": 60,
+      "precision_at_5": 0.2333,
+      "recall_at_5": 0.6333,
+      "recall_at_10": 0.75,
+      "mrr": 0.5206,
+      "book_at_4": 0.8833,
+      "page_at_4": 0.55
+    },
+    "C_dense_bm25_no_cut": {
+      "n": 60,
+      "precision_at_5": 0.29,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7667,
+      "mrr": 0.6328,
+      "book_at_4": 0.9167,
+      "page_at_4": 0.7
+    },
+    "D_dense_bm25_lexical_no_cut": {
+      "n": 60,
+      "precision_at_5": 0.27,
+      "recall_at_5": 0.7833,
+      "recall_at_10": 0.8,
+      "mrr": 0.6172,
+      "book_at_4": 0.85,
+      "page_at_4": 0.6833
+    },
+    "E_best_conservative_5pct": {
+      "n": 60,
+      "precision_at_5": 0.27,
+      "recall_at_5": 0.7833,
+      "recall_at_10": 0.8,
+      "mrr": 0.6172,
+      "book_at_4": 0.85,
+      "page_at_4": 0.6833
+    },
+    "F_best_balanced": {
+      "n": 60,
+      "precision_at_5": 0.1733,
+      "recall_at_5": 0.6833,
+      "recall_at_10": 0.6833,
+      "mrr": 0.5922,
+      "book_at_4": 0.8333,
+      "page_at_4": 0.6667
+    },
+    "G_best_aggressive": {
+      "n": 60,
+      "precision_at_5": 0.1533,
+      "recall_at_5": 0.6333,
+      "recall_at_10": 0.6333,
+      "mrr": 0.5714,
+      "book_at_4": 0.8,
+      "page_at_4": 0.6167
+    }
+  },
+  "ir_full_90q": {
+    "A_dense_no_cut": {
+      "n": 90,
+      "precision_at_5": 0.2378,
+      "recall_at_5": 0.6222,
+      "recall_at_10": 0.7,
+      "mrr": 0.536,
+      "book_at_4": 0.9,
+      "page_at_4": 0.5667
+    },
+    "B_dense_lexical_no_cut": {
+      "n": 90,
+      "precision_at_5": 0.24,
+      "recall_at_5": 0.6444,
+      "recall_at_10": 0.7333,
+      "mrr": 0.5468,
+      "book_at_4": 0.8778,
+      "page_at_4": 0.5778
+    },
+    "C_dense_bm25_no_cut": {
+      "n": 90,
+      "precision_at_5": 0.2911,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7667,
+      "mrr": 0.6574,
+      "book_at_4": 0.9222,
+      "page_at_4": 0.7111
+    },
+    "D_dense_bm25_lexical_no_cut": {
+      "n": 90,
+      "precision_at_5": 0.2644,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7889,
+      "mrr": 0.6281,
+      "book_at_4": 0.8556,
+      "page_at_4": 0.6889
+    },
+    "E_best_conservative_5pct": {
+      "n": 90,
+      "precision_at_5": 0.2644,
+      "recall_at_5": 0.7667,
+      "recall_at_10": 0.7889,
+      "mrr": 0.6281,
+      "book_at_4": 0.8556,
+      "page_at_4": 0.6889
+    },
+    "F_best_balanced": {
+      "n": 90,
+      "precision_at_5": 0.1711,
+      "recall_at_5": 0.6889,
+      "recall_at_10": 0.7,
+      "mrr": 0.6092,
+      "book_at_4": 0.8222,
+      "page_at_4": 0.6778
+    },
+    "G_best_aggressive": {
+      "n": 90,
+      "precision_at_5": 0.1489,
+      "recall_at_5": 0.6444,
+      "recall_at_10": 0.6444,
+      "mrr": 0.5902,
+      "book_at_4": 0.7889,
+      "page_at_4": 0.6333
+    }
+  },
+  "e2e_heldout_25q": [
+    {
+      "id": "Q002_factual",
+      "is_answerable": true,
+      "A_in": 2297,
+      "A_out": 118,
+      "A_ms": 1196.9,
+      "E_in": 17032,
+      "E_out": 775,
+      "E_ms": 16286.66,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "For the JSON tutorial example, the following JSON document is created in the Redis database:\n\n```json\n{\n    \"inventory\": {\n        \"mountain_bikes\": [\n            {\n               "
+    },
+    {
+      "id": "Q003_factual",
+      "is_answerable": true,
+      "A_in": 5115,
+      "A_out": 138,
+      "A_ms": 2250.67,
+      "E_in": 11946,
+      "E_out": 133,
+      "E_ms": 3208.94,
+      "E_cut_pct": 3.96,
+      "E_resp_preview": "The command that can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, is `HINCRBY`. This comman"
+    },
+    {
+      "id": "Q005_factual",
+      "is_answerable": true,
+      "A_in": 2035,
+      "A_out": 62,
+      "A_ms": 1023.88,
+      "E_in": 8878,
+      "E_out": 21,
+      "E_ms": 1524.79,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "Redis hashes are similar to Python dictionaries. Both are mutable mappings that store collections of key-value pairs."
+    },
+    {
+      "id": "Q006_factual",
+      "is_answerable": true,
+      "A_in": 4088,
+      "A_out": 80,
+      "A_ms": 1423.36,
+      "E_in": 8494,
+      "E_out": 56,
+      "E_ms": 1799.89,
+      "E_cut_pct": 4.61,
+      "E_resp_preview": "The JSON array used in the ReJSONBenchmark test located at [/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.jso"
+    },
+    {
+      "id": "Q008_factual",
+      "is_answerable": true,
+      "A_in": 3573,
+      "A_out": 312,
+      "A_ms": 3091.97,
+      "E_in": 6270,
+      "E_out": 226,
+      "E_ms": 2905.94,
+      "E_cut_pct": 3.66,
+      "E_resp_preview": "The file names of the charts that compare the rate and latency of Lua pass operations with different JSON files are:\n\n1. `bench_lua_pass_100.png` - Rate\n2. `bench_lua_pass_100_l.pn"
+    },
+    {
+      "id": "Q009_factual",
+      "is_answerable": true,
+      "A_in": 3372,
+      "A_out": 156,
+      "A_ms": 1960.07,
+      "E_in": 7109,
+      "E_out": 374,
+      "E_ms": 4356.39,
+      "E_cut_pct": 2.58,
+      "E_resp_preview": "Redis sorted sets are collections of unique strings (members) that maintain order based on each member's associated score. Here's how they maintain order and some key characteristi"
+    },
+    {
+      "id": "Q011_factual",
+      "is_answerable": true,
+      "A_in": 1277,
+      "A_out": 60,
+      "A_ms": 811.51,
+      "E_in": 4575,
+      "E_out": 115,
+      "E_ms": 1705.1,
+      "E_cut_pct": 4.29,
+      "E_resp_preview": "In Redis, the order of strings in a list is determined by the order of insertion. This means that elements are added to the list in the order they are inserted, and the same order "
+    },
+    {
+      "id": "Q012_factual",
+      "is_answerable": true,
+      "A_in": 3583,
+      "A_out": 79,
+      "A_ms": 1233.66,
+      "E_in": 11876,
+      "E_out": 148,
+      "E_ms": 3294.55,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "The timestamp returned when using the `HEXPIRETIME` command on the field \"air_quality\" for the key \"sensor:sensor1\" is 4102444800, as shown in the example provided in the context:\n"
+    },
+    {
+      "id": "Q014_factual",
+      "is_answerable": true,
+      "A_in": 3445,
+      "A_out": 101,
+      "A_ms": 1604.85,
+      "E_in": 8258,
+      "E_out": 160,
+      "E_ms": 2651.57,
+      "E_cut_pct": 2.97,
+      "E_resp_preview": "To extend the features provided by the included data types in Redis, you have two main options:\n\n1. **Write your own custom server-side functions in Lua**: You can leverage Lua scr"
+    },
+    {
+      "id": "Q015_factual",
+      "is_answerable": true,
+      "A_in": 1514,
+      "A_out": 58,
+      "A_ms": 905.35,
+      "E_in": 6112,
+      "E_out": 153,
+      "E_ms": 2150.38,
+      "E_cut_pct": 4.55,
+      "E_resp_preview": "The purpose of Redis time series structures is to store and query timestamped data points efficiently. Specifically, Redis time series allow you to:\n\n1. Store real-valued data poin"
+    },
+    {
+      "id": "Q017_factual",
+      "is_answerable": true,
+      "A_in": 3023,
+      "A_out": 86,
+      "A_ms": 1240.01,
+      "E_in": 14720,
+      "E_out": 364,
+      "E_ms": 6020.67,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "The `ARNEXT` command in Redis is used in conjunction with the `ARINSERT` command to manage sequential insertion into an array data structure. Specifically, `ARNEXT` is used to insp"
+    },
+    {
+      "id": "Q018_factual",
+      "is_answerable": true,
+      "A_in": 1153,
+      "A_out": 186,
+      "A_ms": 2022.5,
+      "E_in": 5803,
+      "E_out": 293,
+      "E_ms": 3304.64,
+      "E_cut_pct": 3.14,
+      "E_resp_preview": "To install Redis Open Source and enable the Redis JSON data type, follow these steps:\n\n1. **Install Redis Open Source**: \n   - If your OS has a Redis 6.x package, you can install i"
+    },
+    {
+      "id": "Q020_factual",
+      "is_answerable": true,
+      "A_in": 2217,
+      "A_out": 133,
+      "A_ms": 1483.62,
+      "E_in": 9853,
+      "E_out": 137,
+      "E_ms": 2844.9,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "According to the provided context, Redis JSON and MessagePack have similar performance rates and latencies when processing and storing incoming JSON values. However, absolute measu"
+    },
+    {
+      "id": "Q021_factual",
+      "is_answerable": true,
+      "A_in": 2373,
+      "A_out": 66,
+      "A_ms": 1107.12,
+      "E_in": 16760,
+      "E_out": 42,
+      "E_ms": 3374.54,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "Redis vector sets support the Hierarchical Navigable Small World (HNSW) algorithm for storing and querying vectors based on cosine similarity. This algorithm allows for fast and ef"
+    },
+    {
+      "id": "Q023_factual",
+      "is_answerable": true,
+      "A_in": 3321,
+      "A_out": 126,
+      "A_ms": 1942.54,
+      "E_in": 7732,
+      "E_out": 309,
+      "E_ms": 3863.93,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "Redis Bloom filters serve the purpose of checking for the presence or absence of an element in a set with a probabilistic approach. They are particularly useful for set membership "
+    },
+    {
+      "id": "Q091_no_evidence",
+      "is_answerable": false,
+      "A_in": 3005,
+      "A_out": 32,
+      "A_ms": 871.06,
+      "E_in": 10965,
+      "E_out": 114,
+      "E_ms": 2846.07,
+      "E_cut_pct": 4.55,
+      "E_resp_preview": "Based on the provided context, there is no specific information about the secret API password and Slack channel used by the Komtek K-Monitor team in 2026. The context does not cont"
+    },
+    {
+      "id": "Q092_no_evidence",
+      "is_answerable": false,
+      "A_in": 6839,
+      "A_out": 69,
+      "A_ms": 1841.59,
+      "E_in": 14719,
+      "E_out": 564,
+      "E_ms": 8058.88,
+      "E_cut_pct": 4.55,
+      "E_resp_preview": "O contexto fornecido não contém informações sobre o protocolo HydraX-999 ou qualquer detalhe sobre um cabeçalho de pacote binário específico para esse protocolo. Portanto, não é po"
+    },
+    {
+      "id": "Q093_no_evidence",
+      "is_answerable": false,
+      "A_in": 581,
+      "A_out": 36,
+      "A_ms": 743.54,
+      "E_in": 10061,
+      "E_out": 119,
+      "E_ms": 2665.46,
+      "E_cut_pct": 4.96,
+      "E_resp_preview": "Based on the provided context, there is no specific information about the annual salary of the CTO of Acme Robotics Corp in 2025. The context only provides salary details for emplo"
+    },
+    {
+      "id": "Q094_no_evidence",
+      "is_answerable": false,
+      "A_in": 3848,
+      "A_out": 58,
+      "A_ms": 1275.59,
+      "E_in": 11513,
+      "E_out": 280,
+      "E_ms": 4503.32,
+      "E_cut_pct": 3.47,
+      "E_resp_preview": "Com base no contexto fornecido, não há detalhes específicos sobre o \"StarlightDB 2028 cloud tier\" ou sua fórmula interna de precificação. Os livros indexados não contêm informações"
+    },
+    {
+      "id": "Q095_no_evidence",
+      "is_answerable": false,
+      "A_in": 5595,
+      "A_out": 100,
+      "A_ms": 1926.98,
+      "E_in": 20972,
+      "E_out": 164,
+      "E_ms": 5859.06,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "O contexto fornecido não contém informações sobre um kernel patch do PostgreSQL 19.4 que corrigiu a vulnerabilidade CVE-2029-88123 em Solaris SPARC. Não há menção a essa combinação"
+    },
+    {
+      "id": "Q096_no_evidence",
+      "is_answerable": false,
+      "A_in": 2866,
+      "A_out": 43,
+      "A_ms": 1239.94,
+      "E_in": 11582,
+      "E_out": 44,
+      "E_ms": 2368.91,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "Based on the provided context, there is no information about the Wi-Fi SSID and WPA3 passphrase of the Komtek Data Center floor 3. The available information does not contain detail"
+    },
+    {
+      "id": "Q097_no_evidence",
+      "is_answerable": false,
+      "A_in": 4080,
+      "A_out": 53,
+      "A_ms": 1263.42,
+      "E_in": 10983,
+      "E_out": 104,
+      "E_ms": 2802.28,
+      "E_cut_pct": 3.97,
+      "E_resp_preview": "I apologize, but there is no information available in the provided context about a book titled \"Quantum COBOL for Serverless GPUs\" or any chapter related to it. The context provide"
+    },
+    {
+      "id": "Q098_no_evidence",
+      "is_answerable": false,
+      "A_in": 578,
+      "A_out": 51,
+      "A_ms": 812.96,
+      "E_in": 8446,
+      "E_out": 61,
+      "E_ms": 1833.44,
+      "E_cut_pct": 0.0,
+      "E_resp_preview": "The provided context does not contain any information about the author's blood pressure measurements. The books listed do not mention personal health details of the authors. Theref"
+    },
+    {
+      "id": "Q099_no_evidence",
+      "is_answerable": false,
+      "A_in": 3703,
+      "A_out": 46,
+      "A_ms": 1089.47,
+      "E_in": 13533,
+      "E_out": 250,
+      "E_ms": 4695.56,
+      "E_cut_pct": 2.6,
+      "E_resp_preview": "Based on the provided context, there is no specific information about a ReductorPrompt CI runner or its private RSA-4096 key fingerprint. The context includes details on generating"
+    },
+    {
+      "id": "Q100_no_evidence",
+      "is_answerable": false,
+      "A_in": 572,
+      "A_out": 35,
+      "A_ms": 704.86,
+      "E_in": 7863,
+      "E_out": 83,
+      "E_ms": 1953.44,
+      "E_cut_pct": 3.21,
+      "E_resp_preview": "The provided context does not contain any information about the secret underground vault of Acme Bank or its GPS coordinates. The context is related to technical documentation for "
+    }
+  ]
+}

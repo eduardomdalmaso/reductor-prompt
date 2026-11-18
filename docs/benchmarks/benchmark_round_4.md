@@ -37,3 +37,32 @@
 1. **Rastreabilidade e Grounding funcionam**: todos os `sources` agora retornam `chunk_id`, `book_id`, `page_start`/`page_end`, `char_start`/`char_end` e `excerpt_preview`. O `verify_citation_grounding` detectou automaticamente a única resposta com páginas inventadas (`Q068_contradiction`, `grounding_ratio = 0,1667`).
 2. **Por que `Book Hit` (75%) e `Page Hit` (45%) não subiram**: aumentar `top_k` de `12` para `16` e fazer boost de termos compostos melhorou o `MRR` (`0,5396` → `0,5456`), mas perguntas abertas que não citam o título do livro continuam sendo atraídas por livros concorrentes do mesmo tema no índice denso.
 3. **Por que a latência não caiu com `embed_batch`**: o tempo de embedding é mínimo (<50 ms) frente aos ~2.000 ms de geração de ~214 tokens de saída no `qwen2.5:14b`. Reduzir a latência abaixo de `+15%` exige limitar tokens de saída (`num_predict` / concisão no prompt), não apenas otimizar embeddings.
+
+---
+
+## 4. Auditoria das 11 Falhas de Página e Estudo de Ablação (5 Configurações)
+
+**Dados brutos:** [retrieval_failure_analysis.json](file:///c:/Users/hades/Documents/reductor-prompt/docs/benchmarks/retrieval_failure_analysis.json)
+
+### 4.1 Onde a evidência desapareceu nas 11 perguntas que falharam a página esperada
+
+| Causa Raiz | Quantidade | % |
+| :--- | :---: | :---: |
+| `NEVER_RETRIEVED` (não entrou no Dense Top-20 nem no RRF) | **`7`** | **63,6%** |
+| `DROPPED_BY_COMPRESSOR` (estava no RRF, mas cortada pelo Elbow/orçamento) | **`3`** | **27,3%** |
+| `PRESENT_IN_FINAL_CONTEXT` (chegou no contexto final, fora do top-6) | **`1`** | **9,1%** |
+
+### 4.2 Estudo de Ablação (90 Perguntas Respondíveis, mesmos documentos e parâmetros)
+
+| Configuração | `Recall@5` | `Recall@10` | `MRR` | `Book@4` | `Page@4` |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **1. `Dense only`** | `0,6111` | `0,6889` | `0,5249` | **`0,8889`** | `0,5556` |
+| **2. `Dense + lexical` (`$contains` + boost)** | **`0,6444`** | **`0,7333`** | **`0,5385`** | `0,8778` | **`0,5778`** |
+| **3. `Dense + Multi-Query RRF`** | `0,6111` | `0,6778` | `0,5236` | `0,8889` | `0,5556` |
+| **4. `Dense + RRF + Elbow`** | `0,5889` | `0,6111` | `0,5128` | `0,8778` | `0,5556` |
+| **5. `Pipeline completo + roteamento`** | `0,5889` | `0,6111` | `0,5269` | `0,8667` | **`0,5778`** |
+
+**Conclusão causal definitiva:**
+1. O maior ganho real de recuperação vem do **reforço lexical** (`2_dense_lexical` vence em `Recall@5 = 0,6444`, `Recall@10 = 0,7333`, `MRR = 0,5385` e `Page@4 = 0,5778`).
+2. O **Elbow Cutoff atual** derruba `Recall@10` de `0,6778` para `0,6111` (`-6,67 p.p.`), explicando os **27,3% (`3/11`)** de evidências descartadas após a recuperação.
+3. Os outros **63,6% (`7/11`)** nunca chegam nem ao Top-20 denso — exigindo busca híbrida lexical ampla (ex.: BM25) além de `$contains` apenas para identificadores CamelCase/snake_case.
