@@ -1,0 +1,1002 @@
+[
+  {
+    "id": "Q001_factual",
+    "category": "factual",
+    "query": "What is the purpose of Redis Top-K structures?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 18,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_18_74a14d",
+    "evidence_snippet": "### Top-K\n\n[Redis Top-K](/content/develop/data-types/probabilistic/top-k.md)\nstructures estimate the ranking of a data point within a stream of values.\nFor more information, see:\n\n- [Redis Top-K overview](/content/develop/data-types/probabilistic/top-k.md)\n- [Top-K command refere",
+    "is_answerable": true
+  },
+  {
+    "id": "Q002_factual",
+    "category": "factual",
+    "query": "What JSON document is created in the Redis database for the JSON tutorial example?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 92,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_93_743d07",
+    "evidence_snippet": "First, create the JSON document in your database:\n\n{{< clients-example set=\"json_tutorial\" step=\"set_bikes\" description=\"Setup: Create a complex JSON document with nested objects and arrays to use in JSONPath examples\" max_lines=\"10\" prereq=\"true\" >}}\n> JSON.SET bikes:inventory $",
+    "is_answerable": true
+  },
+  {
+    "id": "Q003_factual",
+    "category": "factual",
+    "query": "What command can be used to increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 57,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_57_5d09aa",
+    "evidence_snippet": "# Recreate the bike:1 hash so this example runs on its own.\n> DEL bike:1\n(integer) 1\n> HSET bike:1 model Deimos brand Ergonom type 'Enduro bikes' price 4972\n(integer) 4\n> HMGET bike:1 model price no-such-field\n1) \"Deimos\"\n2) \"4972\"\n3) (nil)\n{{< /clients-example >}}\n\nThere are com",
+    "is_answerable": true
+  },
+  {
+    "id": "Q004_factual",
+    "category": "factual",
+    "query": "What happens when the last element in a Redis key is deleted?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 33,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_33_1655c0",
+    "evidence_snippet": "## Deleting elements\n\n[`ARDEL`](/content/commands/ardel.md) deletes one or more elements by index and returns the count of elements actually removed. [`ARDELRANGE`](/content/commands/ardelrange.md) removes all elements within an index range; reversing `start` and `end` is support",
+    "is_answerable": true
+  },
+  {
+    "id": "Q005_factual",
+    "category": "factual",
+    "query": "What data structure in Python is similar to Redis hashes?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 9,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_9_584f57",
+    "evidence_snippet": "### Hashes\n\n[Redis hashes](/content/develop/data-types/hashes.md) are record types modeled as collections of field-value pairs.\nAs such, Redis hashes resemble [Python dictionaries](https://docs.python.org/3/tutorial/datastructures.html#dictionaries), [Java HashMaps](https://docs.",
+    "is_answerable": true
+  },
+  {
+    "id": "Q006_factual",
+    "category": "factual",
+    "query": "What is the size of the JSON array used in the ReJSONBenchmark test located at [/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json)?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 103,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_108_c74f99",
+    "evidence_snippet": "### A bigger array\n\nMoving on to bigger values, we use the 1.4 kB array in\n[/tests/files/pass-jsonsl-1.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-jsonsl-1.json):\n\n\n![ReJSONBenchmark pass-jsonsl-1.json](images/bench_pass_jsonsl_1.png)\n\n![ReJSO",
+    "is_answerable": true
+  },
+  {
+    "id": "Q007_factual",
+    "category": "factual",
+    "query": "How do you enable debugging information when compiling RedisJSON?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 86,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_86_d491f5",
+    "evidence_snippet": "## Debugging\nTo include debugging information, you need to set the [`DEBUG`](/content/commands/debug.md) environment variable before you compile RedisJSON. For example, run `export DEBUG=1`.\n\nYou can add breakpoints to Python tests in single-test mode. To set a breakpoint, call t",
+    "is_answerable": true
+  },
+  {
+    "id": "Q008_factual",
+    "category": "factual",
+    "query": "What are the file names of the charts that compare the rate and latency of Lua pass operations with different JSON files?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 111,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_116_4c8908",
+    "evidence_snippet": "### Even more charts\n\nThese charts are more of the same but independent for each file (value):\n\n![VS. Lua pass-100.json rate](images/bench_lua_pass_100.png)\n\n![VS. Lua pass-100.json average latency](images/bench_lua_pass_100_l.png)\n\n![VS. Lua pass-jsonsl-1.json rate](images/bench",
+    "is_answerable": true
+  },
+  {
+    "id": "Q009_factual",
+    "category": "factual",
+    "query": "What are Redis sorted sets and how do they maintain order?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 20,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_20_355bc1",
+    "evidence_snippet": "### Sorted sets\n\n[Redis sorted sets](/content/develop/data-types/sorted-sets.md) are collections of unique strings that maintain order by each string's associated score.\nFor more information, see:\n\n* [Overview of Redis sorted sets](/content/develop/data-types/sorted-sets.md)\n* [R",
+    "is_answerable": true
+  },
+  {
+    "id": "Q010_factual",
+    "category": "factual",
+    "query": "How can you use the wildcard operator in the `JSON.GET` command to retrieve all items in a specific collection within a JSON document?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 93,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_94_70166a",
+    "evidence_snippet": "### Access examples\n\nThe following examples use the [`JSON.GET`](/content/commands/json.get.md) command to retrieve data from various paths in the JSON document.\n\nYou can use the wildcard operator `*` to return a list of all items in the inventory:\n\n{{< clients-example set=\"json_",
+    "is_answerable": true
+  },
+  {
+    "id": "Q011_factual",
+    "category": "factual",
+    "query": "What is the order of strings in a Redis list?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 11,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_11_88e349",
+    "evidence_snippet": "### Lists\n\n[Redis lists](/content/develop/data-types/lists.md) are lists of strings sorted by insertion order.\nFor more information, see:\n\n* [Overview of Redis lists](/content/develop/data-types/lists.md)\n* [Redis list command reference](/commands/?group=list)",
+    "is_answerable": true
+  },
+  {
+    "id": "Q012_factual",
+    "category": "factual",
+    "query": "What is the timestamp returned when using the HEXPIRETIME command on the field \"air_quality\" for the key \"sensor:sensor1\"?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 64,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_64_8f4ea4",
+    "evidence_snippet": "# (4102444800 is just an example; use a timestamp appropriate for your use case).\n> HEXPIREAT sensor:sensor1 4102444800 FIELDS 1 air_quality\n1) (integer) 1\n> HEXPIRETIME sensor:sensor1 FIELDS 1 air_quality\n1) (integer) 4102444800\n{{< /clients-example >}}",
+    "is_answerable": true
+  },
+  {
+    "id": "Q013_factual",
+    "category": "factual",
+    "query": "How are small hashes with a few elements and small values encoded in memory to make them very memory efficient?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 58,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_58_9d09b7",
+    "evidence_snippet": "# Recreate the bike:1 hash so this example runs on its own.\n> DEL bike:1\n(integer) 1\n> HSET bike:1 model Deimos brand Ergonom type 'Enduro bikes' price 4972\n(integer) 4\n> HINCRBY bike:1 price 100\n(integer) 5072\n> HINCRBY bike:1 price -100\n(integer) 4972\n{{< /clients-example >}}\n\n",
+    "is_answerable": true
+  },
+  {
+    "id": "Q014_factual",
+    "category": "factual",
+    "query": "How can you extend Redis features beyond the included data types?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 24,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_24_f50a30",
+    "evidence_snippet": "## Adding extensions\n\nTo extend the features provided by the included data types, use one of these options:\n\n1. Write your own custom [server-side functions in Lua](/content/develop/programmability/_index.md).\n1. Write your own Redis module using the [modules API](/content/develo",
+    "is_answerable": true
+  },
+  {
+    "id": "Q015_factual",
+    "category": "factual",
+    "query": "What is the purpose of Redis time series structures?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 22,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_22_cc8f14",
+    "evidence_snippet": "### Time series\n\n[Redis time series](/content/develop/data-types/timeseries/_index.md)\nstructures let you store and query timestamped data points.\nFor more information, see:\n\n- [Redis time series overview](/content/develop/data-types/timeseries/_index.md)\n- [Time series command r",
+    "is_answerable": true
+  },
+  {
+    "id": "Q016_factual",
+    "category": "factual",
+    "query": "What character indicates the use of JSONPath syntax in Redis JSON path queries?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 88,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_88_1fd647",
+    "evidence_snippet": "## Seção: Path\n*Fonte: `content/develop/data-types/json/path.md`*\n\n---\naliases:\n- /stack/json/path\n- /stack/json/path/\ncategories:\n- docs\n- develop\n- stack\n- oss\n- rs\n- rc\n- oss\n- kubernetes\n- clients\ndescription: Access specific elements within a JSON document\nlinkTitle: Path\nti",
+    "is_answerable": true
+  },
+  {
+    "id": "Q017_factual",
+    "category": "factual",
+    "query": "How does the `ARNEXT` command function in the context of sequential insertion using the `ARINSERT` command in Redis?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 29,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_29_b720e3",
+    "evidence_snippet": "## Sequential insertion\n\n[`ARINSERT`](/content/commands/arinsert.md) appends values using an internal cursor that advances automatically after each call. Use [`ARNEXT`](/content/commands/arnext.md) to inspect where the next insert would land, and [`ARSEEK`](/content/commands/arse",
+    "is_answerable": true
+  },
+  {
+    "id": "Q018_factual",
+    "category": "factual",
+    "query": "How can you install Redis Open Source to enable the Redis JSON data type?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 75,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_75_07ae42",
+    "evidence_snippet": "## Enable Redis JSON\n\nThe Redis JSON data type is part of Redis Open Source and it is also available in Redis Software and Redis Cloud.\nSee\n[Install Redis Open Source](/content/operate/oss_and_stack/install/install-stack/_index.md) or\n[Install Redis Software](/content/operate/rs/",
+    "is_answerable": true
+  },
+  {
+    "id": "Q019_factual",
+    "category": "factual",
+    "query": "How can you enable full-text search capabilities for JSON documents stored in Redis?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 87,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_87_a3078e",
+    "evidence_snippet": "## Seção: Indexing Json\n*Fonte: `content/develop/data-types/json/indexing_JSON.md`*\n\n---\ncategories:\n- docs\n- develop\n- stack\n- oss\n- rs\n- rc\n- oss\n- kubernetes\n- clients\ndescription: Combine Redis JSON and Redis Search to index and search JSON documents\nlinkTitle: Index/Search\nt",
+    "is_answerable": true
+  },
+  {
+    "id": "Q020_factual",
+    "category": "factual",
+    "query": "How does the performance of Redis JSON compare to MessagePack when processing and storing incoming JSON values?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 109,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_114_83b303",
+    "evidence_snippet": "### Setting and getting the root\n\nStoring raw JSON performs best in this test, but that isn't really surprising as all it does is\nserve unprocessed strings. While you can and should use Redis for caching opaque data, and JSON\n\"blobs\" are just one example, this does not allow any ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q021_factual",
+    "category": "factual",
+    "query": "What algorithm does Redis vector sets support for storing and querying vectors based on cosine similarity?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 23,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_23_55e21a",
+    "evidence_snippet": "### Vector sets\n\n[Redis vector sets](/content/develop/data-types/vector-sets/_index.md) are a specialized data type designed for managing high-dimensional vector data, enabling fast and efficient vector similarity search within Redis. Vector sets are optimized for use cases invol",
+    "is_answerable": true
+  },
+  {
+    "id": "Q022_factual",
+    "category": "factual",
+    "query": "What is the difference between the `ARLEN` and `ARCOUNT` commands when applied to a sparse array in Redis?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 27,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_27_9b67d6",
+    "evidence_snippet": "## Array length vs. element count\n\nRedis arrays expose two distinct size measurements:\n\n- [`ARLEN`](/content/commands/arlen.md) returns the *logical length*: the highest set index plus one.\n- [`ARCOUNT`](/content/commands/arcount.md) returns the number of *non-empty* elements.\n\nF",
+    "is_answerable": true
+  },
+  {
+    "id": "Q023_factual",
+    "category": "factual",
+    "query": "What is the purpose of Redis Bloom filters in terms of set membership checks?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 13,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_13_09c843",
+    "evidence_snippet": "### Bloom filter\n\n[Redis Bloom filters](/content/develop/data-types/probabilistic/bloom-filter.md)\nlet you check for the presence or absence of an element in a set. For more\ninformation, see:\n\n- [Overview of Redis Bloom filters](/content/develop/data-types/probabilistic/bloom-fil",
+    "is_answerable": true
+  },
+  {
+    "id": "Q024_factual",
+    "category": "factual",
+    "query": "What are the steps involved in developing Redis JSON, including setting up the development environment and running tests and benchmarks?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 78,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_78_bc1a59",
+    "evidence_snippet": "## Seção: Developer\n*Fonte: `content/develop/data-types/json/developer.md`*\n\n---\ncategories:\n- docs\n- develop\n- stack\n- oss\n- rs\n- rc\n- oss\n- kubernetes\n- clients\ndescription: 'Notes on JSON debugging, testing and documentation.'\nlinkTitle: Developer notes\ntitle: Developer notes\n",
+    "is_answerable": true
+  },
+  {
+    "id": "Q025_factual",
+    "category": "factual",
+    "query": "What is the size of the JSON object used in the ReJSON benchmark tests as shown in the image for \"pass-json-parser-0000.json\"?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 104,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_109_05befb",
+    "evidence_snippet": "### A largish object\n\nMore of the same to wrap up, now we'll take on a behemoth of no less than 3.5 kB as given by\n[/tests/files/pass-json-parser-0000.json](https://github.com/RedisLabsModules/redisjson/blob/master/tests/files/pass-json-parser-0000.json):\n\n![ReJSONBenchmark pass-",
+    "is_answerable": true
+  },
+  {
+    "id": "Q026_code",
+    "category": "code",
+    "query": "What happens if an order line is allocated to the same batch twice in the allocation process?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 36,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_32_f94b7e",
+    "evidence_snippet": "• We should not be able to allocate the line to the batch. We can’t allocate the same line twice. For example: • We have a batch of 10 BLUE-V ASE, and we allocate an order line for 2 BLUE- V ASE. • If we allocate the order line again to the same batch, the batch should still have",
+    "is_answerable": true
+  },
+  {
+    "id": "Q027_code",
+    "category": "code",
+    "query": "What is the purpose of using fakes at the service layer in unit testing, as mentioned in the excerpt?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 88,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_83_751f4f",
+    "evidence_snippet": "1 Service-layer services and domain services do have confusingly similar names. We tackle this topic later in “Why Is Everything Called a Service?” on page 66. self._batches = set(batches) def add(self, batch): self._batches.add(batch) def get(self, reference): return next(b for ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q028_code",
+    "category": "code",
+    "query": "What is the issue with coupling model properties directly to database columns in SQLAlchemy?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 54,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_50_05479f",
+    "evidence_snippet": "id = Column(Integer, primary_key=True) sku = Column(String(250)) qty = Integer(String(250)) order_id = Column(Integer, ForeignKey('order.id')) order = relationship(Order) class Allocation(Base): ... Y ou don’t need to understand SQLAlchemy to see that our pristine model is now fu",
+    "is_answerable": true
+  },
+  {
+    "id": "Q029_code",
+    "category": "code",
+    "query": "What Rust crate and version should be added to Cargo.toml to enable writing PNG image files?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 55,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_54_466fee",
+    "evidence_snippet": "pixels[row * bounds.0 + column] = match escape_time(point, 255) { None => 0, Some(count) => 255 - count as u8 }; If escape_time says that point belongs to the set, render colors the corresponding pixel black ( 0). Otherwise, render assigns darker colors to the numbers that took l",
+    "is_answerable": true
+  },
+  {
+    "id": "Q030_code",
+    "category": "code",
+    "query": "What command should be used to clone the GitHub repository containing the code for the chapters on architecture patterns with Python?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 50,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_46_c65057",
+    "evidence_snippet": "The code for this chapter is in the chapter_02_repository branch on GitHub. git clone https://github.com/cosmicpython/code.git cd code git checkout chapter_02_repository # or to code along, checkout the previous chapter: git checkout chapter_01_domain_model Persisting Our Domain ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q031_code",
+    "category": "code",
+    "query": "What are the responsibilities of the Flask app in the given architecture pattern?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 91,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_86_cd9c49",
+    "evidence_snippet": "We extract the user’s commands from the web request and pass them to a domain service. We return some JSON responses with the appropriate status codes. The responsibilities of the Flask app are just standard web stuff: per-request session management, parsing information out of PO",
+    "is_answerable": true
+  },
+  {
+    "id": "Q032_code",
+    "category": "code",
+    "query": "What is the purpose of the block surrounded by curly braces in Rust when it is used without a semicolon at the end?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 32,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_31_509fd3",
+    "evidence_snippet": "Rust has a return statement, but the gcd function doesn’t need one. If a function body ends with an expression that is not followed by a semicolon, that’s the function’s return value. In fact, any block surrounded by curly braces can function as an expres‐ sion. For example, this",
+    "is_answerable": true
+  },
+  {
+    "id": "Q033_code",
+    "category": "code",
+    "query": "What is the syntax for initializing a `Complex<f64>` value with specific real and imaginary parts in Rust?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 47,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_46_9513f2",
+    "evidence_snippet": "It’s traditional to use z for complex numbers, so we’ve renamed our looping variable. The expression Complex { re: 0.0, im: 0.0 } is the way we write complex zero using the num crate’s Complex type. Complex is a Rust structure type (or struct), defined like this: struct Complex<T",
+    "is_answerable": true
+  },
+  {
+    "id": "Q034_code",
+    "category": "code",
+    "query": "What is the difference in how values are stored in Rust compared to Java when a Rust value nests inside another value?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 87,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_86_3586e5",
+    "evidence_snippet": "Pointer Types Rust has several types that represent memory addresses. This is a big difference between Rust and most languages with garbage collection. In Java, if class Rectangle contains a field Vector2D upperLeft;, then upperLeft is a reference to another separately created Ve",
+    "is_answerable": true
+  },
+  {
+    "id": "Q035_code",
+    "category": "code",
+    "query": "What are the two primary methods defined in the simplest repository implementation according to the excerpt?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 58,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_54_231077",
+    "evidence_snippet": "6 Y ou may be thinking, “What about list or delete or update?” However, in an ideal world, we modify our model objects one at a time, and delete is usually handled as a soft-delete—i.e., batch.cancel(). Finally, update is taken care of by the Unit of Work pattern, as you’ll see i",
+    "is_answerable": true
+  },
+  {
+    "id": "Q036_code",
+    "category": "code",
+    "query": "What is the purpose of using a tuple type for the `bounds` parameter in the `write_image` function?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 86,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_85_e2687a",
+    "evidence_snippet": "/// Write the buffer `pixels`, whose dimensions are given by `bounds`, to the /// file named `filename`. fn write_image(filename: &str, pixels: &[u8], bounds: (usize, usize)) -> Result<(), std::io::Error> { ... } The type of the bounds parameter is (usize, usize), a tuple of two ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q037_code",
+    "category": "code",
+    "query": "What is the metaphor used to explain the process of switching between writing tests against the domain model and other testing approaches?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 101,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_96_4302b4",
+    "evidence_snippet": "When starting a new project or when hitting a particularly gnarly problem, we will drop back down to writing tests against the domain model so we get better feedback and executable documentation of our intent. The metaphor we use is that of shifting gears. When starting a journey",
+    "is_answerable": true
+  },
+  {
+    "id": "Q038_code",
+    "category": "code",
+    "query": "How does the `hash_file` function read and hash a file in Python using the SHA-1 algorithm?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 69,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_64_f0c706",
+    "evidence_snippet": "Abstracting State Aids Testability Let’s see an example. Imagine we want to write code for synchronizing two file direc‐ tories, which we’ll call the source and the destination: • If a file exists in the source but not in the destination, copy the file over. • If a file exists in",
+    "is_answerable": true
+  },
+  {
+    "id": "Q039_code",
+    "category": "code",
+    "query": "What is the purpose of the `allocate` method in the `Batch` class?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 37,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_33_f25f30",
+    "evidence_snippet": "2 In previous Python versions, we might have used a namedtuple. Y ou could also check out Hynek Schlawack’s excellent attrs. 3 Or perhaps you think there’s not enough code? What about some sort of check that the SKU in the OrderLine matches Batch.sku? We saved some thoughts on va",
+    "is_answerable": true
+  },
+  {
+    "id": "Q040_code",
+    "category": "code",
+    "query": "Why can't the `MutexGuard` type be marked as `Copy` in Rust?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 118,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_117_5ddffd",
+    "evidence_snippet": "representing an operating system file handle, is not Copy; duplicating such a value would entail asking the operating system for another file handle. Similarly, the MutexGuard type, representing a locked mutex, isn’t Copy: this type isn’t meaningful to copy at all, as only one th",
+    "is_answerable": true
+  },
+  {
+    "id": "Q041_code",
+    "category": "code",
+    "query": "What does the `allocate` function return after allocating an `OrderLine` to a `Batch`?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 46,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_42_c3215b",
+    "evidence_snippet": "assert medium.available_quantity == 100 assert latest.available_quantity == 100 def test_returns_allocated_batch_ref(): in_stock_batch = Batch(\"in-stock-batch-ref\", \"HIGHBROW-POSTER\", 100, eta=None) shipment_batch = Batch(\"shipment-batch-ref\", \"HIGHBROW-POSTER\", 100, eta=tomorrow",
+    "is_answerable": true
+  },
+  {
+    "id": "Q042_code",
+    "category": "code",
+    "query": "What Rust string-like type should be used when working with filenames that may contain non-Unicode characters?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 100,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_99_42fb92",
+    "evidence_snippet": "that isn’t valid Unicode. What should happen when a Rust program comes across this sort of filename? Rust’s solution is to offer a few string-like types for these situations: • Stick to String and &str for Unicode text. • When working with filenames, use std::path::PathBuf and &P",
+    "is_answerable": true
+  },
+  {
+    "id": "Q043_code",
+    "category": "code",
+    "query": "What is the purpose of using `typing.NewType` in the context of type hints for the `Batch` class?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 41,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_37_94a529",
+    "evidence_snippet": "4 It is appalling. Please, please don’t do this. —Harry rigidly to our principles of encapsulation and careful layering will help us to avoid a ball of mud. More Types for More Type Hints If you really want to go to town with type hints, you could go so far as wrapping primitive ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q044_code",
+    "category": "code",
+    "query": "What SQL query is used to insert an order line into the `order_lines` table in the repository test?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 61,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_57_cecc01",
+    "evidence_snippet": "Repository test for retrieving a complex object (test_repository.py) def insert_order_line(session): session.execute( 'INSERT INTO order_lines (orderid, sku, qty)' ' VALUES (\"order1\", \"GENERIC-SOFA\", 12)' ) [[orderline_id]] = session.execute( 'SELECT id FROM order_lines WHERE ord",
+    "is_answerable": true
+  },
+  {
+    "id": "Q045_code",
+    "category": "code",
+    "query": "What happens to the unit of work when there is no exception during the context manager exit in the given UoW implementation?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 116,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_111_0b3b59",
+    "evidence_snippet": "rows = list(new_session.execute('SELECT * FROM \"batches\"')) assert rows == [] We haven’t shown it here, but it can be worth testing some of the more “obscure” database behavior, like transactions, against the “real” database—that is, the same engine. For now, we’re getting away w",
+    "is_answerable": true
+  },
+  {
+    "id": "Q046_architecture",
+    "category": "architecture",
+    "query": "What are some architectural approaches mentioned in the excerpt that aim to make applications easier to test?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 11,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_9_8953ec",
+    "evidence_snippet": "Preface Y ou may be wondering who we are and why we wrote this book. At the end of Harry’s last book, Test-Driven Development with Python (O’Reilly), he found himself asking a bunch of questions about architecture, such as, What’s the best way of structuring your application so t",
+    "is_answerable": true
+  },
+  {
+    "id": "Q047_architecture",
+    "category": "architecture",
+    "query": "What is the copyright year and the copyright holders of the book \"Software Architecture: The Hard Parts\"?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 6,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_5_6d5cc2",
+    "evidence_snippet": "978-1-492-08689-5 [LSI] Software Architecture: The Hard Parts by Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani Copyright © 2022 Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani. All rights reserved. Printed in the United States of America. Published",
+    "is_answerable": true
+  },
+  {
+    "id": "Q048_architecture",
+    "category": "architecture",
+    "query": "What is a code kata and how is it used in the context of practicing TDD?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 67,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_62_1df103",
+    "evidence_snippet": "1 A code kata is a small, contained programming challenge often used to practice TDD. See “Kata—The Only Way to Learn TDD” by Peter Provost. CHAPTER 3 A Brief Interlude: On Coupling and Abstractions Allow us a brief digression on the subject of abstractions, dear reader. We’ve ta",
+    "is_answerable": true
+  },
+  {
+    "id": "Q049_architecture",
+    "category": "architecture",
+    "query": "What is the purpose of the Unit of Work pattern in the context of the Repository and Service Layer patterns?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 107,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_102_817145",
+    "evidence_snippet": "CHAPTER 6 Unit of Work Pattern In this chapter we’ll introduce the final piece of the puzzle that ties together the Repository and Service Layer patterns: the Unit of Work pattern. If the Repository pattern is our abstraction over the idea of persistent storage, the Unit of Work ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q050_architecture",
+    "category": "architecture",
+    "query": "What are the key patterns discussed for modeling domains in the context of domain modeling according to the excerpt?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 31,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_27_24177e",
+    "evidence_snippet": "CHAPTER 1 Domain Modeling This chapter looks into how we can model business processes with code, in a way that’s highly compatible with TDD. We’ll discuss why domain modeling matters, and we’ll look at a few key patterns for modeling domains: Entity, Value Object, and Domain Serv",
+    "is_answerable": true
+  },
+  {
+    "id": "Q051_architecture",
+    "category": "architecture",
+    "query": "What pattern was covered at the end of Chapter 2 in the context of the allocations project?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 81,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_76_4e31bc",
+    "evidence_snippet": "CHAPTER 4 Our First Use Case: Flask API and Service Layer Back to our allocations project! Figure 4-1 shows the point we reached at the end of Chapter 2, which covered the Repository pattern. Figure 4-1. Before: we drive our app by talking to repositories and the domain model 55",
+    "is_answerable": true
+  },
+  {
+    "id": "Q052_architecture",
+    "category": "architecture",
+    "query": "What is the range of integer indexes that can be mapped to string values in Redis arrays?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 25,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_25_811ca8",
+    "evidence_snippet": "## Seção: Arrays\n*Fonte: `content/develop/data-types/arrays.md`*\n\n---\naliases:\n- /develop/data-types/array/\nbannerText: Array is a new data type that is currently in preview and may be subject to change.\ncategories:\n- docs\n- develop\n- stack\n- oss\n- rs\n- rc\n- kubernetes\n- clients\n",
+    "is_answerable": true
+  },
+  {
+    "id": "Q053_architecture",
+    "category": "architecture",
+    "query": "What does Appendix C demonstrate in terms of infrastructure flexibility?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 29,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_26_a163f2",
+    "evidence_snippet": "Three appendices are further explorations of the content from Part I: • Appendix B is a write-up of the infrastructure for our example code: how we build and run the Docker images, where we manage configuration info, and how we run different types of tests. • Appendix C is a “pro",
+    "is_answerable": true
+  },
+  {
+    "id": "Q054_architecture",
+    "category": "architecture",
+    "query": "What foundational concepts should be considered when drawing boundaries around microservices?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 61,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_57_782339",
+    "evidence_snippet": "CHAPTER 2 How to Model Microservices My opponent’s reasoning reminds me of the heathen, who, being asked on what the world stood, replied, “On a tortoise.” But on what does the tortoise stand? “On another tortoise.” —Rev. Joseph Frederick Berg (1854) So you know what microservice",
+    "is_answerable": true
+  },
+  {
+    "id": "Q055_architecture",
+    "category": "architecture",
+    "query": "What are the challenges of using the saga pattern in microservices for managing transactions asynchronously and ensuring data consistency?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 43,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_40_0f9183",
+    "evidence_snippet": "CHAPTER 2 Discerning Coupling in Software Architecture Wednesday, November 3, 13:00 Logan, the lead architect for Penultimate Electronics, interrupted a small group of archi- tects in the cafeteria, discussing distributed architectures. “Austen, are you wearing a cast again?” “No",
+    "is_answerable": true
+  },
+  {
+    "id": "Q056_architecture",
+    "category": "architecture",
+    "query": "What does the `~` operator return when applied to an object in Redis JSON?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 94,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_98_6afc6a",
+    "evidence_snippet": "The terminal `~` operator returns the member names of an object as a flat list of strings. Applied to the root (`$~`), it returns the top-level keys. Applied to a multiple-match receiver, it flattens the keys of every matched object. A non-object receiver contributes no keys.\n\nBe",
+    "is_answerable": true
+  },
+  {
+    "id": "Q057_architecture",
+    "category": "architecture",
+    "query": "What does the warm-up program in Chapter 2 of the book introduce in terms of Rust language features?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 27,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_26_0589a2",
+    "evidence_snippet": "CHAPTER 2 A Tour of Rust Rust presents the authors of a book like this one with a challenge: what gives the lan‐ guage its character is not some specific, amazing feature that we can show off on the first page, but rather, the way all its parts are designed to work together smoot",
+    "is_answerable": true
+  },
+  {
+    "id": "Q058_architecture",
+    "category": "architecture",
+    "query": "What pattern is used to enforce the integrity of data in the system described in the excerpt?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 28,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_25_244cac",
+    "evidence_snippet": "• The Unit of Work pattern to provide atomic operations • The Aggregate pattern to enforce the integrity of our data If you’ d like a picture of where we’re going, take a look at Figure I-1, but don’t worry if none of it makes sense yet! We introduce each box in the figure, one b",
+    "is_answerable": true
+  },
+  {
+    "id": "Q059_architecture",
+    "category": "architecture",
+    "query": "What are the two main types of communication mechanisms discussed for microservices in this chapter?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 115,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_109_23586e",
+    "evidence_snippet": "CHAPTER 4 Microservice Communication Styles Getting communication between microservices right is problematic for many due in great part, I feel, to the fact that people gravitate toward a chosen technological approach without first considering the different types of communication",
+    "is_answerable": true
+  },
+  {
+    "id": "Q060_architecture",
+    "category": "architecture",
+    "query": "How can you use HINCRBY and HMGET commands to track multiple counters for a bike in Redis?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 59,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_59_0095bb",
+    "evidence_snippet": "## Examples\n\n* Store counters for the number of times bike:1 has been ridden, has crashed, or has changed owners:\n{{< clients-example set=\"hash_tutorial\" step=\"incrby_get_mget\" description=\"Practical pattern: Combine HINCRBY and HMGET to track multiple counters when you need atom",
+    "is_answerable": true
+  },
+  {
+    "id": "Q061_architecture",
+    "category": "architecture",
+    "query": "What is the purpose of introducing the Product aggregate in the context of maintaining consistency boundaries in the domain model?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 121,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_116_2f6df0",
+    "evidence_snippet": "CHAPTER 7 Aggregates and Consistency Boundaries In this chapter, we’ d like to revisit our domain model to talk about invariants and constraints, and see how our domain objects can maintain their own internal consis‐ tency, both conceptually and in persistent storage. We’ll discu",
+    "is_answerable": true
+  },
+  {
+    "id": "Q062_architecture",
+    "category": "architecture",
+    "query": "What is the difference between a domain service and a service-layer service in the context of application architecture?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 45,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_41_303380",
+    "evidence_snippet": "6 Domain services are not the same thing as the services from the service layer, although they are often closely related. A domain service represents a business concept or process, whereas a service-layer service represents a use case for your application. Often the service layer",
+    "is_answerable": true
+  },
+  {
+    "id": "Q063_architecture",
+    "category": "architecture",
+    "query": "What is the purpose of the `OrderLine` class in the given domain model, and what are its attributes?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 37,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_33_f25f30",
+    "evidence_snippet": "2 In previous Python versions, we might have used a namedtuple. Y ou could also check out Hynek Schlawack’s excellent attrs. 3 Or perhaps you think there’s not enough code? What about some sort of check that the SKU in the OrderLine matches Batch.sku? We saved some thoughts on va",
+    "is_answerable": true
+  },
+  {
+    "id": "Q064_architecture",
+    "category": "architecture",
+    "query": "What is the time complexity of searching a path in Redis when N is the depth and M is the number of parent object keys?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 99,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_104_7074b1",
+    "evidence_snippet": "## Time complexity of path evaluation\n\nThe time complexity of searching (navigating to) an element in the path is calculated from:\n\n1. Child level - every level along the path adds an additional search\n2. Key search - O(N)<sup>&#8224;</sup>, where N is the number of keys in the p",
+    "is_answerable": true
+  },
+  {
+    "id": "Q065_architecture",
+    "category": "architecture",
+    "query": "What is the purpose of separating the internal implementation from external interfaces in microservices, as described by the Hexagonal Architecture pattern?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 31,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_27_034528",
+    "evidence_snippet": "2 Alistair Cockburn, “Hexagonal Architecture,” January 4, 2005, https://oreil.ly/NfvTP. consumer, enabling independent releasability of functionality. This is essential in allowing our microservices to be worked on in isolation and released on demand. Having clear, stable service",
+    "is_answerable": true
+  },
+  {
+    "id": "Q066_contradiction",
+    "category": "contradiction",
+    "query": "How can a large monolithic application like the Sysops Squad application be effectively decomposed into a distributed architecture, starting with the reporting module?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 81,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_78_6572d5",
+    "evidence_snippet": "CHAPTER 4 Architectural Decomposition Monday, October 4, 10:04 Now that Addison and Austen had the go-ahead to move to a distributed architecture and break apart the monolithic Sysops Squad application, they needed to determine the best approach for how to get started. “The appli",
+    "is_answerable": true
+  },
+  {
+    "id": "Q067_contradiction",
+    "category": "contradiction",
+    "query": "What are the forces that encourage a larger or smaller service size and boundary, as defined in Chapter 7?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 42,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_39_ee5cee",
+    "evidence_snippet": "Data and transactions have become increasingly important in architecture, driving many trade-off decisions by architects and DBAs. Chapter 6 addresses the architec‐ tural impacts of data, including how to reconcile service and data boundaries. Finally, Chapter 7 ties together arc",
+    "is_answerable": true
+  },
+  {
+    "id": "Q068_contradiction",
+    "category": "contradiction",
+    "query": "What are the component-based decomposition patterns and how can they be applied according to Logan's advice?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 99,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_95_2df2cf",
+    "evidence_snippet": "CHAPTER 5 Component-Based Decomposition Patterns Monday, November 1, 11:53 Addison and Austen chose to use the component-based decomposition approach, but were unsure about the details of each decomposition pattern. They tried to research this approach, but did not find much on t",
+    "is_answerable": true
+  },
+  {
+    "id": "Q069_contradiction",
+    "category": "contradiction",
+    "query": "What are some of the key considerations regarding data access and management in modern software architecture?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 13,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_12_f71366",
+    "evidence_snippet": "Preface When two of your authors, Neal and Mark, were writing the book Fundamentals of Software Architecture, we kept coming across complex examples in architecture that we wanted to cover but that were too difficult. Each one offered no easy solutions but rather a collection of ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q070_contradiction",
+    "category": "contradiction",
+    "query": "What information does the `ARINFO` command provide when the `FULL` option is included?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 34,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_34_a542a2",
+    "evidence_snippet": "## Introspection\n\n[`ARINFO`](/content/commands/arinfo.md) returns metadata about an array's internal structure, including its logical length, element count, and next insert index. Pass the `FULL` option to include per-slice statistics such as fill rates and counts of dense versus",
+    "is_answerable": true
+  },
+  {
+    "id": "Q071_contradiction",
+    "category": "contradiction",
+    "query": "What is the purpose of the service layer in the context of defining use cases and workflow in an application?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 97,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_92_933b23",
+    "evidence_snippet": "CHAPTER 5 TDD in High Gear and Low Gear We’ve introduced the service layer to capture some of the additional orchestration responsibilities we need from a working application. The service layer helps us clearly define our use cases and the workflow for each: what we need to get f",
+    "is_answerable": true
+  },
+  {
+    "id": "Q072_contradiction",
+    "category": "contradiction",
+    "query": "What is the primary purpose of Redis Cuckoo filters in terms of set operations?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 15,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_15_61f3e7",
+    "evidence_snippet": "### Cuckoo filter\n\n[Redis Cuckoo filters](/content/develop/data-types/probabilistic/cuckoo-filter.md)\nlet you check for the presence or absence of an element in a set. They are similar to\n[Bloom filters](#bloom-filter) but with slightly different trade-offs between features\nand p",
+    "is_answerable": true
+  },
+  {
+    "id": "Q073_contradiction",
+    "category": "contradiction",
+    "query": "What are the benefits of using microservices for organizations aiming to develop loosely coupled systems with autonomous teams?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 19,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_17_9a1f0a",
+    "evidence_snippet": "Preface Microservices are an approach to distributed systems that promote the use of finely grained services that can be changed, deployed, and released independently. For organizations that are moving toward more loosely coupled systems, with autono‐ mous teams delivering user-f",
+    "is_answerable": true
+  },
+  {
+    "id": "Q074_contradiction",
+    "category": "contradiction",
+    "query": "What motivates a technologist like a software architect to write a book or present at a conference according to the excerpt?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 19,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_17_50a598",
+    "evidence_snippet": "CHAPTER 1 What Happens When There Are No “Best Practices”? Why does a technologist like a software architect present at a conference or write a book? Because they have discovered what is colloquially known as a “best practice, ” a term so overused that those who speak it increasi",
+    "is_answerable": true
+  },
+  {
+    "id": "Q075_contradiction",
+    "category": "contradiction",
+    "query": "What should be the primary reason for deciding to migrate to a microservice architecture according to the text?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 97,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_92_5674c1",
+    "evidence_snippet": "CHAPTER 3 Splitting the Monolith Many of you reading this book likely don’t have a blank slate on which to design your system, and even if you did, starting with microservices might not be a great idea, for reasons we explored in Chapter 1. Many of you will already have an existi",
+    "is_answerable": true
+  },
+  {
+    "id": "Q076_contradiction",
+    "category": "contradiction",
+    "query": "How does a tightly coupled user interface affect the architecture quantum in a microservices environment?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 54,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_51_3f17c5",
+    "evidence_snippet": "Each service (acting as a bounded context) may have its own set of architecture char‐ acteristics—one service might have higher levels of scalability or security than another. This granular level of architecture characteristics scoping represents one of the advantages of the micr",
+    "is_answerable": true
+  },
+  {
+    "id": "Q077_contradiction",
+    "category": "contradiction",
+    "query": "What does the test function `test_when_a_file_has_been_renamed_in_the_source` verify in terms of the file synchronization process between the source and destination directories?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 71,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_66_56c5c0",
+    "evidence_snippet": "def test_when_a_file_has_been_renamed_in_the_source(): try: source = tempfile.mkdtemp() dest = tempfile.mkdtemp() content = \"I am a file that was renamed\" source_path = Path(source) / 'source-filename' old_dest_path = Path(dest) / 'dest-filename' expected_dest_path = Path(dest) /",
+    "is_answerable": true
+  },
+  {
+    "id": "Q078_contradiction",
+    "category": "contradiction",
+    "query": "What does the & operator do in the expression &numbers[1..] when used in a for loop?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 36,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_35_623f0c",
+    "evidence_snippet": "The for loop has two surprising bits to it. First, we wrote for m in &numbers[1..] ; what is the & operator for? Second, we wrote gcd(d, *m) ; what is the * in *m for? These two details are complementary to each other. Up to this point, our code has operated only on simple values",
+    "is_answerable": true
+  },
+  {
+    "id": "Q079_contradiction",
+    "category": "contradiction",
+    "query": "What does the `ARLASTITEMS` command do when the `REV` flag is passed to it?",
+    "expected_book": "Redis Core Architecture And Data Types",
+    "expected_page": 30,
+    "expected_chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_30_9b4a21",
+    "evidence_snippet": "## Ring buffer mode\n\n[`ARRING`](/content/commands/arring.md) turns an array into a fixed-size circular buffer. Each call inserts a value at `insert_idx % size`, wrapping back to index `0` once the window is full and overwriting the oldest entry:\n\n{{< clients-example set=\"arrays_t",
+    "is_answerable": true
+  },
+  {
+    "id": "Q080_contradiction",
+    "category": "contradiction",
+    "query": "What does the `is_valid_sku` function check in the Flask app?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 87,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_82_7b3297",
+    "evidence_snippet": "Flask app starting to get crufty (flask_app.py) def is_valid_sku(sku, batches): return sku in {b.sku for b in batches} @app.route(\"/allocate\", methods=['POST']) def allocate_endpoint(): session = get_session() batches = repository.SqlAlchemyRepository(session).list() line = model",
+    "is_answerable": true
+  },
+  {
+    "id": "Q081_structure",
+    "category": "structure",
+    "query": "What are the advantages of using REST for microservice communication?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 8,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_7_b3f425",
+    "evidence_snippet": "Advantages 99 Disadvantages 100 Where to Use It 101 Pattern: Communication Through Common Data 101 Implementation 102 Advantages 103 Disadvantages 103 Where to Use It 104 Pattern: Request-Response Communication 104 Implementation: Synchronous Versus Asynchronous 106 Where to Use ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q082_structure",
+    "category": "structure",
+    "query": "What is a stream-aligned team according to the concept introduced in the book \"Team Topologies\"?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 40,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_36_3484f0",
+    "evidence_snippet": "4 Matthew Skelton and Manuel Pais, Team Topologies (Portland, OR: IT Revolution, 2019). Often, the UI is not provided directly by the microservice, but even if this is the case, we would expect the portion of the UI related to this functionality to still be owned by the Customer ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q083_structure",
+    "category": "structure",
+    "query": "What does constant width italic text represent in the given excerpt?",
+    "expected_book": "Architecturepatternswithpython",
+    "expected_page": 17,
+    "expected_chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_15_5536e1",
+    "evidence_snippet": "Constant width Used for program listings, as well as within paragraphs to refer to program ele‐ ments such as variable or function names, databases, data types, environment variables, statements, and keywords. Constant width bold Shows commands or other text that should be typed ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q084_structure",
+    "category": "structure",
+    "query": "What is the common outcome when the Ticket Auditing, Billing Auditing, and Survey Auditing components perform their respective actions?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 113,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_109_e974fe",
+    "evidence_snippet": "Notice how each of these components (Ticket Auditing, Billing Auditing, and Survey Auditing) all have the same thing in common—writing the action performed and the user requesting the action to an audit table. While the context may be different, the final outcome is the same—inse",
+    "is_answerable": true
+  },
+  {
+    "id": "Q085_structure",
+    "category": "structure",
+    "query": "What are the benefits of using the tactical forking pattern when restructuring a monolithic application with little or no internal structure?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 95,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_92_ffd956",
+    "evidence_snippet": "At the completion of the tactical forking pattern, teams have split the original mono‐ lithic application into two parts, preserving the coarse-grained structure of the behav‐ ior in each part, as illustrated in Figure 4-11. Figure 4-11. The end state of tactical forking features",
+    "is_answerable": true
+  },
+  {
+    "id": "Q086_structure",
+    "category": "structure",
+    "query": "What were the main reasons for writing the second edition of the book on microservices?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 20,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_18_1b2de3",
+    "evidence_snippet": "Why I Wrote This Book At one level, I wrote this book because I wanted to make sure that the information in the first edition remained up to date, accurate, and useful. I wrote the first edition because there were really interesting ideas that I wanted to share. I was fortunate t",
+    "is_answerable": true
+  },
+  {
+    "id": "Q087_structure",
+    "category": "structure",
+    "query": "What is an example of an internal concern within a bounded context that should be hidden from the outside world according to the MusicCorp example?",
+    "expected_book": "Buildingmicroservices2Ndedition",
+    "expected_page": 82,
+    "expected_chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_78_d23a3c",
+    "evidence_snippet": "Bounded Context A bounded context typically represents a larger organizational boundary. Within the scope of that boundary, explicit responsibilities need to be carried out. That’s all a bit woolly, so let’s look at another specific example. At MusicCorp, our warehouse is a hive ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q088_structure",
+    "category": "structure",
+    "query": "What is the difference between an unsafe block and an unsafe function in Rust?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 16,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_16_ffc9b9",
+    "evidence_snippet": "22. Unsafe Code. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 627 Unsafe from What? 628 Unsafe Blocks 630 Example: An Efficient ASCII String Type 631 Unsafe Functions 633 Unsafe Block or Unsafe Function?",
+    "is_answerable": true
+  },
+  {
+    "id": "Q089_structure",
+    "category": "structure",
+    "query": "What are generic enums and where are they discussed in the book?",
+    "expected_book": "Programmingrust2Ndedition",
+    "expected_page": 9,
+    "expected_chunk_id": "81fc6522-d0b2-541e-a012-b6f98c7cd1c9_9_d4b178",
+    "evidence_snippet": "Associated Consts 218 Generic Structs 219 Generic Structs with Lifetime Parameters 221 Generic Structs with Constant Parameters 222 Deriving Common Traits for Struct Types 225 Interior Mutability 225 10. Enums and Patterns. . . . . . . . . . . . . . . . . . . . . . . . . . . . . ",
+    "is_answerable": true
+  },
+  {
+    "id": "Q090_structure",
+    "category": "structure",
+    "query": "What happens when a caller posts a message to a receiver in asynchronous communication?",
+    "expected_book": "Softwarearchitecture Thehardparts",
+    "expected_page": 57,
+    "expected_chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_54_f94b16",
+    "evidence_snippet": "Synchronous communication requires the requestor to wait for the response from the receiver, as shown in Figure 2-11. Figure 2-11. A synchronous call waits for a result from the receiver The calling service makes a call (using one of a number of protocols that support syn‐ chrono",
+    "is_answerable": true
+  },
+  {
+    "id": "Q091_no_evidence",
+    "category": "no_evidence",
+    "query": "What is the secret API password and Slack channel used by the Komtek K-Monitor team in 2026?",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q092_no_evidence",
+    "category": "no_evidence",
+    "query": "Explain the binary packet header of the proprietary HydraX-999 quantum protocol invented in 2027.",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q093_no_evidence",
+    "category": "no_evidence",
+    "query": "What was the exact annual salary in USD of the CTO of Acme Robotics Corp in 2025?",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q094_no_evidence",
+    "category": "no_evidence",
+    "query": "Describe the internal pricing formula of the fictional StarlightDB 2028 cloud tier.",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q095_no_evidence",
+    "category": "no_evidence",
+    "query": "Which exact PostgreSQL 19.4 kernel patch fixed CVE-2029-88123 on Solaris SPARC?",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q096_no_evidence",
+    "category": "no_evidence",
+    "query": "What is the Wi-Fi SSID and WPA3 passphrase of the Komtek Data Center floor 3?",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q097_no_evidence",
+    "category": "no_evidence",
+    "query": "Summarize Chapter 14 of the unreleased book 'Quantum COBOL for Serverless GPUs' (2029).",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q098_no_evidence",
+    "category": "no_evidence",
+    "query": "What are the exact blood pressure measurements of the author of Building Microservices in 2024?",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q099_no_evidence",
+    "category": "no_evidence",
+    "query": "Provide the private RSA-4096 key fingerprint of the ReductorPrompt CI runner.",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  },
+  {
+    "id": "Q100_no_evidence",
+    "category": "no_evidence",
+    "query": "List the exact GPS coordinates of the secret underground vault of Acme Bank.",
+    "expected_book": null,
+    "expected_page": null,
+    "expected_chunk_id": null,
+    "evidence_snippet": "",
+    "is_answerable": false
+  }
+]

@@ -192,8 +192,10 @@ async def delete_book_endpoint(book_id: str):
     """Deleta um livro específico do banco vetorial pelo ID."""
     try:
         def _delete():
+            from src.application.use_cases.query_books_use_case import invalidate_query_cache
             vector_store = ChromaVectorStoreAdapter()
             vector_store.delete_book(book_id)
+            invalidate_query_cache()
             return True
         await asyncio.to_thread(_delete)
         telemetry_service.log("INFO", "VectorStore", f"Livro {book_id} removido com sucesso.")

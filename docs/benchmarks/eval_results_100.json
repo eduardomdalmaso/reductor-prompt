@@ -1,0 +1,1022 @@
+{
+  "algorithm_version": "rrf-elbow-v2-lexical",
+  "code2_retest": {
+    "query": "Show the Python code for SqlAlchemyRepository (add and get methods) from Architecture Patterns with Python, including parameters and page number.",
+    "sources": [
+      {
+        "book_title": "Architecturepatternswithpython",
+        "chapter": "Página 82",
+        "page": 82,
+        "score": 1.15,
+        "tokens": 201
+      },
+      {
+        "book_title": "Architecturepatternswithpython",
+        "chapter": "Página 60",
+        "page": 60,
+        "score": 1.135,
+        "tokens": 254
+      },
+      {
+        "book_title": "Architecturepatternswithpython",
+        "chapter": "Página 61",
+        "page": 61,
+        "score": 1.0,
+        "tokens": 313
+      },
+      {
+        "book_title": "Architecturepatternswithpython",
+        "chapter": "Página 62",
+        "page": 62,
+        "score": 1.0,
+        "tokens": 302
+      },
+      {
+        "book_title": "Architecturepatternswithpython",
+        "chapter": "Página 82",
+        "page": 82,
+        "score": 0.879,
+        "tokens": 201
+      },
+      {
+        "book_title": "Architecturepatternswithpython",
+        "chapter": "Página 60",
+        "page": 60,
+        "score": 0.851,
+        "tokens": 254
+      }
+    ],
+    "prompt_eval_count": 2243,
+    "eval_count": 183,
+    "has_sqlalchemy_class": true,
+    "response_preview": "The Python code for the `SqlAlchemyRepository` class, including the `add` and `get` methods, is provided in the book \"Architecture Patterns with Python\" on page 62. Here is the relevant code:\n\n```python\nclass SqlAlchemyRepository(AbstractRepository):\n    def __init__(self, session):\n        self.session = session\n\n    def add(self, batch):\n        self.session.add(batch)\n\n    def get(self, reference):\n        return self.session.query(model.Batch).filter_by(reference=reference).one()\n\n    def li"
+  },
+  "ir_summary_90q": {
+    "baseline_topk10": {
+      "n_queries": 90,
+      "precision_at_5": 0.2333,
+      "recall_at_5": 0.6111,
+      "recall_at_10": 0.6889,
+      "mrr": 0.5249
+    },
+    "reductor_v2": {
+      "n_queries": 90,
+      "precision_at_5": 0.24,
+      "recall_at_5": 0.6444,
+      "recall_at_10": 0.7333,
+      "mrr": 0.5396
+    }
+  },
+  "e2e_30q": [
+    {
+      "id": "Q001_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 18,
+      "A_in": 2090,
+      "A_out": 88,
+      "A_ms": 1108.97,
+      "A_resp_preview": "According to the provided context from the book \"Redis Core Architecture And Data Types\" on page 18, Redis Top-K structures are used to estimate the ranking of a data point within a stream of values. This means that Top-",
+      "B_in": 2495,
+      "B_out": 104,
+      "B_ms": 1262.39,
+      "B_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          18
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          18
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          32
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          32
+        ]
+      ],
+      "B_resp_preview": "Redis Top-K structures are designed to estimate the ranking of a data point within a stream of values. They provide an efficient way to approximate the top-k elements in a dataset, which is useful for applications that r"
+    },
+    {
+      "id": "Q002_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 92,
+      "A_in": 1657,
+      "A_out": 220,
+      "A_ms": 1941.78,
+      "A_resp_preview": "The provided context does not contain a specific JSON document that is created in the Redis database for a tutorial example. The context includes general information about Redis JSON capabilities and how to work with nes",
+      "B_in": 2296,
+      "B_out": 141,
+      "B_ms": 1445.64,
+      "B_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          10
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          10
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          77
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          77
+        ]
+      ],
+      "B_resp_preview": "Based on the provided context, there isn't a specific JSON document example mentioned for the Redis JSON tutorial. The documentation indicates that Redis JSON allows importing JSON text into Redis objects and accessing, "
+    },
+    {
+      "id": "Q003_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 57,
+      "A_in": 4737,
+      "A_out": 204,
+      "A_ms": 2337.2,
+      "A_resp_preview": "Based on the provided context, there is no direct mention of a Redis command that increments the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0. However, this ",
+      "B_in": 2613,
+      "B_out": 551,
+      "B_ms": 4674.35,
+      "B_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          668
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          68
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          68
+        ]
+      ],
+      "B_resp_preview": "To increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, you should use the `HINCRBY` command. However, based on the provided context, there is no dire"
+    },
+    {
+      "id": "Q004_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 33,
+      "A_in": 2957,
+      "A_out": 195,
+      "A_ms": 1996.14,
+      "A_resp_preview": "Quando o último elemento em uma chave Redis é removido, a chave é automaticamente destruída. Isso é mencionado na regra 2 da seção \"Automatic creation and removal of keys\" do livro \"Redis Core Architecture And Data Types",
+      "B_in": 2346,
+      "B_out": 341,
+      "B_ms": 2986.79,
+      "B_sources": [
+        [
+          "Redis Core Architecture And Data Types",
+          502
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          502
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          128
+        ],
+        [
+          "Redis Core Architecture And Data Types",
+          128
+        ]
+      ],
+      "B_resp_preview": "When the last element in a Redis key is deleted, the key is automatically destroyed if it is an aggregate data type (such as a list, set, sorted set, or hash). This behavior is summarized in the third rule of automatic c"
+    },
+    {
+      "id": "Q005_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 9,
+      "A_in": 1605,
+      "A_out": 90,
+      "A_ms": 979.81,
+      "A_resp_preview": "According to the context provided, Redis hashes are similar to Python dictionaries. This can be seen in the excerpt from the book \"Redis Core Architecture And Data Types\" on page 9, which states:\n\n\"Redis hashes resemble ",
+      "B_in": 2144,
+      "B_out": 103,
+      "B_ms": 1098.37,
+      "B_sources": [
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          742
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          1329
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          1962
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          2605
+        ]
+      ],
+      "B_resp_preview": "The data structure in Python that is similar to Redis hashes is the **dictionary**. According to the documentation and examples provided:\n\n- Redis hashes are modeled as collections of field-value pairs.\n- These collectio"
+    },
+    {
+      "id": "Q026_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 36,
+      "A_in": 3762,
+      "A_out": 170,
+      "A_ms": 1893.7,
+      "A_resp_preview": "According to the provided context from \"Architecture Patterns with Python\" (Page 36), if an order line is allocated to the same batch twice, the available quantity of the batch should not be reduced further. Specifically",
+      "B_in": 2020,
+      "B_out": 193,
+      "B_ms": 1838.67,
+      "B_sources": [
+        [
+          "Architecturepatternswithpython",
+          36
+        ],
+        [
+          "Architecturepatternswithpython",
+          36
+        ],
+        [
+          "Architecturepatternswithpython",
+          123
+        ],
+        [
+          "Architecturepatternswithpython",
+          123
+        ]
+      ],
+      "B_resp_preview": "If an order line is allocated to the same batch twice, the available quantity of the batch should not be reduced further. According to the business rules described in \"Architecture Patterns with Python\" (Página 36), once"
+    },
+    {
+      "id": "Q027_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 88,
+      "A_in": 5564,
+      "A_out": 119,
+      "A_ms": 1803.94,
+      "A_resp_preview": "The purpose of using fakes at the service layer in unit testing, as mentioned in the excerpt, is to allow for nice, fast unit tests. Specifically, it enables testing the service layer without the need for actual database",
+      "B_in": 1549,
+      "B_out": 176,
+      "B_ms": 1709.03,
+      "B_sources": [
+        [
+          "Pythoninanutshell4Thedition",
+          533
+        ],
+        [
+          "Pythoninanutshell4Thedition",
+          533
+        ]
+      ],
+      "B_resp_preview": "The excerpt does not specifically mention the use of \"fakes\" at the service layer in unit testing. However, it discusses the use of stubs, also known as mocks, which are fake implementations of various units' interfaces "
+    },
+    {
+      "id": "Q028_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 54,
+      "A_in": 3462,
+      "A_out": 216,
+      "A_ms": 2150.89,
+      "A_resp_preview": "O problema de acoplamento direto das propriedades do modelo com as colunas do banco de dados no SQLAlchemy é que isso viola o princípio de independência da persistência (persistence ignorance). Como mencionado no livro \"",
+      "B_in": 2059,
+      "B_out": 320,
+      "B_ms": 2803.84,
+      "B_sources": [
+        [
+          "Architecturepatternswithpython",
+          54
+        ],
+        [
+          "Architecturepatternswithpython",
+          53
+        ],
+        [
+          "Architecturepatternswithpython",
+          6
+        ],
+        [
+          "Architecturepatternswithpython",
+          29
+        ]
+      ],
+      "B_resp_preview": "Coupling model properties directly to database columns in SQLAlchemy leads to a model that is tightly coupled with the ORM (Object-Relational Mapper) and the database schema. This coupling violates the principle of persi"
+    },
+    {
+      "id": "Q029_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Programmingrust2Ndedition",
+      "expected_page": 55,
+      "A_in": 4239,
+      "A_out": 215,
+      "A_ms": 2329.47,
+      "A_resp_preview": "Não há informações específicas no contexto fornecido sobre um crate Rust que permita escrever arquivos PNG. No entanto, um crate comum usado para manipulação de imagens PNG em Rust é o `image`. Para adicionar a dependênc",
+      "B_in": 2380,
+      "B_out": 385,
+      "B_ms": 3376.24,
+      "B_sources": [
+        [
+          "Designingdistributedsystems2Ndedition",
+          145
+        ],
+        [
+          "Introducingpython3Rdedition",
+          345
+        ],
+        [
+          "Introducingpython3Rdedition",
+          346
+        ],
+        [
+          "Introducingpython3Rdedition",
+          349
+        ]
+      ],
+      "B_resp_preview": "Para escrever arquivos PNG usando Rust, você deve adicionar a dependência do crate `image` ao seu `Cargo.toml`. Infelizmente, o contexto fornecido não especifica uma versão específica para o crate `image`. No entanto, vo"
+    },
+    {
+      "id": "Q030_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 50,
+      "A_in": 1562,
+      "A_out": 77,
+      "A_ms": 873.88,
+      "A_resp_preview": "Based on the provided context, there is no specific command given for cloning a GitHub repository containing the code for chapters on architecture patterns with Python. The context includes commands for cloning repositor",
+      "B_in": 1645,
+      "B_out": 130,
+      "B_ms": 1240.37,
+      "B_sources": [
+        [
+          "Architecturepatternswithpython",
+          50
+        ],
+        [
+          "Architecturepatternswithpython",
+          15
+        ],
+        [
+          "Architecturepatternswithpython",
+          16
+        ]
+      ],
+      "B_resp_preview": "To clone the GitHub repository containing the code for the chapters on architecture patterns with Python, you should use the following command:\n\n```bash\ngit clone https://github.com/cosmicpython/code.git\n```\n\nAfter cloni"
+    },
+    {
+      "id": "Q046_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 11,
+      "A_in": 2817,
+      "A_out": 125,
+      "A_ms": 1397.3,
+      "A_resp_preview": "Based on the provided context, the excerpt from \"Software Architecture Metrics\" (Page 62) mentions that structuring work around testability helps keep options open as the system evolves. It emphasizes that designing syst",
+      "B_in": 1867,
+      "B_out": 217,
+      "B_ms": 1980.26,
+      "B_sources": [
+        [
+          "Facilitatingsoftwarearchitecture",
+          69
+        ],
+        [
+          "Facilitatingsoftwarearchitecture",
+          69
+        ],
+        [
+          "Learningdomain Drivendesign",
+          192
+        ],
+        [
+          "Learningdomain Drivendesign",
+          192
+        ]
+      ],
+      "B_resp_preview": "The excerpt mentions several architectural approaches that aim to make applications easier to test:\n\n1. **Layered Architecture**: This common architecture style ensures separation of concerns, making it easier to test in"
+    },
+    {
+      "id": "Q047_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 6,
+      "A_in": 4720,
+      "A_out": 93,
+      "A_ms": 1436.57,
+      "A_resp_preview": "The book \"Software Architecture: The Hard Parts\" has a copyright year of 2022, and the copyright holders are Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani. \n\nReferência: \n- Livro: Software Architecture: ",
+      "B_in": 2333,
+      "B_out": 48,
+      "B_ms": 797.38,
+      "B_sources": [
+        [
+          "Softwarearchitecture Thehardparts",
+          6
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          6
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          3
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          13
+        ]
+      ],
+      "B_resp_preview": "The book \"Software Architecture: The Hard Parts\" has a copyright year of 2022. The copyright holders are Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani."
+    },
+    {
+      "id": "Q048_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 67,
+      "A_in": 2893,
+      "A_out": 98,
+      "A_ms": 1229.58,
+      "A_resp_preview": "A code kata is a small, contained programming challenge often used to practice TDD (Test-Driven Development). According to the context provided from \"Architecture Patterns with Python\" (Page 67), code katas allow develop",
+      "B_in": 1845,
+      "B_out": 311,
+      "B_ms": 2663.68,
+      "B_sources": [
+        [
+          "Architecturepatternswithpython",
+          31
+        ],
+        [
+          "Architecturepatternswithpython",
+          6
+        ],
+        [
+          "Architecturepatternswithpython",
+          13
+        ],
+        [
+          "Architecturepatternswithpython",
+          27
+        ]
+      ],
+      "B_resp_preview": "A pergunta do usuário sobre \"code kata\" e seu uso no contexto de TDD não é diretamente abordada nos trechos fornecidos do livro \"Architecture Patterns with Python\". Os trechos fornecidos focam principalmente em conceitos"
+    },
+    {
+      "id": "Q049_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 107,
+      "A_in": 2806,
+      "A_out": 185,
+      "A_ms": 1826.1,
+      "A_resp_preview": "The Unit of Work pattern serves as an abstraction over the idea of atomic operations, tying together the Repository and Service Layer patterns. Its primary purpose is to enforce data integrity and consistency within the ",
+      "B_in": 2165,
+      "B_out": 285,
+      "B_ms": 2565.98,
+      "B_sources": [
+        [
+          "Architecturepatternswithpython",
+          107
+        ],
+        [
+          "Architecturepatternswithpython",
+          107
+        ],
+        [
+          "Architecturepatternswithpython",
+          120
+        ],
+        [
+          "Architecturepatternswithpython",
+          120
+        ]
+      ],
+      "B_resp_preview": "The Unit of Work (UoW) pattern serves as an abstraction over the idea of atomic operations, complementing the Repository and Service Layer patterns by ensuring data integrity and consistency. Its primary purposes are:\n\n1"
+    },
+    {
+      "id": "Q050_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 31,
+      "A_in": 3712,
+      "A_out": 78,
+      "A_ms": 1169.49,
+      "A_resp_preview": "According to the excerpt from \"Architecture Patterns with Python\" (Pág 31), the key patterns discussed for modeling domains in the context of domain modeling are:\n\n1. **Entity**\n2. **Value Object**\n3. **Domain Service**\n",
+      "B_in": 1748,
+      "B_out": 71,
+      "B_ms": 889.6,
+      "B_sources": [
+        [
+          "Architecturepatternswithpython",
+          31
+        ],
+        [
+          "Architecturepatternswithpython",
+          31
+        ],
+        [
+          "Architecturepatternswithpython",
+          32
+        ],
+        [
+          "Architecturepatternswithpython",
+          32
+        ]
+      ],
+      "B_resp_preview": "According to the excerpt from \"Architecture Patterns with Python,\" the key patterns discussed for modeling domains in the context of domain modeling are:\n\n1. **Entity**\n2. **Value Object**\n3. **Domain Service**\n\nThese pa"
+    },
+    {
+      "id": "Q066_contradiction",
+      "category": "contradiction",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 81,
+      "A_in": 3348,
+      "A_out": 598,
+      "A_ms": 5126.84,
+      "A_resp_preview": "To effectively decompose a large monolithic application like the Sysops Squad application into a distributed architecture, starting with the reporting module, involves several steps and considerations. Based on the conte",
+      "B_in": 4258,
+      "B_out": 549,
+      "B_ms": 4955.62,
+      "B_sources": [
+        [
+          "Softwarearchitecture Thehardparts",
+          79
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          79
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          129
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          129
+        ]
+      ],
+      "B_resp_preview": "To effectively decompose a large monolithic application like the Sysops Squad application into a distributed architecture, starting with the reporting module, follow these steps:\n\n1. **Identify Reporting Dependencies**: "
+    },
+    {
+      "id": "Q067_contradiction",
+      "category": "contradiction",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 42,
+      "A_in": 3220,
+      "A_out": 342,
+      "A_ms": 3202.05,
+      "A_resp_preview": "According to \"Software Architecture: The Hard Parts\" (Pág 206), the forces that encourage a larger or smaller service size and boundary are referred to as granularity disintegrators and integrators. The six main drivers ",
+      "B_in": 1743,
+      "B_out": 230,
+      "B_ms": 2071.74,
+      "B_sources": [
+        [
+          "Softwarearchitecture Thehardparts",
+          206
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          206
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          207
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          207
+        ]
+      ],
+      "B_resp_preview": "According to Chapter 7 of \"Software Architecture: The Hard Parts,\" the forces that encourage a larger or smaller service size and boundary are referred to as granularity disintegrators and integrators. The six main drive"
+    },
+    {
+      "id": "Q068_contradiction",
+      "category": "contradiction",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 99,
+      "A_in": 3166,
+      "A_out": 423,
+      "A_ms": 3754.01,
+      "A_resp_preview": "According to Logan's advice, the component-based decomposition patterns are a set of techniques designed to refactor monolithic applications into a more modular and distributed architecture. These patterns are particular",
+      "B_in": 2005,
+      "B_out": 462,
+      "B_ms": 3868.33,
+      "B_sources": [
+        [
+          "Softwarearchitecture Thehardparts",
+          99
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          99
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          101
+        ],
+        [
+          "Softwarearchitecture Thehardparts",
+          101
+        ]
+      ],
+      "B_resp_preview": "According to Logan's advice, component-based decomposition patterns are a set of techniques used to refactor monolithic applications into well-defined components that can eventually become services in a distributed archi"
+    },
+    {
+      "id": "Q081_structure",
+      "category": "structure",
+      "is_answerable": true,
+      "expected_book": "Buildingmicroservices2Ndedition",
+      "expected_page": 8,
+      "A_in": 5396,
+      "A_out": 315,
+      "A_ms": 3339.67,
+      "A_resp_preview": "According to the provided context from \"Building Microservices, 2nd edition\" (Page 158), REST over HTTP is a sensible default choice for service-to-service interactions due to several advantages:\n\n1. **Widespread Use and",
+      "B_in": 1719,
+      "B_out": 331,
+      "B_ms": 2849.27,
+      "B_sources": [
+        [
+          "Learningapistyles",
+          401
+        ],
+        [
+          "Architecturepatternswithpython",
+          92
+        ],
+        [
+          "Learningapistyles",
+          401
+        ]
+      ],
+      "B_resp_preview": "Based on the provided context, the advantages of using REST for microservice communication are not explicitly detailed, but REST is commonly used for its simplicity and statelessness. REST APIs are easier to understand a"
+    },
+    {
+      "id": "Q082_structure",
+      "category": "structure",
+      "is_answerable": true,
+      "expected_book": "Buildingmicroservices2Ndedition",
+      "expected_page": 40,
+      "A_in": 5156,
+      "A_out": 130,
+      "A_ms": 1816.71,
+      "A_resp_preview": "According to the book \"Team Topologies\" by Matthew Skelton and Manuel Pais, a stream-aligned team is a team aligned to a single, valuable stream of work. This team is empowered to build and deliver customer or user value",
+      "B_in": 1799,
+      "B_out": 188,
+      "B_ms": 1788.42,
+      "B_sources": [
+        [
+          "Buildingmicroservices2Ndedition",
+          40
+        ],
+        [
+          "Buildingmicroservices2Ndedition",
+          40
+        ],
+        [
+          "Buildingevolutionaryarchitectures2Ndedition",
+          223
+        ]
+      ],
+      "B_resp_preview": "A conceito de um **stream-aligned team** é introduzido no livro \"Team Topologies\" por Matthew Skelton e Manuel Pais. Um stream-aligned team é uma equipe alinhada a um único fluxo de trabalho valioso que pertence a uma pa"
+    },
+    {
+      "id": "Q091_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 1811,
+      "A_out": 50,
+      "A_ms": 664.95,
+      "A_resp_preview": "Não há informações sobre o secret API password e Slack channel usado pelo Komtek K-Monitor team em 2026 no contexto fornecido. Recuso-me a responder com informações que não estão presentes nos dados fornecidos.",
+      "B_in": 2264,
+      "B_out": 79,
+      "B_ms": 953.77,
+      "B_sources": [
+        [
+          "Redis Operations Clustering And Kubernetes",
+          629
+        ],
+        [
+          "Architecturepatternswithpython",
+          6
+        ],
+        [
+          "Redis Operations Clustering And Kubernetes",
+          1628
+        ],
+        [
+          "Architecturepatternswithpython",
+          8
+        ]
+      ],
+      "B_resp_preview": "Based on the provided context, there is no information about the secret API password and Slack channel used by the Komtek K-Monitor team in 2026. The context only provides details on how to retrieve Redis Enterprise cred"
+    },
+    {
+      "id": "Q092_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 6008,
+      "A_out": 119,
+      "A_ms": 1863.3,
+      "A_resp_preview": "Não há informações sobre o protocolo HydraX-999 ou qualquer protocolo relacionado a tecnologias quânticas inventado em 2027 no contexto fornecido. Portanto, não posso fornecer uma explicação sobre o cabeçalho de pacote b",
+      "B_in": 1881,
+      "B_out": 128,
+      "B_ms": 1396.41,
+      "B_sources": [
+        [
+          "Learningapistyles",
+          166
+        ],
+        [
+          "Learningapistyles",
+          166
+        ],
+        [
+          "Pythoninanutshell4Thedition",
+          582
+        ]
+      ],
+      "B_resp_preview": "O contexto fornecido não contém informações sobre o protocolo HydraX-999 ou qualquer outro protocolo quantum inventado em 2027. As informações disponíveis tratam principalmente de HTTP/2 e TCP, bem como uma breve menção "
+    },
+    {
+      "id": "Q093_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 314,
+      "A_out": 56,
+      "A_ms": 531.98,
+      "A_resp_preview": "Não há informações sobre a remuneração salarial do CTO da Acme Robotics Corp no ano de 2025 nos livros e páginas fornecidas no contexto. Portanto, não posso responder a essa pergunta com base nas informações disponíveis.",
+      "B_in": 2460,
+      "B_out": 103,
+      "B_ms": 1115.66,
+      "B_sources": [
+        [
+          "Causalinferenceinpython",
+          100
+        ],
+        [
+          "Architecturepatternswithpython",
+          112
+        ],
+        [
+          "Causalinferenceinpython",
+          101
+        ],
+        [
+          "Architecturepatternswithpython",
+          136
+        ]
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre a remuneração salarial do CTO da Acme Robotics Corp para o ano de 2025. Os trechos apresentados abordam principalmente conceitos relacionados a inferência causal,"
+    },
+    {
+      "id": "Q094_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 2763,
+      "A_out": 55,
+      "A_ms": 872.39,
+      "A_resp_preview": "Não há informações específicas sobre um \"StarlightDB 2028 cloud tier\" ou sua fórmula interna de precificação no contexto fornecido. Recuso-me a responder com informações que não estão presentes nos documentos fornecidos.",
+      "B_in": 1902,
+      "B_out": 592,
+      "B_ms": 4757.39,
+      "B_sources": [
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          404
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          404
+        ],
+        [
+          "Buildingmedallionarchitectures",
+          295
+        ],
+        [
+          "Buildingmedallionarchitectures",
+          295
+        ]
+      ],
+      "B_resp_preview": "Com base no contexto fornecido, não há detalhes específicos sobre o \"StarlightDB 2028 cloud tier\" ou sua fórmula interna de precificação. Os capítulos e figuras mencionados nos livros indexados não fornecem informações d"
+    },
+    {
+      "id": "Q095_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 5227,
+      "A_out": 106,
+      "A_ms": 1631.32,
+      "A_resp_preview": "Não há informações sobre um kernel patch específico para PostgreSQL 19.4 que tenha corrigido a vulnerabilidade CVE-2029-88123 em Solaris SPARC no contexto fornecido. Além disso, não há nenhuma referência a uma vulnerabil",
+      "B_in": 2471,
+      "B_out": 143,
+      "B_ms": 1575.72,
+      "B_sources": [
+        [
+          "Php 8 4 Complete Reference And Migration Manual",
+          11
+        ],
+        [
+          "Architecturepatternswithpython",
+          137
+        ]
+      ],
+      "B_resp_preview": "O contexto fornecido não contém informações sobre o PostgreSQL 19.4, Solaris SPARC ou o CVE-2029-88123. Portanto, não é possível fornecer detalhes específicos sobre qual patch do kernel do PostgreSQL 19.4 corrigiu esse C"
+    },
+    {
+      "id": "Q096_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 2552,
+      "A_out": 40,
+      "A_ms": 734.46,
+      "A_resp_preview": "Recuso-me a responder à pergunta, pois não há informações sobre o Wi-Fi SSID e WPA3 passphrase do Komtek Data Center no floor 3 no contexto fornecido.",
+      "B_in": 2975,
+      "B_out": 78,
+      "B_ms": 1084.9,
+      "B_sources": [
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          392
+        ],
+        [
+          "Redis Ai Vector Search And Semantic Caching",
+          392
+        ],
+        [
+          "Laravel 12 Concurrency Queues Octane And Ai",
+          984
+        ],
+        [
+          "Laravel 12 Concurrency Queues Octane And Ai",
+          984
+        ]
+      ],
+      "B_resp_preview": "The provided context does not contain any information regarding the Wi-Fi SSID and WPA3 passphrase of the Komtek Data Center floor 3. The context is focused on technical details related to Redis AI, Laravel development e"
+    },
+    {
+      "id": "Q097_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 2160,
+      "A_out": 81,
+      "A_ms": 999.05,
+      "A_resp_preview": "Não há evidências de que um livro intitulado \"Quantum COBOL for Serverless GPUs\" esteja programado para ser lançado em 2029 ou que tenha um capítulo 14. Portanto, não posso fornecer uma resumo para esse capítulo específi",
+      "B_in": 2070,
+      "B_out": 59,
+      "B_ms": 790.44,
+      "B_sources": [
+        [
+          "Facilitatingsoftwarearchitecture",
+          91
+        ],
+        [
+          "Buildinggreensoftware",
+          122
+        ],
+        [
+          "Pythoninanutshell4Thedition",
+          232
+        ]
+      ],
+      "B_resp_preview": "I'm sorry, but there is no information available regarding Chapter 14 of the unreleased book 'Quantum COBOL for Serverless GPUs' (2029) in the provided context or any indexed books. Please provide more details or another"
+    },
+    {
+      "id": "Q098_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 311,
+      "A_out": 53,
+      "A_ms": 490.58,
+      "A_resp_preview": "Recuso-me a responder, pois não há informações relevantes sobre o assunto na base de dados fornecida. O contexto não menciona o livro \"Building Microservices\" nem fornece detalhes sobre as medidas de pressão arterial do ",
+      "B_in": 689,
+      "B_out": 45,
+      "B_ms": 449.52,
+      "B_sources": [
+        [
+          "Elasticsearch Text Analysis Mapping And Plugins",
+          89
+        ],
+        [
+          "Elasticsearch Text Analysis Mapping And Plugins",
+          91
+        ],
+        [
+          "Elasticsearch Text Analysis Mapping And Plugins",
+          107
+        ],
+        [
+          "Elasticsearch Text Analysis Mapping And Plugins",
+          114
+        ]
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre o autor do livro \"Building Microservices\" ou suas medidas de pressão arterial. Portanto, não é possível responder à pergunta com base nos dados disponíveis."
+    },
+    {
+      "id": "Q099_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 3267,
+      "A_out": 47,
+      "A_ms": 827.94,
+      "A_resp_preview": "Não há informações sobre o fingerprint de uma chave RSA-4096 privada do ReductorPrompt CI runner nos documentos fornecidos. Portanto, não posso responder a essa pergunta com base no contexto dado.",
+      "B_in": 2676,
+      "B_out": 60,
+      "B_ms": 914.12,
+      "B_sources": [
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          293
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          294
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          295
+        ],
+        [
+          "Buildingmulti Tenantsaasarchitectures",
+          479
+        ]
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre o ReductorPrompt CI runner ou sobre a impressão digital de uma chave privada RSA-4096. Portanto, não é possível fornecer a impressão digital da chave privada soli"
+    },
+    {
+      "id": "Q100_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "A_in": 305,
+      "A_out": 95,
+      "A_ms": 767.7,
+      "A_resp_preview": "Recuso-me a responder à pergunta, pois não há qualquer informação no contexto fornecido que relate a localização de um cofre subterrâneo secreto da Acme Bank. Além disso, a solicitação de GPS coordenadas de um local real",
+      "B_in": 2294,
+      "B_out": 104,
+      "B_ms": 1133.89,
+      "B_sources": [
+        [
+          "Buildingevent Drivenmicroservices2Ndedition",
+          226
+        ],
+        [
+          "Buildingevent Drivenmicroservices2Ndedition",
+          476
+        ],
+        [
+          "Causalinferenceinpython",
+          194
+        ]
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre as coordenadas GPS de um cofre subterrâneo secreto da Acme Bank. Os trechos apresentados tratam de sincronização de relógios, processamento de eventos em tempo re"
+    }
+  ]
+}

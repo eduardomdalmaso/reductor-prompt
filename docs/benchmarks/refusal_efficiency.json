@@ -1,0 +1,481 @@
+{
+  "test": "refusal_efficiency_after_deep_fix",
+  "results": [
+    {
+      "question_id": "N1_komtek",
+      "query": "What is the secret API password and internal Slack channel name used by the Komtek K-Monitor engineering team in 2026?",
+      "exp_B_isolated_generation": {
+        "A_conv": {
+          "prompt_eval_count": 2006,
+          "eval_count": 52,
+          "latency_ms": 783.43,
+          "response": "The provided context does not contain any information about the secret API password or the internal Slack channel name used by the Komtek K-Monitor engineering team in 2026. There is no relevant data to answer this question based on the given context."
+        },
+        "B_std": {
+          "prompt_eval_count": 2117,
+          "eval_count": 81,
+          "latency_ms": 904.34,
+          "response": "O contexto fornecido não contém informações sobre a senha do API secret ou o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. Os detalhes fornecidos estão relacionados a Redis Enterprise clusters e Kubernetes secrets, não à infraestrutura ou práticas de segurança específicas do Komtek K-Monitor."
+        },
+        "C_deep_fixed": {
+          "prompt_eval_count": 2316,
+          "eval_count": 84,
+          "latency_ms": 975.89,
+          "response": "Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta. Os trechos fornecidos tratam principalmente de como recuperar credenciais de clusters Redis Enterprise em Kubernetes e não contêm informações sobre a senha da API secreta ou o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026."
+        }
+      },
+      "exp_C_full_pipeline": {
+        "B_std_full": {
+          "prompt_eval_count": 2743,
+          "eval_count": 98,
+          "latency_ms": 1133.71,
+          "sources": [
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 821",
+              "page": 821,
+              "score": 1.0,
+              "tokens": 210
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 821",
+              "page": 821,
+              "score": 0.984,
+              "tokens": 210
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 599",
+              "page": 599,
+              "score": 0.968,
+              "tokens": 89
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 599",
+              "page": 599,
+              "score": 0.953,
+              "tokens": 89
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 178",
+              "page": 178,
+              "score": 0.938,
+              "tokens": 23
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 178",
+              "page": 178,
+              "score": 0.924,
+              "tokens": 23
+            },
+            {
+              "book_title": "Practicalpythondatawranglinganddataquality",
+              "chapter": "Página 185",
+              "page": 185,
+              "score": 0.91,
+              "tokens": 244
+            },
+            {
+              "book_title": "Practicalpythondatawranglinganddataquality",
+              "chapter": "Página 185",
+              "page": 185,
+              "score": 0.897,
+              "tokens": 244
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 629",
+              "page": 629,
+              "score": 0.884,
+              "tokens": 166
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 1628",
+              "page": 1628,
+              "score": 0.871,
+              "tokens": 166
+            }
+          ],
+          "response": "O contexto fornecido não contém informações sobre o segredo da API password ou o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. Os detalhes fornecidos estão relacionados a como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, mas não mencionam nada sobre o Komtek K-Monitor ou detalhes específicos de 2026."
+        },
+        "C_deep_fixed_full": {
+          "prompt_eval_count": 2942,
+          "eval_count": 86,
+          "latency_ms": 1071.7,
+          "sources": [
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 821",
+              "page": 821,
+              "score": 1.0,
+              "tokens": 210
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 821",
+              "page": 821,
+              "score": 0.984,
+              "tokens": 210
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 599",
+              "page": 599,
+              "score": 0.968,
+              "tokens": 89
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 599",
+              "page": 599,
+              "score": 0.953,
+              "tokens": 89
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 178",
+              "page": 178,
+              "score": 0.938,
+              "tokens": 23
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 178",
+              "page": 178,
+              "score": 0.924,
+              "tokens": 23
+            },
+            {
+              "book_title": "Practicalpythondatawranglinganddataquality",
+              "chapter": "Página 185",
+              "page": 185,
+              "score": 0.91,
+              "tokens": 244
+            },
+            {
+              "book_title": "Practicalpythondatawranglinganddataquality",
+              "chapter": "Página 185",
+              "page": 185,
+              "score": 0.897,
+              "tokens": 244
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 629",
+              "page": 629,
+              "score": 0.884,
+              "tokens": 166
+            },
+            {
+              "book_title": "Redis Operations Clustering And Kubernetes",
+              "chapter": "Seção 1628",
+              "page": 1628,
+              "score": 0.871,
+              "tokens": 166
+            }
+          ],
+          "response": "Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta. Os trechos fornecidos tratam principalmente de como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, sem fazer referência a um time de engenharia chamado Komtek K-Monitor ou a detalhes específicos sobre um Slack ou senha de API em 2026."
+        }
+      }
+    },
+    {
+      "question_id": "N2_protocol",
+      "query": "Explain the binary packet header format of the proprietary HydraX-999 quantum telemetry protocol invented in 2027.",
+      "exp_B_isolated_generation": {
+        "A_conv": {
+          "prompt_eval_count": 3940,
+          "eval_count": 51,
+          "latency_ms": 967.7,
+          "response": "Não há informações suficientes no contexto fornecido para explicar o formato de cabeçalho binário de pacotes do protocolo de telemetria HydraX-999 quantum inventado em 2027."
+        },
+        "B_std": {
+          "prompt_eval_count": 4051,
+          "eval_count": 119,
+          "latency_ms": 1528.99,
+          "response": "O contexto fornecido não contém informações sobre o formato de cabeçalho binário de pacotes do protocolo de telemetria HydraX-999 quantum inventado em 2027. Os livros e capítulos indexados tratam principalmente de protocolos como HTTP/2, QUIC, sockets e arquiteturas de microserviços, mas não mencionam o protocolo HydraX-999. Portanto, não é possível fornecer detalhes específicos sobre esse protocolo com base nas informações disponíveis."
+        },
+        "C_deep_fixed": {
+          "prompt_eval_count": 4250,
+          "eval_count": 67,
+          "latency_ms": 1181.86,
+          "response": "Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta. Os trechos fornecidos abordam protocolos como HTTP/2, TCP, QUIC e sockets, mas não mencionam o protocolo HydraX-999 ou qualquer outro protocolo com esse nome."
+        }
+      },
+      "exp_C_full_pipeline": {
+        "B_std_full": {
+          "prompt_eval_count": 1883,
+          "eval_count": 138,
+          "latency_ms": 1332.64,
+          "sources": [
+            {
+              "book_title": "Learningapistyles",
+              "chapter": "Página 166",
+              "page": 166,
+              "score": 1.0,
+              "tokens": 353
+            },
+            {
+              "book_title": "Learningapistyles",
+              "chapter": "Página 166",
+              "page": 166,
+              "score": 0.984,
+              "tokens": 353
+            },
+            {
+              "book_title": "Pythoninanutshell4Thedition",
+              "chapter": "Página 582",
+              "page": 582,
+              "score": 0.968,
+              "tokens": 618
+            }
+          ],
+          "response": "O contexto fornecido não contém informações sobre o formato de cabeçalho binário do protocolo de telemetria HydraX-999, que foi inventado em 2027. Os detalhes fornecidos estão relacionados a HTTP/2 e TCP, e não abordam nenhum protocolo chamado HydraX-999 ou qualquer protocolo de telemetria baseado em tecnologia quântica.\n\nPara responder a essa pergunta, seria necessário ter acesso a documentação técnica específica do protocolo HydraX-999 ou a um livro que descreva esse protocolo em detalhes."
+        },
+        "C_deep_fixed_full": {
+          "prompt_eval_count": 2082,
+          "eval_count": 70,
+          "latency_ms": 830.33,
+          "sources": [
+            {
+              "book_title": "Learningapistyles",
+              "chapter": "Página 166",
+              "page": 166,
+              "score": 1.0,
+              "tokens": 353
+            },
+            {
+              "book_title": "Learningapistyles",
+              "chapter": "Página 166",
+              "page": 166,
+              "score": 0.984,
+              "tokens": 353
+            },
+            {
+              "book_title": "Pythoninanutshell4Thedition",
+              "chapter": "Página 582",
+              "page": 582,
+              "score": 0.968,
+              "tokens": 618
+            }
+          ],
+          "response": "Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta. Os trechos fornecidos abordam principalmente o protocolo HTTP/2 e sockets em Python, sem mencionar o protocolo HydraX-999 ou qualquer outro protocolo de telemetria quântica."
+        }
+      }
+    },
+    {
+      "question_id": "N3_salary",
+      "query": "What is the exact annual salary in USD of the CTO of Acme Robotics Corp in 2025?",
+      "exp_B_isolated_generation": {
+        "A_conv": {
+          "prompt_eval_count": 363,
+          "eval_count": 50,
+          "latency_ms": 464.91,
+          "response": "The provided context does not contain any information about the CTO of Acme Robotics Corp or their salary details. Therefore, I cannot provide the exact annual salary in USD for the CTO of Acme Robotics Corp in 2025."
+        },
+        "B_std": {
+          "prompt_eval_count": 474,
+          "eval_count": 97,
+          "latency_ms": 762.17,
+          "response": "O contexto técnico fornecido não contém informações sobre a remuneração salarial do CTO da Acme Robotics Corp para o ano de 2025. Os livros e manuais listados tratam de tecnologias como Elasticsearch e Triton Inference Server, sem fazer menção a dados financeiros ou de pessoal específicos da Acme Robotics Corp. Portanto, não é possível fornecer a informação solicitada com base nos dados disponíveis."
+        },
+        "C_deep_fixed": {
+          "prompt_eval_count": 673,
+          "eval_count": 52,
+          "latency_ms": 472.78,
+          "response": "Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta. Os trechos fornecidos não contêm informações sobre a estrutura salarial da Acme Robotics Corp ou detalhes específicos sobre seu CTO."
+        }
+      },
+      "exp_C_full_pipeline": {
+        "B_std_full": {
+          "prompt_eval_count": 692,
+          "eval_count": 54,
+          "latency_ms": 493.81,
+          "sources": [
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 89",
+              "page": 89,
+              "score": 1.0,
+              "tokens": 1
+            },
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 91",
+              "page": 91,
+              "score": 0.984,
+              "tokens": 1
+            },
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 107",
+              "page": 107,
+              "score": 0.968,
+              "tokens": 1
+            },
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 114",
+              "page": 114,
+              "score": 0.953,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 49",
+              "page": 49,
+              "score": 0.938,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 61",
+              "page": 61,
+              "score": 0.924,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 252",
+              "page": 252,
+              "score": 0.91,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 485",
+              "page": 485,
+              "score": 0.897,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 558",
+              "page": 558,
+              "score": 0.884,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Inference Server Architecture And Guide",
+              "chapter": "Seção 242",
+              "page": 242,
+              "score": 0.871,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Inference Server Architecture And Guide",
+              "chapter": "Seção 283",
+              "page": 283,
+              "score": 0.859,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Inference Server Architecture And Guide",
+              "chapter": "Seção 310",
+              "page": 310,
+              "score": 0.847,
+              "tokens": 1
+            }
+          ],
+          "response": "The provided context does not contain any information about the CTO of Acme Robotics Corp or their salary details. The context is related to Elasticsearch, Triton Inference Server, and other technical topics and does not include financial or personnel information for Acme Robotics Corp."
+        },
+        "C_deep_fixed_full": {
+          "prompt_eval_count": 891,
+          "eval_count": 56,
+          "latency_ms": 486.95,
+          "sources": [
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 89",
+              "page": 89,
+              "score": 1.0,
+              "tokens": 1
+            },
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 91",
+              "page": 91,
+              "score": 0.984,
+              "tokens": 1
+            },
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 107",
+              "page": 107,
+              "score": 0.968,
+              "tokens": 1
+            },
+            {
+              "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+              "chapter": "Seção 114",
+              "page": 114,
+              "score": 0.953,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 49",
+              "page": 49,
+              "score": 0.938,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 61",
+              "page": 61,
+              "score": 0.924,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 252",
+              "page": 252,
+              "score": 0.91,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 485",
+              "page": 485,
+              "score": 0.897,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+              "chapter": "Seção 558",
+              "page": 558,
+              "score": 0.884,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Inference Server Architecture And Guide",
+              "chapter": "Seção 242",
+              "page": 242,
+              "score": 0.871,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Inference Server Architecture And Guide",
+              "chapter": "Seção 283",
+              "page": 283,
+              "score": 0.859,
+              "tokens": 1
+            },
+            {
+              "book_title": "Triton Inference Server Architecture And Guide",
+              "chapter": "Seção 310",
+              "page": 310,
+              "score": 0.847,
+              "tokens": 1
+            }
+          ],
+          "response": "Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta. Os trechos fornecidos não contêm informações sobre a remuneração salarial do CTO da Acme Robotics Corp para o ano de 2025."
+        }
+      }
+    }
+  ]
+}

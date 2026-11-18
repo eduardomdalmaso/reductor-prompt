@@ -1,0 +1,215 @@
+{
+  "test": "ranking_position_tail_evidence",
+  "results": [
+    {
+      "question_id": "R1_aggregate_invariant",
+      "query": "In Domain-Driven Design, what happens when an Aggregate enforces invariants across entities and how should references between Aggregates be modeled?",
+      "total_retrieved": 12,
+      "elbow_kept_count": 12,
+      "top1_score": 0.8023,
+      "last_kept_score": 0.7706,
+      "tail_chunks_with_keywords": [
+        {
+          "rank": 6,
+          "score": 0.7942,
+          "book": "Learningdomain Drivendesign",
+          "page": 210,
+          "matched_keywords": [
+            "id"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 9,
+          "score": 0.7913,
+          "book": "Learningdomain Drivendesign",
+          "page": 124,
+          "matched_keywords": [
+            "id"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 10,
+          "score": 0.7913,
+          "book": "Learningdomain Drivendesign",
+          "page": 124,
+          "matched_keywords": [
+            "id"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 11,
+          "score": 0.7706,
+          "book": "Learningdomain Drivendesign",
+          "page": 256,
+          "matched_keywords": [
+            "id"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 12,
+          "score": 0.7706,
+          "book": "Learningdomain Drivendesign",
+          "page": 256,
+          "matched_keywords": [
+            "id"
+          ],
+          "kept_by_elbow": true
+        }
+      ],
+      "tail_evidence_dropped_count": 0,
+      "tail_evidence_dropped": []
+    },
+    {
+      "question_id": "R2_strangler_fig",
+      "query": "How does the Strangler Fig pattern migrate a monolith to microservices incrementally using HTTP routing or proxies?",
+      "total_retrieved": 12,
+      "elbow_kept_count": 12,
+      "top1_score": 0.731,
+      "last_kept_score": 0.6748,
+      "tail_chunks_with_keywords": [
+        {
+          "rank": 7,
+          "score": 0.6838,
+          "book": "Masteringapiarchitecture",
+          "page": 242,
+          "matched_keywords": [
+            "proxy",
+            "route",
+            "intercept"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 8,
+          "score": 0.6838,
+          "book": "Masteringapiarchitecture",
+          "page": 242,
+          "matched_keywords": [
+            "proxy",
+            "route",
+            "intercept"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 9,
+          "score": 0.6772,
+          "book": "Masteringapiarchitecture",
+          "page": 145,
+          "matched_keywords": [
+            "proxy"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 10,
+          "score": 0.6772,
+          "book": "Masteringapiarchitecture",
+          "page": 145,
+          "matched_keywords": [
+            "proxy"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 11,
+          "score": 0.6748,
+          "book": "Buildingmicroservices2Ndedition",
+          "page": 192,
+          "matched_keywords": [
+            "proxy"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 12,
+          "score": 0.6748,
+          "book": "Buildingmicroservices2Ndedition",
+          "page": 192,
+          "matched_keywords": [
+            "proxy"
+          ],
+          "kept_by_elbow": true
+        }
+      ],
+      "tail_evidence_dropped_count": 0,
+      "tail_evidence_dropped": []
+    },
+    {
+      "question_id": "R3_backpressure_queue",
+      "query": "What are the trade-offs of synchronous request-response vs asynchronous event-driven communication when handling backpressure and retries?",
+      "total_retrieved": 12,
+      "elbow_kept_count": 12,
+      "top1_score": 0.7325,
+      "last_kept_score": 0.7261,
+      "tail_chunks_with_keywords": [
+        {
+          "rank": 7,
+          "score": 0.7299,
+          "book": "Buildingevolutionaryarchitectures2Ndedition",
+          "page": 123,
+          "matched_keywords": [
+            "queue"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 8,
+          "score": 0.7299,
+          "book": "Buildingevolutionaryarchitectures2Ndedition",
+          "page": 123,
+          "matched_keywords": [
+            "queue"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 9,
+          "score": 0.727,
+          "book": "Buildingmicroservices2Ndedition",
+          "page": 134,
+          "matched_keywords": [
+            "retry"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 10,
+          "score": 0.727,
+          "book": "Buildingmicroservices2Ndedition",
+          "page": 134,
+          "matched_keywords": [
+            "retry"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 11,
+          "score": 0.7261,
+          "book": "Buildingmicroservices2Ndedition",
+          "page": 121,
+          "matched_keywords": [
+            "retry"
+          ],
+          "kept_by_elbow": true
+        },
+        {
+          "rank": 12,
+          "score": 0.7261,
+          "book": "Buildingmicroservices2Ndedition",
+          "page": 121,
+          "matched_keywords": [
+            "retry"
+          ],
+          "kept_by_elbow": true
+        }
+      ],
+      "tail_evidence_dropped_count": 0,
+      "tail_evidence_dropped": []
+    }
+  ]
+}

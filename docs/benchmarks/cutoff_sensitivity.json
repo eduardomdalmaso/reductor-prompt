@@ -1,0 +1,845 @@
+{
+  "experiment": "A_retrieval_cutoff_sensitivity",
+  "results": [
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 0,
+      "actual_cut_pct": 0.0,
+      "raw_chunks": 12,
+      "kept_chunks": 12,
+      "raw_tokens": 3110,
+      "kept_tokens": 3110,
+      "prompt_eval_count": 3615,
+      "eval_count": 329,
+      "latency_ms": 2988.27,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "fact_coverage": 1.0,
+      "response_preview": "In \"Architecture Patterns with Python\", the Repository pattern is introduced as a simplifying abstraction over data storage, which allows the decoupling of the domain model from the data layer. This pattern is designed to adhere to the Dependency Inversion Principle, thereby reducing the coupling between the core logic and infrastructural concerns.\n\nThe core methods of the Repository pattern inclu"
+    },
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 10,
+      "actual_cut_pct": 16.46,
+      "raw_chunks": 12,
+      "kept_chunks": 11,
+      "raw_tokens": 3110,
+      "kept_tokens": 2598,
+      "prompt_eval_count": 3063,
+      "eval_count": 351,
+      "latency_ms": 2706.68,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [
+        "add",
+        "get",
+        "domain"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo que o modelo de domínio seja decoupled (desacoplado) da camada de dados. Esse padrão é implementado através de um objeto Repository que se posiciona entre o modelo de domínio e o banco de dados. \n\nO Repository pattern decupla o modelo de domín"
+    },
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 20,
+      "actual_cut_pct": 32.93,
+      "raw_chunks": 12,
+      "kept_chunks": 10,
+      "raw_tokens": 3110,
+      "kept_tokens": 2086,
+      "prompt_eval_count": 2538,
+      "eval_count": 382,
+      "latency_ms": 2890.8,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [
+        "add",
+        "get"
+      ],
+      "fact_coverage": 0.5,
+      "response_preview": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo que o modelo de domínio seja decoupled (desacoplado) da camada de dados. Esse padrão ajuda a tornar o sistema mais testável ao esconder as complexidades do banco de dados. O padrão Repository coloca um objeto Repository entre o modelo de domín"
+    },
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 30,
+      "actual_cut_pct": 32.93,
+      "raw_chunks": 12,
+      "kept_chunks": 10,
+      "raw_tokens": 3110,
+      "kept_tokens": 2086,
+      "prompt_eval_count": 2538,
+      "eval_count": 293,
+      "latency_ms": 2350.56,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "fact_coverage": 1.0,
+      "response_preview": "In \"Architecture Patterns with Python\", the Repository pattern is introduced as a simplifying abstraction over data storage, which allows the decoupling of the domain model from the data layer. This pattern is designed to adhere to the Dependency Inversion Principle, thereby reducing the coupling between the core logic and infrastructural concerns. The Repository pattern achieves this by providing"
+    },
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 40,
+      "actual_cut_pct": 43.05,
+      "raw_chunks": 12,
+      "kept_chunks": 9,
+      "raw_tokens": 3110,
+      "kept_tokens": 1771,
+      "prompt_eval_count": 2158,
+      "eval_count": 326,
+      "latency_ms": 2508.75,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [
+        "add",
+        "get"
+      ],
+      "fact_coverage": 0.5,
+      "response_preview": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo que o modelo de domínio seja decoupled (desacoplado) da camada de dados. Isso é feito através da criação de um objeto Repository que atua como intermediário entre o modelo de domínio e o banco de dados.\n\nO Repository padrão possui dois métodos"
+    },
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 50,
+      "actual_cut_pct": 53.18,
+      "raw_chunks": 12,
+      "kept_chunks": 8,
+      "raw_tokens": 3110,
+      "kept_tokens": 1456,
+      "prompt_eval_count": 1796,
+      "eval_count": 235,
+      "latency_ms": 1736.7,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [],
+      "fact_coverage": 0.0,
+      "response_preview": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo que o modelo de domínio seja decoupled (desacoplado) da camada de dados. Esse padrão é implementado através de um objeto Repository que se posiciona entre o modelo de domínio e o banco de dados, ocultando as complexidades do banco de dados e t"
+    },
+    {
+      "question_id": "S1_repo",
+      "requested_cut_pct": 60,
+      "actual_cut_pct": 72.41,
+      "raw_chunks": 12,
+      "kept_chunks": 5,
+      "raw_tokens": 3110,
+      "kept_tokens": 858,
+      "prompt_eval_count": 1085,
+      "eval_count": 337,
+      "latency_ms": 2497.9,
+      "expected_facts": [
+        "add",
+        "get",
+        "domain",
+        "abstraction"
+      ],
+      "facts_hit": [
+        "domain"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Este padrão é implementado através de um objeto Repository que se posiciona entre o modelo de domínio e o banco de dados, ocultando as complexidades do banco de dados e tornando o"
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 0,
+      "actual_cut_pct": 0.0,
+      "raw_chunks": 12,
+      "kept_chunks": 12,
+      "raw_tokens": 1774,
+      "kept_tokens": 1774,
+      "prompt_eval_count": 2212,
+      "eval_count": 296,
+      "latency_ms": 2483.19,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "commit",
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "The Unit of Work (UoW) pattern works closely with the Repository pattern to manage data integrity and consistency in a system. According to \"Architecture Patterns with Python,\" the Repository pattern is an abstraction over data storage, allowing the decoupling of the model layer from the data layer. The UoW pattern, on the other hand, is an abstraction over atomic operations, ensuring that operati"
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 10,
+      "actual_cut_pct": 11.44,
+      "raw_chunks": 12,
+      "kept_chunks": 9,
+      "raw_tokens": 1774,
+      "kept_tokens": 1571,
+      "prompt_eval_count": 1901,
+      "eval_count": 306,
+      "latency_ms": 2211.53,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 0.5,
+      "response_preview": "The Unit of Work (UoW) pattern works closely with the Repository pattern to provide an abstraction around data integrity and atomic operations. According to the book \"Architecture Patterns with Python,\" the Repository pattern is an abstraction over data storage, allowing the decoupling of the model layer from the data layer. The UoW pattern complements this by ensuring that operations on the data "
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 20,
+      "actual_cut_pct": 27.11,
+      "raw_chunks": 12,
+      "kept_chunks": 7,
+      "raw_tokens": 1774,
+      "kept_tokens": 1293,
+      "prompt_eval_count": 1575,
+      "eval_count": 260,
+      "latency_ms": 1863.66,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "commit",
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "The Unit of Work (UoW) pattern works in conjunction with the Repository pattern to manage data integrity and ensure consistency in the domain model. The UoW pattern abstracts atomic operations, allowing the service layer to be fully decoupled from the data layer. Specifically, the UoW pattern coordinates the operations performed by the Repository, ensuring that all changes are committed or rolled "
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 30,
+      "actual_cut_pct": 34.95,
+      "raw_chunks": 12,
+      "kept_chunks": 6,
+      "raw_tokens": 1774,
+      "kept_tokens": 1154,
+      "prompt_eval_count": 1410,
+      "eval_count": 273,
+      "latency_ms": 1962.49,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 0.5,
+      "response_preview": "The Unit of Work (UoW) pattern works closely with the Repository pattern to ensure data integrity and consistency in the domain model. The UoW pattern abstracts the idea of atomic operations, allowing the service layer to be fully decoupled from the data layer. When a service layer use case runs, it operates within a single unit of work that either succeeds as a whole or fails as a block, ensuring"
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 40,
+      "actual_cut_pct": 57.38,
+      "raw_chunks": 12,
+      "kept_chunks": 3,
+      "raw_tokens": 1774,
+      "kept_tokens": 756,
+      "prompt_eval_count": 920,
+      "eval_count": 272,
+      "latency_ms": 1937.41,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 1.0,
+      "response_preview": "The Unit of Work (UoW) pattern works in conjunction with the Repository pattern to manage data integrity and consistency in a system. According to the context provided from \"Architecture Patterns with Python,\" the Repository pattern abstracts the idea of persistent storage, while the UoW pattern abstracts the idea of atomic operations. This means that the UoW pattern ensures that all changes made "
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 50,
+      "actual_cut_pct": 57.38,
+      "raw_chunks": 12,
+      "kept_chunks": 3,
+      "raw_tokens": 1774,
+      "kept_tokens": 756,
+      "prompt_eval_count": 920,
+      "eval_count": 318,
+      "latency_ms": 2237.06,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "commit",
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "The Unit of Work (UoW) pattern works in conjunction with the Repository pattern to ensure data integrity and consistency in the domain model. Specifically, the UoW pattern abstracts the idea of atomic operations, allowing the service layer to be fully decoupled from the data layer. This means that while the Repository pattern abstracts the concept of persistent storage, the UoW pattern manages the"
+    },
+    {
+      "question_id": "S2_uow",
+      "requested_cut_pct": 60,
+      "actual_cut_pct": 77.23,
+      "raw_chunks": 12,
+      "kept_chunks": 2,
+      "raw_tokens": 1774,
+      "kept_tokens": 404,
+      "prompt_eval_count": 570,
+      "eval_count": 269,
+      "latency_ms": 1913.0,
+      "expected_facts": [
+        "commit",
+        "rollback",
+        "session",
+        "atomic"
+      ],
+      "facts_hit": [
+        "commit",
+        "session",
+        "atomic"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "The Unit of Work (UoW) pattern works in conjunction with the Repository pattern to manage transactions and ensure that database operations are performed atomically. The Repository pattern abstracts the idea of persistent storage, while the UoW pattern abstracts the idea of atomic operations. This means that the UoW pattern is responsible for tracking changes made to entities within the Repository "
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 0,
+      "actual_cut_pct": 0.0,
+      "raw_chunks": 12,
+      "kept_chunks": 12,
+      "raw_tokens": 4124,
+      "kept_tokens": 4124,
+      "prompt_eval_count": 4568,
+      "eval_count": 285,
+      "latency_ms": 2770.69,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "fact_coverage": 1.0,
+      "response_preview": "In Domain-Driven Design (DDD), a Bounded Context is a delineated boundary within which a specific model (or understanding) of the domain is applied consistently. It is used to manage complexity in software projects by clearly defining the scope within which a particular domain model applies, thereby protecting the integrity and consistency of that model. Bounded contexts help in avoiding conflicts"
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 10,
+      "actual_cut_pct": 22.09,
+      "raw_chunks": 12,
+      "kept_chunks": 9,
+      "raw_tokens": 4124,
+      "kept_tokens": 3213,
+      "prompt_eval_count": 3601,
+      "eval_count": 238,
+      "latency_ms": 1824.95,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "fact_coverage": 1.0,
+      "response_preview": "In Domain-Driven Design (DDD), a Bounded Context is a delineated boundary within which a specific model is applied consistently. It represents a specific part of the domain model that is relevant to a particular business capability or subdomain. The purpose of a Bounded Context is to protect the consistency of the ubiquitous language and the model within that context, ensuring that there are no co"
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 20,
+      "actual_cut_pct": 22.09,
+      "raw_chunks": 12,
+      "kept_chunks": 9,
+      "raw_tokens": 4124,
+      "kept_tokens": 3213,
+      "prompt_eval_count": 3601,
+      "eval_count": 331,
+      "latency_ms": 2472.14,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "fact_coverage": 1.0,
+      "response_preview": "In Domain-Driven Design (DDD), a Bounded Context is a delineated boundary within which a specific model is applied consistently. It represents a specific part of the domain model that is relevant to a particular business capability or subdomain. The purpose of a Bounded Context is to protect the consistency of the ubiquitous language and the model within that context, ensuring that there are no co"
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 30,
+      "actual_cut_pct": 35.35,
+      "raw_chunks": 12,
+      "kept_chunks": 8,
+      "raw_tokens": 4124,
+      "kept_tokens": 2666,
+      "prompt_eval_count": 3066,
+      "eval_count": 219,
+      "latency_ms": 1655.47,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "boundary",
+        "model"
+      ],
+      "fact_coverage": 0.67,
+      "response_preview": "In Domain-Driven Design (DDD), a Bounded Context is a delineated boundary within which a specific model (or understanding) of the domain is applied consistently. It is used to manage complexity in software projects by clearly defining the scope and applicability of a particular domain model. This helps in avoiding conflicts and inconsistencies that arise when the same concept is interpreted differ"
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 40,
+      "actual_cut_pct": 42.36,
+      "raw_chunks": 12,
+      "kept_chunks": 7,
+      "raw_tokens": 4124,
+      "kept_tokens": 2377,
+      "prompt_eval_count": 2741,
+      "eval_count": 365,
+      "latency_ms": 2725.29,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "model"
+      ],
+      "fact_coverage": 0.33,
+      "response_preview": "Em Domain-Driven Design (DDD), um Bounded Context é uma fronteira lógica que delimita o escopo de um modelo de domínio. Dentro de um Bounded Context, o modelo de domínio é consistente e livre de conflitos. A ideia é proteger a consistência da linguagem ubíqua e dos modelos dentro de um contexto delimitado, garantindo que não haja implementações de modelos conflitantes dentro do mesmo contexto.\n\nOs"
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 50,
+      "actual_cut_pct": 55.58,
+      "raw_chunks": 12,
+      "kept_chunks": 5,
+      "raw_tokens": 4124,
+      "kept_tokens": 1832,
+      "prompt_eval_count": 2133,
+      "eval_count": 433,
+      "latency_ms": 3146.58,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "model"
+      ],
+      "fact_coverage": 0.33,
+      "response_preview": "Em Domain-Driven Design (DDD), um Bounded Context é uma fronteira lógica que define o escopo dentro do qual um modelo de domínio é aplicável e consistente. Ele delimita o espaço de aplicação de um modelo de domínio, garantindo que dentro desse contexto, o modelo é único e não há ambiguidades ou conflitos de terminologia. Isso é crucial para manter a consistência e a integridade do modelo de domíni"
+    },
+    {
+      "question_id": "S3_ddd",
+      "requested_cut_pct": 60,
+      "actual_cut_pct": 61.78,
+      "raw_chunks": 12,
+      "kept_chunks": 4,
+      "raw_tokens": 4124,
+      "kept_tokens": 1576,
+      "prompt_eval_count": 1843,
+      "eval_count": 243,
+      "latency_ms": 1758.39,
+      "expected_facts": [
+        "ubiquitous language",
+        "boundary",
+        "model"
+      ],
+      "facts_hit": [
+        "model"
+      ],
+      "fact_coverage": 0.33,
+      "response_preview": "Em Domain-Driven Design (DDD), um Bounded Context é uma fronteira lógica que define o escopo de um modelo de domínio. Dentro de um Bounded Context, o modelo de domínio é consistente e livre de conflitos. Isso significa que cada Bounded Context tem uma única interpretação do modelo de domínio e terminologia específica para esse contexto. O uso de Bounded Contexts ajuda a proteger a consistência do "
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 0,
+      "actual_cut_pct": 0.0,
+      "raw_chunks": 12,
+      "kept_chunks": 12,
+      "raw_tokens": 4462,
+      "kept_tokens": 4462,
+      "prompt_eval_count": 4961,
+      "eval_count": 93,
+      "latency_ms": 1471.55,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "durability",
+        "log"
+      ],
+      "fact_coverage": 0.5,
+      "response_preview": "The provided context does not contain any information about Write-Ahead Logging (WAL) in databases. The context focuses on logging strategies in software systems, including logging levels, logging in distributed systems, and logging in specific frameworks like Laravel and Ceph. It does not cover the concept of Write-Ahead Logging (WAL) which is a technique used in databases to ensure transaction d"
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 10,
+      "actual_cut_pct": 20.75,
+      "raw_chunks": 12,
+      "kept_chunks": 9,
+      "raw_tokens": 4462,
+      "kept_tokens": 3536,
+      "prompt_eval_count": 3940,
+      "eval_count": 135,
+      "latency_ms": 1147.64,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "log"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "O contexto fornecido não aborda o conceito de Write-Ahead Logging (WAL) em bancos de dados. Portanto, não posso responder à sua pergunta com base apenas nas informações fornecidas. O contexto foca principalmente em estratégias de logging em sistemas distribuídos, escalabilidade de logs, e diferentes níveis de logging em frameworks e sistemas como Ceph, PostgreSQL, LSP, Laravel e sistemas distribuí"
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 20,
+      "actual_cut_pct": 20.75,
+      "raw_chunks": 12,
+      "kept_chunks": 9,
+      "raw_tokens": 4462,
+      "kept_tokens": 3536,
+      "prompt_eval_count": 3940,
+      "eval_count": 125,
+      "latency_ms": 994.06,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "log"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "O contexto fornecido não aborda o conceito de Write-Ahead Logging (WAL) em bancos de dados. Portanto, não posso responder à sua pergunta com base apenas nas informações fornecidas. O WAL é uma técnica utilizada em sistemas de gerenciamento de banco de dados para garantir a consistência e a recuperação de dados em caso de falhas, mas esse tópico não é mencionado nos trechos fornecidos. Para obter i"
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 30,
+      "actual_cut_pct": 35.86,
+      "raw_chunks": 12,
+      "kept_chunks": 8,
+      "raw_tokens": 4462,
+      "kept_tokens": 2862,
+      "prompt_eval_count": 3303,
+      "eval_count": 247,
+      "latency_ms": 1903.69,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "log"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "A pergunta sobre Write-Ahead Logging (WAL) não é respondida diretamente pelo contexto fornecido. O contexto aborda principalmente estratégias de logging em sistemas distribuídos, como Ceph, e discussões sobre o uso de logs em aplicações web e bancos de dados PostgreSQL. Não há menção específica ao Write-Ahead Logging (WAL) ou a problemas específicos que ele resolve.\n\nWrite-Ahead Logging (WAL) é um"
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 40,
+      "actual_cut_pct": 47.8,
+      "raw_chunks": 12,
+      "kept_chunks": 7,
+      "raw_tokens": 4462,
+      "kept_tokens": 2329,
+      "prompt_eval_count": 2760,
+      "eval_count": 119,
+      "latency_ms": 961.03,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "log"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "O contexto fornecido não aborda o conceito de Write-Ahead Logging (WAL) em bancos de dados. Portanto, não posso fornecer uma resposta baseada diretamente no material fornecido. O contexto foca principalmente em estratégias de logging em sistemas distribuídos, escalabilidade de logs, e exemplos de frameworks e linguagens de programação que lidam com logs, mas não menciona WAL especificamente. Para "
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 50,
+      "actual_cut_pct": 59.75,
+      "raw_chunks": 12,
+      "kept_chunks": 6,
+      "raw_tokens": 4462,
+      "kept_tokens": 1796,
+      "prompt_eval_count": 2248,
+      "eval_count": 112,
+      "latency_ms": 894.54,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "log"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "O contexto fornecido não aborda o conceito de Write-Ahead Logging (WAL) em bancos de dados. Portanto, não posso responder à pergunta com base apenas nas informações fornecidas. O texto foca principalmente em estratégias de logging em sistemas distribuídos, escalabilidade de logs e exemplos de como configurar logs em diferentes frameworks e linguagens de programação, mas não menciona WAL. Para resp"
+    },
+    {
+      "question_id": "S4_wal",
+      "requested_cut_pct": 60,
+      "actual_cut_pct": 63.78,
+      "raw_chunks": 12,
+      "kept_chunks": 5,
+      "raw_tokens": 4462,
+      "kept_tokens": 1616,
+      "prompt_eval_count": 1909,
+      "eval_count": 118,
+      "latency_ms": 886.88,
+      "expected_facts": [
+        "durability",
+        "crash",
+        "log",
+        "disk"
+      ],
+      "facts_hit": [
+        "log"
+      ],
+      "fact_coverage": 0.25,
+      "response_preview": "O contexto fornecido não aborda o conceito de Write-Ahead Logging (WAL) em bancos de dados. Portanto, não posso fornecer uma resposta baseada diretamente no material fornecido. O contexto foca principalmente em estratégias de logging em sistemas distribuídos, como Ceph, e em exemplos de logging em aplicações web e servidores LSP, mas não menciona WAL. Para responder a sua pergunta sobre Write-Ahea"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 0,
+      "actual_cut_pct": 0.0,
+      "raw_chunks": 12,
+      "kept_chunks": 12,
+      "raw_tokens": 5176,
+      "kept_tokens": 5176,
+      "prompt_eval_count": 5607,
+      "eval_count": 516,
+      "latency_ms": 5023.7,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy",
+        "distributed"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "The main trade-offs between a modular monolith and microservices, as discussed in \"Building Microservices\", include:\n\n1. **Deployment Complexity**:\n   - **Modular Monolith**: Has a simpler deployment topology compared to microservices, which can result in easier developer workflows, monitoring, troubleshooting, and end-to-end testing.\n   - **Microservices**: Require a more complex deployment topol"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 10,
+      "actual_cut_pct": 10.47,
+      "raw_chunks": 12,
+      "kept_chunks": 11,
+      "raw_tokens": 5176,
+      "kept_tokens": 4634,
+      "prompt_eval_count": 5036,
+      "eval_count": 436,
+      "latency_ms": 3589.53,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy",
+        "distributed"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "According to the provided context from \"Building Microservices 2nd edition,\" the main trade-offs between a modular monolith and microservices include:\n\n1. **Deployment Complexity**:\n   - **Modular Monolith**: Has a simpler deployment topology compared to microservices, which can result in simpler developer workflows, easier monitoring, troubleshooting, and end-to-end testing.\n   - **Microservices*"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 20,
+      "actual_cut_pct": 20.94,
+      "raw_chunks": 12,
+      "kept_chunks": 10,
+      "raw_tokens": 5176,
+      "kept_tokens": 4092,
+      "prompt_eval_count": 4494,
+      "eval_count": 516,
+      "latency_ms": 4212.83,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy",
+        "distributed"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "The main trade-offs between a modular monolith and microservices, as discussed in \"Building Microservices,\" include:\n\n1. **Deployment Complexity**:\n   - **Modular Monolith**: Deployment is simpler because all modules are deployed together as a single process. This reduces the complexity of deployment and management.\n   - **Microservices**: Deployment is more complex due to the distributed nature o"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 30,
+      "actual_cut_pct": 35.94,
+      "raw_chunks": 12,
+      "kept_chunks": 8,
+      "raw_tokens": 5176,
+      "kept_tokens": 3316,
+      "prompt_eval_count": 3591,
+      "eval_count": 503,
+      "latency_ms": 3989.34,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy",
+        "distributed"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "According to \"Building Microservices\" (2nd edition), the main trade-offs between a modular monolith and microservices include:\n\n1. **Deployment Complexity**:\n   - **Modular Monolith**: Has a simpler deployment topology compared to microservices, as all modules are deployed together within a single process.\n   - **Microservices**: Have a more complex deployment topology, involving multiple processe"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 40,
+      "actual_cut_pct": 43.28,
+      "raw_chunks": 12,
+      "kept_chunks": 7,
+      "raw_tokens": 5176,
+      "kept_tokens": 2936,
+      "prompt_eval_count": 3184,
+      "eval_count": 421,
+      "latency_ms": 3380.83,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy",
+        "distributed"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "According to \"Building Microservices\" (2nd edition), the main trade-offs between a modular monolith and microservices include:\n\n1. **Deployment Complexity**: A modular monolith has a simpler deployment topology compared to microservices. Since all modules are part of a single process, deployment is less complex and can be done more quickly. In contrast, microservices require a more distributed dep"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 50,
+      "actual_cut_pct": 50.62,
+      "raw_chunks": 12,
+      "kept_chunks": 6,
+      "raw_tokens": 5176,
+      "kept_tokens": 2556,
+      "prompt_eval_count": 2798,
+      "eval_count": 399,
+      "latency_ms": 3086.35,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy",
+        "distributed"
+      ],
+      "fact_coverage": 0.75,
+      "response_preview": "According to \"Building Microservices\" (2nd edition), the main trade-offs between a modular monolith and microservices include:\n\n1. **Deployment Complexity**: A modular monolith has a simpler deployment topology compared to microservices, which can be more complex and challenging to manage. Microservices require managing multiple services, each with its own deployment process, leading to a more int"
+    },
+    {
+      "question_id": "S5_micro",
+      "requested_cut_pct": 60,
+      "actual_cut_pct": 65.03,
+      "raw_chunks": 12,
+      "kept_chunks": 4,
+      "raw_tokens": 5176,
+      "kept_tokens": 1810,
+      "prompt_eval_count": 2003,
+      "eval_count": 327,
+      "latency_ms": 2520.19,
+      "expected_facts": [
+        "complexity",
+        "deploy",
+        "boundary",
+        "distributed"
+      ],
+      "facts_hit": [
+        "complexity",
+        "deploy"
+      ],
+      "fact_coverage": 0.5,
+      "response_preview": "According to \"Building Microservices\" (2nd edition), the main trade-offs between a modular monolith and microservices include:\n\n- **Deployment Topology**: A modular monolith has a simpler deployment topology compared to a microservice architecture. This simplicity can reduce operational complexity and overhead, making it easier to manage and deploy the application.\n\n- **Parallel Work**: If module "
+    }
+  ]
+}

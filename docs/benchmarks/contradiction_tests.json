@@ -1,0 +1,341 @@
+{
+  "test": "contradiction_tests",
+  "results": [
+    {
+      "question_id": "C1_monolith_vs_micro",
+      "query": "Should a new software project start as a modular monolith or microservices? Compare conflicting recommendations across architecture books and explain when each applies.",
+      "exp_B_isolated_generation": {
+        "A_conv": {
+          "prompt_eval_count": 4217,
+          "eval_count": 780,
+          "latency_ms": 6765.38,
+          "response": "Deciding whether a new software project should start as a modular monolith or microservices involves considering several factors and understanding the trade-offs involved. Here’s a comparison based on the provided context and general architectural principles:\n\n### Modular Monolith\n**Advantages:**\n1. **Simplicity in Deployment:** A modular monolith is easier to deploy and manage compared to a distributed system. It avoids many of the pitfalls associated with distributed systems, such as network latency, distributed transactions, and complex deployment topologies.\n2. **Code Reuse:** Code reuse within a modular monolith is straightforward. All the code is in one place, making it easy to share and maintain.\n3. **Development Workflow:** It simplifies developer workflows, monitoring, troubleshooting, and end-to-end testing.\n4. **Initial Development Speed:** It can be faster to develop and deploy a modular monolith initially, as there is less overhead in setting up and managing multiple services.\n\n**Disadvantages:**\n1. **Database Decomposition Challenges:** The database in a modular monolith often lacks the same level of decomposition as the code, making it harder to decompose the monolith into microservices in the future.\n2. **Scalability Limitations:** As the system grows, a monolith can become a bottleneck, especially in terms of scaling individual components independently.\n\n### Microservices\n**Advantages:**\n1. **Scalability:** Microservices allow for better scalability by enabling independent scaling of individual services.\n2. **Isolation and Fault Isolation:** Each microservice can be deployed independently, which helps in isolating faults and improving system resilience.\n3. **Technology Independence:** Different microservices can be built using different technologies, frameworks, and languages, providing flexibility.\n4. **Ownership and Team Alignment:** Microservices provide clear boundaries for ownership and team alignment, reducing delivery contention.\n\n**Disadvantages:**\n1. **Complexity:** Microservices introduce additional complexity in terms of deployment, monitoring, and troubleshooting.\n2. **Initial Overhead:** Setting up a microservices architecture requires significant initial investment in terms of infrastructure, tooling, and operational practices.\n3. **Integration Challenges:** Integrating multiple microservices can be complex and error-prone, especially when dealing with distributed transactions and service dependencies.\n\n### When to Use Each Approach\n- **Modular Monolith:**\n  - **Small to Medium-Sized Projects:** For projects that are expected to remain relatively small or medium-sized, a modular monolith can be a good choice due to its simplicity and ease of development.\n  - **Initial Development Phase:** When starting a new project, a modular monolith can help in quickly building and deploying the initial version of the application.\n  - **Legacy System Modernization:** If you are modernizing an existing legacy system, a modular monolith can be a stepping stone towards eventual microservice decomposition.\n\n- **Microservices:**\n  - **Large-Scale Projects:** For large-scale projects that require high scalability and independent scaling of components, microservices are a better fit.\n  - **Highly Distributed Systems:** When the system is expected to be highly distributed, with multiple teams working on different parts of the system, microservices provide better isolation and ownership.\n  - **Technology Diversity:** If the project requires using different technologies for different parts of the system, microservices offer the flexibility to do so.\n\n### Conclusion\nThe choice between a modular monolith and microservices should be driven by the specific needs and constraints of the project. A modular monolith is a good starting point for smaller projects or when initial development speed is a priority. As the project grows and scalability becomes a concern, transitioning to microservices can be a strategic move. However, it is important to avoid premature decomposition and to adopt microservices incrementally, focusing on the benefits they bring rather than the monolith itself."
+        },
+        "B_std": {
+          "prompt_eval_count": 4343,
+          "eval_count": 936,
+          "latency_ms": 8087.56,
+          "response": "When deciding whether a new software project should start as a modular monolith or microservices, it's important to consider the context and specific needs of the project. Both approaches have their advantages and disadvantages, and the choice should be guided by the project's goals, team capabilities, and the expected evolution of the system.\n\n### Modular Monolith\n\n**Advantages:**\n1. **Simplicity in Deployment and Testing:** A modular monolith simplifies deployment and testing processes, as all components are deployed together in a single process. This can reduce the complexity of setting up and maintaining a distributed system.\n2. **Easier Code Reuse:** Within a monolith, code reuse is straightforward, as all the code is in one place. This can lead to faster development cycles and easier maintenance.\n3. **Lower Initial Complexity:** Starting with a modular monolith can be less complex initially, as it avoids the overhead of setting up and managing a distributed system.\n\n**Disadvantages:**\n1. **Potential for a Big Ball of Mud:** Without proper discipline, a modular monolith can evolve into a complex, hard-to-maintain system, often referred to as a \"big ball of mud.\"\n2. **Limited Scalability:** As the system grows, a monolith can become a bottleneck for scaling, especially if certain parts of the system are more resource-intensive than others.\n\n### Microservices\n\n**Advantages:**\n1. **Scalability:** Microservices allow for more granular scaling, as each service can be scaled independently based on its specific needs.\n2. **Loose Coupling:** Services are loosely coupled, which can make the system more resilient to changes and easier to maintain.\n3. **Independent Deployment:** Each microservice can be deployed independently, which can speed up the development and deployment cycles.\n\n**Disadvantages:**\n1. **Complexity in Deployment and Testing:** Deploying and testing microservices can be more complex due to the distributed nature of the system.\n2. **Higher Initial Overhead:** Setting up a microservices architecture requires more initial effort in terms of infrastructure, tooling, and governance.\n3. **Potential for Over-Engineering:** Premature decomposition can lead to unnecessary complexity and overhead, especially if the domain is not well understood.\n\n### Recommendations from Architecture Books\n\n- **\"Building Microservices\" by Sam Newman:**\n  - **Chapter 1:** Newman emphasizes that microservices are not a goal in themselves but a means to achieve specific goals such as scalability, resilience, and agility. He suggests that adopting microservices should be a conscious decision based on rational decision-making.\n  - **Chapter 3:** Newman recommends starting with a modular monolith if you are not starting with a blank slate and if microservices are not the easiest way to achieve your goals. He suggests that you should only move to microservices if you can't find any easier way to move toward your end goal with your current architecture.\n\n- **\"Software Architecture Metrics\" by Mark Lines and Bill Curtis:**\n  - The book discusses the challenges of both monoliths and microservices, highlighting that both can drift into becoming a \"big ball of mud\" if not managed properly. It suggests that the choice between monoliths and microservices should be based on the specific needs and constraints of the project.\n\n### When Each Applies\n\n- **Modular Monolith:**\n  - **Small to Medium-Sized Projects:** For projects that are small to medium-sized and do not require immediate scalability, a modular monolith can be a good starting point.\n  - **Teams with Limited Experience:** If the team is not experienced with distributed systems, starting with a modular monolith can be less complex and less risky.\n  - **Projects with Clear Boundaries:** If the project has clear boundaries and well-defined modules, a modular monolith can be easier to manage and maintain.\n\n- **Microservices:**\n  - **Large-Scale Projects:** For large-scale projects that require high scalability and resilience, microservices can be a better choice.\n  - **Teams with Experience in Distributed Systems:** If the team has experience with distributed systems and can manage the complexity, microservices can offer significant benefits.\n  - **Projects with Evolving Requirements:** If the project requirements are likely to evolve rapidly, microservices can provide the flexibility needed to adapt to changing requirements.\n\nIn summary, the choice between a modular monolith and microservices should be based on a careful assessment of the project's specific needs, team capabilities, and expected evolution. Both approaches have their strengths and weaknesses, and the decision should be guided by the project's goals and constraints."
+        },
+        "C_deep": {
+          "prompt_eval_count": 4542,
+          "eval_count": 589,
+          "latency_ms": 5406.41,
+          "response": "1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   A escolha entre iniciar um novo projeto como um modular monolith ou microservices depende de vários fatores, incluindo a complexidade do sistema, a equipe de desenvolvimento e as necessidades de escalabilidade. De acordo com o livro \"Building Microservices\" (Capítulo 1), um modular monolith pode ser uma escolha excelente para muitas organizações, pois permite um alto grau de trabalho paralelo e evita os desafios de uma arquitetura microserviço distribuída, possuindo uma topologia de implantação muito mais simples. Por outro lado, o livro \"Building Microservices\" também sugere que a adoção de microserviços deve ser uma decisão consciente baseada em raciocínio, e não deve ser a primeira opção se existem maneiras mais fáceis de alcançar o objetivo final com a arquitetura atual.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   A implementação de um modular monolith pode ser mais simples e menos propensa a erros de implementação, pois a equipe de desenvolvimento pode trabalhar em módulos separados, mas ainda precisam ser combinados para a implantação. No entanto, a implementação de microserviços pode ser mais complexa e requer uma equipe de desenvolvimento com experiência em gerenciamento de serviços distribuídos. Além disso, a implementação de microserviços pode ser mais vantajosa em termos de escalabilidade e manutenção a longo prazo.\n\n3. 🔍 Auto-Validação e Integridade:\n   A escolha entre modular monolith e microservices deve ser baseada em uma análise cuidadosa das necessidades do projeto e das capacidades da equipe de desenvolvimento. Se o projeto é relativamente simples e a equipe de desenvolvimento é pequena, um modular monolith pode ser a melhor opção. Se o projeto é complexo e a equipe de desenvolvimento é grande, microservices podem ser mais vantajosos.\n\n4. 📖 Citações Exatas:\n   - \"Building Microservices\" (Pág 42): \"For many organizations, the modular monolith can be an excellent choice. If the module boundaries are well defined, it can allow for a high degree of parallel work, while avoiding the challenges of the more distributed microservice architecture by having a much simpler deployment topology.\"\n   - \"Building Microservices\" (Pág 97): \"Microservices are not the goal. You don’t “win” by having microservices. Adopting a microservice architecture should be a conscious decision, one based on rational decision making.\""
+        }
+      },
+      "exp_C_full_pipeline": {
+        "B_std_full": {
+          "prompt_eval_count": 4270,
+          "eval_count": 682,
+          "latency_ms": 6011.84,
+          "sources": [
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 44",
+              "page": 44,
+              "score": 1.0,
+              "tokens": 542
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 44",
+              "page": 44,
+              "score": 0.984,
+              "tokens": 542
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 99",
+              "page": 99,
+              "score": 0.982,
+              "tokens": 535
+            },
+            {
+              "book_title": "Softwarearchitecturemetrics",
+              "chapter": "Página 98",
+              "page": 98,
+              "score": 0.98,
+              "tokens": 118
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 99",
+              "page": 99,
+              "score": 0.967,
+              "tokens": 535
+            },
+            {
+              "book_title": "Softwarearchitecturemetrics",
+              "chapter": "Página 98",
+              "page": 98,
+              "score": 0.966,
+              "tokens": 118
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 97",
+              "page": 97,
+              "score": 0.959,
+              "tokens": 380
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 97",
+              "page": 97,
+              "score": 0.944,
+              "tokens": 380
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 42",
+              "page": 42,
+              "score": 0.94,
+              "tokens": 370
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 60",
+              "page": 60,
+              "score": 0.933,
+              "tokens": 249
+            }
+          ],
+          "response": "A escolha entre iniciar um novo projeto como um modular monolith ou microservices depende de vários fatores e contextos específicos. Vamos analisar as recomendações conflitantes e explicar quando cada uma se aplica, baseando-nos nos livros indexados.\n\n### Modular Monolith\n\n**Recomendação:**\nO livro \"Building Microservices\" (2ª edição) sugere que o modular monolith pode ser uma excelente escolha para muitas organizações, especialmente quando as fronteiras dos módulos são bem definidas (Página 42). Isso permite um alto grau de trabalho paralelo e evita os desafios da arquitetura microserviço distribuída, mantendo uma topologia de implantação mais simples.\n\n**Quando Aplica-se:**\n- **Pequenas e médias organizações:** O modular monolith é mais adequado para organizações menores ou médias que buscam uma arquitetura mais simples e menos complexa.\n- **Projetos de curto prazo:** Para projetos com prazos mais curtos, o modular monolith pode ser mais eficiente, pois evita a complexidade adicional de gerenciar múltiplos serviços.\n- **Equipes menores:** Equipes menores podem encontrar mais facilidade em gerenciar e evoluir um modular monolith do que uma arquitetura microserviço.\n\n### Microservices\n\n**Recomendação:**\nO livro \"Building Microservices\" (2ª edição) também destaca que microservices podem oferecer uma grande flexibilidade em escolher tecnologia, lidar com robustez e escalabilidade, organizar equipes e mais (Página 60). No entanto, a complexidade associada a microservices deve ser justificada pelos problemas que você está tentando resolver.\n\n**Quando Aplica-se:**\n- **Grandes organizações:** Para organizações maiores, a arquitetura microserviço pode ser mais adequada, pois permite maior escalabilidade e independência entre equipes.\n- **Projetos de longo prazo:** Projetos que precisam evoluir e se adaptar ao longo do tempo podem beneficiar-se da flexibilidade e isolamento fornecidos por microservices.\n- **Equipes distribuídas:** Equipes distribuídas ou geograficamente dispersas podem encontrar mais facilidade em gerenciar microservices, pois cada equipe pode trabalhar em seu próprio serviço sem interferir nos outros.\n\n### Conclusão\n\nA escolha entre modular monolith e microservices deve ser baseada em uma análise cuidadosa dos requisitos do projeto, do tamanho e da estrutura da equipe, e das necessidades de escalabilidade e manutenção a longo prazo. O modular monolith é mais adequado para projetos menores e de curto prazo, enquanto microservices são mais indicados para projetos maiores e de longo prazo, especialmente em organizações grandes e distribuídas.\n\nReferências:\n- \"Building Microservices\" (2ª edição), Capítulo 1, Páginas 42 e 60."
+        },
+        "C_deep_full": {
+          "prompt_eval_count": 4469,
+          "eval_count": 645,
+          "latency_ms": 5568.38,
+          "sources": [
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 44",
+              "page": 44,
+              "score": 1.0,
+              "tokens": 542
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 44",
+              "page": 44,
+              "score": 0.984,
+              "tokens": 542
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 99",
+              "page": 99,
+              "score": 0.982,
+              "tokens": 535
+            },
+            {
+              "book_title": "Softwarearchitecturemetrics",
+              "chapter": "Página 98",
+              "page": 98,
+              "score": 0.98,
+              "tokens": 118
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 99",
+              "page": 99,
+              "score": 0.967,
+              "tokens": 535
+            },
+            {
+              "book_title": "Softwarearchitecturemetrics",
+              "chapter": "Página 98",
+              "page": 98,
+              "score": 0.966,
+              "tokens": 118
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 97",
+              "page": 97,
+              "score": 0.959,
+              "tokens": 380
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 97",
+              "page": 97,
+              "score": 0.944,
+              "tokens": 380
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 42",
+              "page": 42,
+              "score": 0.94,
+              "tokens": 370
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 60",
+              "page": 60,
+              "score": 0.933,
+              "tokens": 249
+            }
+          ],
+          "response": "1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   A escolha entre iniciar um novo projeto como um modular monolith ou microservices depende de vários fatores, incluindo a complexidade do sistema, a equipe de desenvolvimento e as necessidades de escalabilidade. De acordo com o livro \"Building Microservices\", um modular monolith pode ser uma escolha excelente para muitas organizações, permitindo um alto grau de trabalho paralelo e evitando os desafios de uma arquitetura microserviço mais distribuída. No entanto, a mesma fonte sugere que microservices podem oferecer uma grande flexibilidade em escolher tecnologia, lidar com robustez e escalabilidade, organizar equipes e mais. Portanto, a decisão deve ser baseada na avaliação cuidadosa desses fatores.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   Para projetos menores ou com equipes menores, um modular monolith pode ser mais prático devido à sua simplicidade de implementação e manutenção. No entanto, para projetos maiores ou com necessidades de escalabilidade mais complexas, microservices podem ser mais adequados devido à sua capacidade de lidar com essas necessidades de maneira eficaz. É importante notar que a migração de um monolith para microservices não deve ser feita sem um objetivo claro e deve ser uma decisão consciente baseada em raciocínio.\n\n3. 🔍 Auto-Validação e Integridade:\n   A decisão entre modular monolith e microservices deve ser baseada em uma análise cuidadosa dos requisitos do projeto e das capacidades da equipe. A escolha de um modular monolith pode ser justificada por sua simplicidade e capacidade de permitir trabalho paralelo, enquanto a escolha de microservices pode ser justificada por sua flexibilidade e capacidade de lidar com escalabilidade e robustez. Ambas as escolhas devem ser avaliadas com base em evidências concretas e não devem ser feitas apenas por causa de tendências ou pressões de mercado.\n\n4. 📖 Citações Exatas:\n   - \"Building Microservices\", Capítulo 1, Página 16: \"Shopify é um exemplo de uma organização que usou essa técnica como uma alternativa à decomposição de microserviços, e parece funcionar muito bem para essa empresa.\"\n   - \"Building Microservices\", Capítulo 1, Página 34: \"Microservice architectures can give you a huge degree of flexibility in choosing technology, handling robustness and scaling, organizing teams, and more.\"\n   - \"Building Microservices\", Capítulo 3, Página 71: \"Microservices are not the goal. You don’t “win” by having microservices. Adopting a microservice architecture should be a conscious decision, one based on rational decision making.\""
+        }
+      }
+    },
+    {
+      "question_id": "C2_shared_db_vs_isolated",
+      "query": "Is a shared database across services ever acceptable or must every service own a separate database? Compare conflicting views and trade-offs from the books.",
+      "exp_B_isolated_generation": {
+        "A_conv": {
+          "prompt_eval_count": 4063,
+          "eval_count": 901,
+          "latency_ms": 7403.13,
+          "response": "A questão de compartilhar um banco de dados entre serviços em um ambiente de microserviços é complexa e depende de vários fatores. Vamos analisar as diferentes perspectivas e trade-offs conforme discutidos nos livros fornecidos.\n\n### Perspectiva de Não Compartilhar Dados entre Serviços\n\n**Livro: Building Microservices, 2nd Edition (Pág 248)**\n- **Princípio de Não Compartilhar Dados**: O livro enfatiza o princípio de que microserviços não devem compartilhar bancos de dados. Isso é baseado na ideia de que cada microserviço deve esconder sua lógica interna e gerenciamento de estado. Quando compartilhamos um banco de dados entre microserviços, a lógica de acesso e manipulação de dados é espalhada entre diferentes microserviços, o que pode levar a problemas de acoplamento e complexidade.\n- **Exceção para Instâncias do Mesmo Serviço**: O livro também menciona uma exceção para isso: instâncias diferentes do mesmo microserviço podem compartilhar um banco de dados, pois a lógica de acesso e manipulação de dados ainda é mantida dentro do mesmo microserviço.\n\n### Perspectiva de Compartilhar Dados entre Serviços\n\n**Livro: Software Architecture: The Hard Parts (Pág 268)**\n- **Compartilhamento de Esquema de Banco de Dados**: O livro sugere que é aceitável para múltiplos serviços se conectarem ao mesmo esquema de banco de dados, mas não é aceitável para um serviço se conectar a múltiplos bancos de dados ou esquemas. Isso é baseado na ideia de que a lógica de acesso e manipulação de dados deve ser mantida dentro de um único serviço.\n- **Complexidade de Propriedade de Dados**: O livro também discute a complexidade de atribuir a propriedade de dados quando múltiplos serviços escrevem no mesmo banco de dados. Isso pode levar a problemas de concorrência e consistência.\n\n### Trade-offs e Considerações\n\n**Livro: Software Architecture: The Hard Parts (Pág 265)**\n- **Usar Bibliotecas Compartilhadas**: O livro sugere que, em vez de criar um serviço compartilhado para lógica de banco de dados comum, é melhor usar uma biblioteca compartilhada (DLL). Isso pode melhorar o desempenho, escalabilidade e tolerância a falhas, além de reduzir o acoplamento entre serviços.\n- **Consequências**: No entanto, a mudança na lógica de banco de dados compartilhada pode exigir a retestagem e a reimplantação dos serviços de ticketing, o que pode reduzir a agilidade.\n\n### Conclusão\n\nA decisão de compartilhar um banco de dados entre serviços deve ser tomada com cuidado, considerando os seguintes pontos:\n\n1. **Acoplamento**: Compartilhar um banco de dados entre serviços pode levar a um alto grau de acoplamento, tornando o sistema mais difícil de manter e escalar.\n2. **Consistência e Concorrência**: Quando múltiplos serviços escrevem no mesmo banco de dados, a consistência e a concorrência podem se tornar complexas.\n3. **Isolamento e Controle**: Cada serviço deve ter controle sobre seu próprio banco de dados para garantir isolamento e evitar interferências.\n4. **Bibliotecas Compartilhadas**: Em vez de compartilhar bancos de dados, considerar o uso de bibliotecas compartilhadas para lógica de banco de dados comum pode ser uma solução mais limpa e menos acoplada.\n\nPortanto, embora seja possível compartilhar um esquema de banco de dados entre serviços, é geralmente recomendado que cada serviço tenha seu próprio banco de dados para evitar problemas de acoplamento e complexidade."
+        },
+        "B_std": {
+          "prompt_eval_count": 4189,
+          "eval_count": 837,
+          "latency_ms": 6969.86,
+          "response": "A questão sobre a partilha de um banco de dados entre serviços em um ambiente de microserviços é complexa e depende de vários fatores. Vamos analisar as visões conflitantes e os trade-offs conforme descrito nos livros fornecidos.\n\n### Visão Contra a Partilha de Banco de Dados\n\n**Livro: Building Microservices, 2nd Edition (Pág 248)**\n- **Princípio de Não Partilha de Dados**: A ideia principal é que cada microserviço deve esconder sua gestão de estado interno, incluindo qualquer banco de dados que use para gerenciar seu estado. Isso implica que a partilha de bancos de dados entre diferentes microserviços é geralmente desencorajada, pois pode levar a uma dispersão da lógica de acesso e manipulação de estado entre diferentes microserviços.\n- **Cenário de Instâncias de Serviço**: É aceitável que múltiplas instâncias do mesmo microserviço compartilhem um banco de dados, pois a lógica de acesso e manipulação de estado permanece dentro do mesmo microserviço lógico.\n\n### Visão a Favor da Partilha de Banco de Dados\n\n**Livro: Software Architecture: The Hard Parts (Pág 268)**\n- **Regras de Propriedade de Dados**: A regra geral é que o serviço que realiza operações de escrita em uma tabela é o proprietário dessa tabela. No entanto, a partilha de uma tabela entre múltiplos serviços pode levar a complexidades e problemas de gerenciamento de transações distribuídas.\n- **Exemplo de Serviços**: O exemplo dado envolve três serviços (Wishlist Service, Catalog Service e Inventory Service) que podem precisar acessar a mesma tabela, mas com diferentes níveis de frequência e tipo de operações (leitura vs. escrita).\n\n### Trade-offs e Considerações\n\n**Livro: Software Architecture: The Hard Parts (Pág 265)**\n- **Shared Library vs. Shared Service**: A decisão de usar uma biblioteca compartilhada (DLL) em vez de um serviço compartilhado para lógica de banco de dados comum foi tomada com base em considerações de desempenho, escalabilidade, tolerância a falhas e redução de acoplamento entre serviços.\n- **Consequências**: A escolha de uma biblioteca compartilhada pode reduzir a agilidade para alterações comuns em lógica de banco de dados, pois todas as instâncias de serviço precisam ser testadas e reimplantadas.\n\n### Conclusão\n\nA partilha de um banco de dados entre serviços é geralmente desencorajada devido aos riscos de acoplamento e dispersão da lógica de acesso ao banco de dados. No entanto, em certos casos, como múltiplas instâncias do mesmo microserviço compartilhando um banco de dados, isso pode ser aceitável. A decisão final deve ser baseada em uma análise cuidadosa dos trade-offs entre desempenho, escalabilidade, tolerância a falhas e acoplamento entre serviços.\n\n### Recomendação\n\n- **Não compartilhe bancos de dados entre diferentes microserviços**.\n- **Compartilhe bancos de dados entre instâncias do mesmo microserviço**.\n- **Use bibliotecas compartilhadas para lógica de banco de dados comum** quando a lógica é estável e não muda frequentemente.\n\nEssas diretrizes ajudam a equilibrar as necessidades de isolamento e acoplamento entre serviços, enquanto ainda permite a reutilização de código e lógica de banco de dados quando apropriado."
+        },
+        "C_deep": {
+          "prompt_eval_count": 4388,
+          "eval_count": 754,
+          "latency_ms": 6376.61,
+          "response": "1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   De acordo com o livro \"Software Architecture: The Hard Parts\", é geralmente aceitável que múltiplos serviços se conectem ao mesmo esquema de banco de dados, mas não é recomendado que um serviço se conecte a múltiplos bancos de dados ou esquemas. A regra geral para a atribuição de propriedade de tabela é que o serviço que realiza operações de gravação em uma tabela é o proprietário dessa tabela. No entanto, a propriedade compartilhada (quando vários serviços escrevem na mesma tabela) torna essa regra simples complexa. Por outro lado, o livro \"Building Microservices: Designing Fine-Grained Systems\" sugere que, embora seja uma boa prática não compartilhar bancos de dados entre microserviços, é aceitável que várias instâncias do mesmo microserviço compartilhem um banco de dados, pois a lógica para acessar e manipular o estado ainda é mantida dentro de um único microserviço lógico.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   A prática de compartilhar um banco de dados entre várias instâncias do mesmo microserviço pode melhorar o desempenho, escalabilidade e tolerância a falhas, pois elimina a necessidade de HTTP traffic e dependências adicionais entre serviços. No entanto, compartilhar um banco de dados entre microserviços diferentes pode levar a problemas de interferência e complexidade de gerenciamento. Além disso, a decisão de usar uma biblioteca compartilhada para lógica de banco de dados comum, em vez de um serviço de dados compartilhado, pode reduzir a acoplamento entre serviços e facilitar a versão e a manutenção da lógica de banco de dados.\n\n3. 🔍 Auto-Validação e Integridade:\n   As afirmações acima decorrem diretamente das fontes fornecidas, que discutem as complexidades da atribuição de propriedade de dados e as práticas recomendadas para o gerenciamento de bancos de dados em arquiteturas de microserviços. As citações específicas do livro \"Software Architecture: The Hard Parts\" e \"Building Microservices: Designing Fine-Grained Systems\" fornecem exemplos e discussões detalhadas sobre esses tópicos.\n\n4. 📖 Citações Exatas:\n   - \"Software Architecture: The Hard Parts\", Capítulo 9, Página 268: \"Don’t you remember what Dana said earlier? It’s OK for multiple services to connect to the same database schema, but it’s not OK for a service to connect to multiple databases or schemas.\"\n   - \"Building Microservices: Designing Fine-Grained Systems\", Capítulo 8, Página 248: \"The Database\" e \"Figure 8-4. Multiple instances of the same microservice can share a database\"\n   - \"Software Architecture: The Hard Parts\", Capítulo 8, Página 265: \"ADR: Use of a Shared Library for Common Ticketing Database Logic\"\n   - \"Building Microservices: Designing Fine-Grained Systems\", Capítulo 8, Página 250: \"Figure 8-6. The same physical database infrastructure hosting two logically isolated databases\""
+        }
+      },
+      "exp_C_full_pipeline": {
+        "B_std_full": {
+          "prompt_eval_count": 3951,
+          "eval_count": 948,
+          "latency_ms": 7755.47,
+          "sources": [
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 268",
+              "page": 268,
+              "score": 1.0,
+              "tokens": 522
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 268",
+              "page": 268,
+              "score": 0.984,
+              "tokens": 522
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 248",
+              "page": 248,
+              "score": 0.968,
+              "tokens": 310
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 248",
+              "page": 248,
+              "score": 0.953,
+              "tokens": 310
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 265",
+              "page": 265,
+              "score": 0.764,
+              "tokens": 481
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 265",
+              "page": 265,
+              "score": 0.764,
+              "tokens": 481
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 223",
+              "page": 223,
+              "score": 0.757,
+              "tokens": 500
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 223",
+              "page": 223,
+              "score": 0.757,
+              "tokens": 500
+            }
+          ],
+          "response": "### Resposta ESTRUTURADA\n\n#### Contexto e Conflitos\n\n1. **Regra Geral de Não Compartilhamento de Dados**:\n   - **Software Architecture: The Hard Parts** (Página 268): A regra geral é que múltiplos serviços não devem conectar-se a um mesmo esquema de banco de dados. Isso é para evitar complexidades de gerenciamento de transações distribuídas e problemas de consistência de dados.\n   - **Building Microservices, 2nd Edition** (Página 248): A regra de não compartilhamento de bancos de dados é frequentemente citada, mas é importante notar que isso se refere a compartilhamento entre diferentes serviços, não entre instâncias do mesmo serviço.\n\n2. **Exceções e Casos Especiais**:\n   - **Building Microservices, 2nd Edition** (Página 248): É aceitável que múltiplas instâncias do mesmo serviço compartilhem um banco de dados, pois a lógica de acesso e manipulação de dados permanece dentro do mesmo serviço lógico.\n   - **Software Architecture: The Hard Parts** (Página 265): Em certos casos, como a lógica de banco de dados comum que não muda frequentemente, pode ser mais eficiente e menos acoplado usar uma biblioteca compartilhada em vez de um serviço compartilhado.\n\n#### Trade-offs e Considerações\n\n1. **Desacoplamento e Manutenção**:\n   - **Software Architecture: The Hard Parts** (Página 265): Usar uma biblioteca compartilhada pode reduzir o acoplamento entre serviços e eliminar dependências adicionais, HTTP traffic e banda geral. No entanto, isso pode reduzir a agilidade para alterações comuns de lógica de banco de dados.\n   - **Building Microservices, 2nd Edition** (Página 248): Compartilhar um banco de dados entre instâncias do mesmo serviço pode melhorar a performance, escalabilidade e tolerância a falhas, mas deve ser feito com cuidado para evitar problemas de consistência e acoplamento.\n\n2. **Frequência de Alterações**:\n   - **Software Architecture: The Hard Parts** (Página 223): Se a lógica compartilhada muda frequentemente, pode ser mais difícil coordenar alterações entre múltiplos serviços. Nesse caso, é melhor consolidar os serviços que usam essa lógica.\n   - **Building Microservices, 2nd Edition** (Página 248): Se a lógica de banco de dados é estável e não muda frequentemente, compartilhar uma biblioteca pode ser uma boa solução.\n\n3. **Consistência e Isolamento**:\n   - **Software Architecture: The Hard Parts** (Página 268): Compartilhar um banco de dados entre serviços diferentes pode levar a problemas de consistência e isolamento, pois a lógica de acesso e manipulação de dados é espalhada entre diferentes serviços.\n   - **Building Microservices, 2nd Edition** (Página 248): Compartilhar um banco de dados entre instâncias do mesmo serviço mantém a lógica de acesso e manipulação de dados dentro do mesmo serviço lógico, o que é mais seguro e consistente.\n\n### Conclusão\n\n- **Regra Geral**: Não compartilhar bancos de dados entre diferentes serviços é uma boa prática para evitar complexidades e problemas de consistência.\n- **Exceções**: É aceitável compartilhar um banco de dados entre instâncias do mesmo serviço, pois a lógica de acesso e manipulação de dados permanece dentro do mesmo serviço lógico.\n- **Considerações**: Usar bibliotecas compartilhadas para lógica de banco de dados comum pode ser uma solução eficiente se a lógica não muda frequentemente, mas deve ser feito com cuidado para evitar problemas de acoplamento e agilidade.\n\n### Referências\n\n- **Software Architecture: The Hard Parts** (Página 268, 265, 223)\n- **Building Microservices, 2nd Edition** (Página 248)"
+        },
+        "C_deep_full": {
+          "prompt_eval_count": 4150,
+          "eval_count": 744,
+          "latency_ms": 6282.93,
+          "sources": [
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 268",
+              "page": 268,
+              "score": 1.0,
+              "tokens": 522
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 268",
+              "page": 268,
+              "score": 0.984,
+              "tokens": 522
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 248",
+              "page": 248,
+              "score": 0.968,
+              "tokens": 310
+            },
+            {
+              "book_title": "Buildingmicroservices2Ndedition",
+              "chapter": "Página 248",
+              "page": 248,
+              "score": 0.953,
+              "tokens": 310
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 265",
+              "page": 265,
+              "score": 0.764,
+              "tokens": 481
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 265",
+              "page": 265,
+              "score": 0.764,
+              "tokens": 481
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 223",
+              "page": 223,
+              "score": 0.757,
+              "tokens": 500
+            },
+            {
+              "book_title": "Softwarearchitecture Thehardparts",
+              "chapter": "Página 223",
+              "page": 223,
+              "score": 0.757,
+              "tokens": 500
+            }
+          ],
+          "response": "1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   De acordo com o livro \"Software Architecture: The Hard Parts\", é geralmente aceitável que múltiplos serviços se conectem ao mesmo esquema de banco de dados, mas não é recomendado que um serviço se conecte a múltiplos bancos de dados ou esquemas. A regra geral para a atribuição de propriedade de tabela é que o serviço que realiza operações de gravação em uma tabela é o proprietário dessa tabela. No entanto, a propriedade compartilhada torna essa regra simples complexa. Por outro lado, o livro \"Building Microservices: Designing Fine-Grained Systems\" sugere que, embora seja geralmente recomendado que microserviços não compartilhem bancos de dados, é aceitável que múltiplas instâncias do mesmo microserviço compartilhem um banco de dados, pois a lógica para acessar e manipular o estado ainda está contida dentro de um único microserviço lógico.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   A prática de compartilhar um banco de dados entre múltiplas instâncias do mesmo microserviço pode melhorar o desempenho, escalabilidade e tolerância a falhas, pois elimina a necessidade de tráfego HTTP adicional e dependências de serviço. No entanto, compartilhar um banco de dados entre diferentes microserviços pode levar a problemas de coordenação de alterações e complexidade de gerenciamento de versões. Além disso, a decisão de compartilhar lógica de banco de dados em uma biblioteca compartilhada, conforme discutido no livro \"Software Architecture: The Hard Parts\", pode melhorar a escalabilidade e a tolerância a falhas, mas pode reduzir a agilidade para alterações comuns no banco de dados.\n\n3. 🔍 Auto-Validação e Integridade:\n   As afirmações acima decorrem diretamente das fontes fornecidas, que discutem tanto os benefícios quanto os desafios de compartilhar bancos de dados e lógica de banco de dados entre serviços e microserviços. As citações fornecem exemplos claros de como essas decisões afetam a arquitetura e o desempenho do sistema.\n\n4. 📖 Citações Exatas:\n   - \"Software Architecture: The Hard Parts\", Capítulo 9, Página 268: \"Don’t you remember what Dana said earlier? It’s OK for multiple services to connect to the same database schema, but it’s not OK for a service to connect to multiple databases or schemas.\"\n   - \"Building Microservices: Designing Fine-Grained Systems\", Capítulo 8, Página 248: \"But doesn’t this violate our “don’t share databases” rule? Not really. One of our major concerns is that when sharing a database across multiple different microservices, the logic associated with accessing and manipulating that state is now spread across different microservices.\"\n   - \"Software Architecture: The Hard Parts\", Capítulo 7, Página 223: \"Frequent shared code changes Regardless of the size of the shared library, frequent changes to shared functionality require frequent coordinated changes to the services using that shared domain functionality.\""
+        }
+      }
+    }
+  ]
+}

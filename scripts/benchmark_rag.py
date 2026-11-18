@@ -124,28 +124,31 @@ def run_benchmark():
         })
 
         results_cached.append({
-            "latency_ms": t_cache
+            "latency_ms": t_cache,
+            "cache_hit": bool(res_cache.get("cache_hit", False))
         })
 
     # Médias Agregadas
     mean_naive_latency = statistics.mean(r["latency_ms"] for r in results_naive)
     mean_agentic_latency = statistics.mean(r["latency_ms"] for r in results_agentic)
     mean_cached_latency = statistics.mean(r["latency_ms"] for r in results_cached)
+    cache_hits = sum(1 for r in results_cached if r["cache_hit"])
 
     mean_naive_score = statistics.mean(r["avg_score"] for r in results_naive)
     mean_agentic_score = statistics.mean(r["avg_score"] for r in results_agentic)
 
+    mean_naive_reduction = statistics.mean(r["reduction_pct"] for r in results_naive)
     mean_reduction = statistics.mean(r["reduction_pct"] for r in results_agentic)
     mean_sources = statistics.mean(r["sources_count"] for r in results_agentic)
 
     score_improvement = ((mean_agentic_score - mean_naive_score) / max(0.01, mean_naive_score)) * 100
 
     # Tabela Resumo
-    table = Table(title="🏆 Relatório Final de Performance e Precisão", show_header=True, header_style="bold cyan")
+    table = Table(title="🏆 Relatório de Performance de Recuperação (IR-Only, MockLLM)", show_header=True, header_style="bold cyan")
     table.add_column("Métrica de Qualidade", style="bold")
     table.add_column("Naive RAG (Básico)", justify="center", style="yellow")
     table.add_column("Agentic RAG (Cognitivo)", justify="center", style="green")
-    table.add_column("Hot Cache (<1ms)", justify="center", style="magenta")
+    table.add_column("Hot Cache", justify="center", style="magenta")
     table.add_column("Ganho / Delta", justify="center", style="bold cyan")
 
     table.add_row(
@@ -153,21 +156,21 @@ def run_benchmark():
         f"{mean_naive_score:.3f}",
         f"{mean_agentic_score:.3f}",
         "-",
-        f"[bold green]+{score_improvement:.1f}% mais preciso[/bold green]"
+        f"[bold green]{score_improvement:+.1f}% similaridade[/bold green]"
     )
     table.add_row(
         "Latência de Recuperação (I/O)",
         f"{mean_naive_latency:.1f} ms",
         f"{mean_agentic_latency:.1f} ms",
         f"[bold magenta]{mean_cached_latency:.2f} ms[/bold magenta]",
-        f"[cyan]{mean_cached_latency:.2f} ms no cache[/cyan]"
+        f"[cyan]{cache_hits}/{len(results_cached)} cache hits[/cyan]"
     )
     table.add_row(
-        "Economia Média de Tokens",
-        f"{statistics.mean(r['reduction_pct'] for r in results_naive):.2f}%",
+        "Redução vs. Chunks Recuperados",
+        f"{mean_naive_reduction:.2f}%",
         f"{mean_reduction:.2f}%",
         f"{mean_reduction:.2f}%",
-        "[bold green]>98% economia de tokens[/bold green]"
+        f"[bold green]{mean_reduction:.2f}% corte de ruído[/bold green]"
     )
     table.add_row(
         "Densidade de Chunks Relevantes",
@@ -178,7 +181,7 @@ def run_benchmark():
     )
 
     console.print("\n", table)
-    console.print("\n[bold green]✔ Benchmark concluído com sucesso e dados comprovados![/bold green]\n")
+    console.print("\n[bold green]✔ Benchmark IR-Only concluído (MockLLMAdapter; não avalia qualidade de geração LLM).[/bold green]\n")
 
 
 if __name__ == "__main__":

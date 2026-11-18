@@ -30,6 +30,14 @@ def sanitize_text(text: str) -> str:
     return cleaned.encode('utf-8', errors='ignore').decode('utf-8', errors='ignore')
 
 
+def normalize_preserving_structure(text: str) -> str:
+    """Normaliza quebras de linha preservando indentação, código, tabelas e parágrafos."""
+    cleaned = sanitize_text(text).replace('\r\n', '\n').replace('\r', '\n')
+    cleaned = re.sub(r'[ \t]+$', '', cleaned, flags=re.MULTILINE)
+    cleaned = re.sub(r'\n{3,}', '\n\n', cleaned)
+    return cleaned.strip()
+
+
 class TextAndMarkdownLoader(IDocumentLoaderPort):
     """Carregador para arquivos .txt e .md."""
     
@@ -75,8 +83,7 @@ class PDFDocumentLoader(IDocumentLoaderPort):
             docs = []
             for idx, page in enumerate(doc):
                 text = page.get_text() or ""
-                cleaned = sanitize_text(text)
-                cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+                cleaned = normalize_preserving_structure(text)
                 if len(cleaned) > 20:
                     docs.append({
                         "text": cleaned,
@@ -98,8 +105,7 @@ class PDFDocumentLoader(IDocumentLoaderPort):
                 except Exception:
                     continue
                 if text:
-                    cleaned = sanitize_text(text)
-                    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+                    cleaned = normalize_preserving_structure(text)
                     if len(cleaned) > 20:
                         docs.append({
                             "text": cleaned,

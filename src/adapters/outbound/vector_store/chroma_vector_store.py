@@ -140,6 +140,44 @@ class ChromaVectorStoreAdapter(IVectorStorePort):
 
         return scored_chunks
 
+    def search_by_identifier(
+        self,
+        identifier: str,
+        top_k: int = 4,
+        book_title_filter: Optional[str] = None,
+    ) -> List[ScoredChunk]:
+        """Busca lexical exata via $contains no ChromaDB para identificadores técnicos."""
+        if not identifier or self.collection.count() == 0:
+            return []
+        where_filter = {"book_title": {"$eq": book_title_filter}} if book_title_filter else None
+        try:
+            results = self.collection.get(
+                where=where_filter,
+                where_document={"$contains": identifier},
+                limit=top_k,
+                include=["documents", "metadatas"],
+            )
+        except Exception:
+            return []
+
+        docs = results.get("documents", []) or []
+        metas = results.get("metadatas", []) or []
+        ids = results.get("ids", []) or []
+        scored: List[ScoredChunk] = []
+        for chunk_id, doc, meta in zip(ids, docs, metas):
+            chunk = BookChunk(
+                id=chunk_id,
+                book_id=meta.get("book_id", ""),
+                book_title=meta.get("book_title", "Desconhecido"),
+                chunk_index=meta.get("chunk_index", 0),
+                content=doc,
+                token_count=meta.get("token_count", len(doc.split())),
+                page_number=meta.get("page_number") if meta.get("page_number", -1) != -1 else None,
+                chapter=meta.get("chapter") or None,
+            )
+            scored.append(ScoredChunk(chunk=chunk, score=0.85))
+        return scored
+
     def delete_book(self, book_id: str) -> None:
         self.collection.delete(where={"book_id": {"$eq": book_id}})
 

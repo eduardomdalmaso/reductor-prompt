@@ -111,31 +111,67 @@ class PromptCompressorService:
 
         return selected or [sorted_chunks[0]]
 
+    _STRATEGY_PARAMS = {
+        "conservative": (0.55, 0.35),
+        "balanced": (0.45, 0.30),
+        "aggressive": (0.35, 0.22),
+    }
+
     def compress_and_format(
         self,
         query: str,
         scored_chunks: List[ScoredChunk],
         max_tokens: int = None,
-        similarity_threshold: float = None
+        similarity_threshold: float = None,
+        strategy: str = "balanced",
+        max_cut_percent: Optional[float] = None
     ) -> CompressedContext:
-        """Comprime e formata o contexto com orçamento adaptativo e filtragem inteligente contra ruído."""
+        """Comprime e formata o contexto com orçamento adaptativo e estratégia configurável."""
         limit_tokens = self.determine_dynamic_budget(query, max_tokens)
         min_score = similarity_threshold or settings.SIMILARITY_THRESHOLD
 
         # 1. Ordena decrescente por score de relevância
         sorted_chunks = sorted(scored_chunks, key=lambda x: x.score, reverse=True)
+        raw_retrieved_tokens = sum(
+            sc.chunk.token_count if sc.chunk.token_count > 0 else self.chunking_service.count_tokens(sc.chunk.content)
+            for sc in sorted_chunks
+        )
 
-        # 2. Aplica corte dinâmico por curva de relevância (Elbow Cutoff)
-        relevant_chunks = self.apply_elbow_cutoff(sorted_chunks, min_score)
+        # 2. Aplica corte dinâmico por curva de relevância conforme estratégia
+        rel_drop, step_drop = self._STRATEGY_PARAMS.get(strategy, self._STRATEGY_PARAMS["balanced"])
+        if strategy == "aggressive" and max_cut_percent is None:
+            relevant_chunks = self.apply_elbow_cutoff(sorted_chunks, min_score)
+        else:
+            relevant_chunks = self.apply_elbow_cutoff(
+                sorted_chunks, min_score, max_relative_drop=rel_drop, max_step_drop=step_drop
+            )
+
+        # No modo conservative com limite explícito, garante que o corte não ultrapasse max_cut_percent
+        if strategy == "conservative" and max_cut_percent is not None and sorted_chunks:
+            min_keep_tokens = raw_retrieved_tokens * (1.0 - max_cut_percent / 100.0)
+            kept_ids = {sc.chunk.id for sc in relevant_chunks}
+            kept_raw = sum(
+                sc.chunk.token_count if sc.chunk.token_count > 0 else self.chunking_service.count_tokens(sc.chunk.content)
+                for sc in relevant_chunks
+            )
+            for sc in sorted_chunks:
+                if kept_raw >= min_keep_tokens:
+                    break
+                if sc.chunk.id not in kept_ids:
+                    relevant_chunks.append(sc)
+                    kept_ids.add(sc.chunk.id)
+                    kept_raw += sc.chunk.token_count if sc.chunk.token_count > 0 else self.chunking_service.count_tokens(sc.chunk.content)
 
         selected_chunks: List[ScoredChunk] = []
         current_tokens = 0
+        selected_raw_tokens = 0
         sources_list: List[Dict[str, Any]] = []
         formatted_blocks: List[str] = []
 
         for sc in relevant_chunks:
             chunk = sc.chunk
-            
+            chunk_raw_tokens = chunk.token_count if chunk.token_count > 0 else self.chunking_service.count_tokens(chunk.content)
+
             # Formata o bloco de forma limpa e contextualizada
             loc_info = []
             if chunk.chapter:
@@ -147,18 +183,34 @@ class PromptCompressorService:
             block_text = f"--- [Livro: {chunk.book_title}{loc_str} | Relevância: {sc.score:.2f}] ---\n{chunk.content.strip()}"
             block_tokens = self.chunking_service.count_tokens(block_text)
 
-            if current_tokens + block_tokens > limit_tokens and selected_chunks:
+            if strategy == "conservative" and max_cut_percent is not None:
+                min_keep_tokens = raw_retrieved_tokens * (1.0 - max_cut_percent / 100.0)
+                if selected_chunks and selected_raw_tokens >= min_keep_tokens and current_tokens + block_tokens > limit_tokens:
+                    break
+            elif max_cut_percent is not None:
+                target_keep = raw_retrieved_tokens * (1.0 - max_cut_percent / 100.0)
+                if selected_chunks and (selected_raw_tokens + chunk_raw_tokens > target_keep or current_tokens + block_tokens > limit_tokens):
+                    break
+            elif current_tokens + block_tokens > limit_tokens and selected_chunks:
                 # Atingiu o limite do TokenBudget dinâmico
                 break
 
             selected_chunks.append(sc)
             current_tokens += block_tokens
+            selected_raw_tokens += chunk_raw_tokens
             formatted_blocks.append(block_text)
 
             sources_list.append({
+                "chunk_id": chunk.id,
+                "book_id": chunk.book_id,
                 "book_title": chunk.book_title,
                 "chapter": chunk.chapter,
                 "page": chunk.page_number,
+                "page_start": chunk.page_number,
+                "page_end": chunk.page_number,
+                "char_start": 0,
+                "char_end": len(chunk.content),
+                "excerpt_preview": chunk.content.strip()[:200],
                 "score": round(sc.score, 3),
                 "tokens": chunk.token_count
             })
@@ -166,20 +218,43 @@ class PromptCompressorService:
         final_context_str = "\n\n".join(formatted_blocks)
         total_compressed_tokens = self.chunking_service.count_tokens(final_context_str)
 
-        # Estimativa de tokens do livro completo original (média de 75.000 tokens por livro)
-        estimated_original_tokens = max(75000, total_compressed_tokens * 40)
-        saved_tokens = max(0, estimated_original_tokens - total_compressed_tokens)
-        reduction_percentage = round((saved_tokens / estimated_original_tokens) * 100, 2)
+        saved_tokens = max(0, raw_retrieved_tokens - selected_raw_tokens)
+        reduction_percentage = round((saved_tokens / raw_retrieved_tokens) * 100, 2) if raw_retrieved_tokens > 0 else 0.0
 
         return CompressedContext(
             query=query,
             chunks=selected_chunks,
             raw_context_text=final_context_str,
             total_tokens=total_compressed_tokens,
-            original_estimated_tokens=estimated_original_tokens,
+            original_estimated_tokens=raw_retrieved_tokens,
             token_reduction_percent=reduction_percentage,
             sources=sources_list
         )
+
+    @staticmethod
+    def verify_citation_grounding(
+        response: str,
+        sources: List[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        """Verifica se livros e páginas citados na resposta existem nas fontes recuperadas."""
+        import re as _re
+
+        if not response or not sources:
+            return {"grounded_pages": 0, "cited_pages": 0, "ungrounded_pages": [], "grounding_ratio": 1.0}
+
+        retrieved_pages = {s.get("page") for s in sources if s.get("page") is not None}
+        cited_pages = [int(p) for p in _re.findall(r"(?:P[áa]g\.?|Page|p\.)\s*(\d+)", response, flags=_re.IGNORECASE)]
+        if not cited_pages:
+            return {"grounded_pages": 0, "cited_pages": 0, "ungrounded_pages": [], "grounding_ratio": 1.0}
+
+        grounded = [p for p in cited_pages if p in retrieved_pages]
+        ungrounded = [p for p in cited_pages if p not in retrieved_pages]
+        return {
+            "grounded_pages": len(grounded),
+            "cited_pages": len(cited_pages),
+            "ungrounded_pages": sorted(set(ungrounded)),
+            "grounding_ratio": round(len(grounded) / len(cited_pages), 4),
+        }
 
     @staticmethod
     def fuse_chunks_rrf(chunk_batches: List[List[ScoredChunk]], rrf_k: int = 60) -> List[ScoredChunk]:
@@ -240,7 +315,12 @@ class PromptCompressorService:
                 "Você é um Arquiteto Principal de Software e Pesquisador de IA especialista. "
                 "Sua missão é responder à dúvida do usuário com profundidade analítica, utilizando a metodologia "
                 "de Chain-of-Thought (Cadeia de Raciocínio) e Auto-Reflexão baseada nas fontes fornecidas.\n\n"
-                "Estrutura da Resposta:\n"
+                "REGRA DE RECUSA ECONÔMICA: Antes de escrever qualquer seção, verifique se o CONTEXTO TÉCNICO "
+                "contém evidências suficientes para responder à pergunta. Se NÃO houver evidências suficientes, "
+                "NÃO gere as 4 seções nem justificativas longas: responda apenas em 1 ou 2 frases curtas: "
+                "'Não encontrei evidências suficientes nos documentos indexados para responder a esta pergunta.' "
+                "(mencionando brevemente o tema dos trechos recuperados apenas se útil).\n\n"
+                "Estrutura da Resposta (somente quando houver evidências suficientes):\n"
                 "1. 🧠 Análise dos Fundamentos e Conceitos-Chave (Explicação teórica com base nas fontes)\n"
                 "2. ⚙️ Aplicação Prática, Padrões e Arquitetura (Exemplos de código e trade-offs)\n"
                 "3. 🔍 Auto-Validação e Integridade (Garantir que cada afirmação decorre estritamente dos trechos)\n"

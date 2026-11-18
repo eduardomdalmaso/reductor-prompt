@@ -1,0 +1,1575 @@
+{
+  "algorithm_version": "rrf-elbow-v3-grounded",
+  "ir_v3_90q": {
+    "n_queries": 90,
+    "precision_at_5": 0.24,
+    "recall_at_5": 0.6444,
+    "recall_at_10": 0.7222,
+    "mrr": 0.5456
+  },
+  "e2e_v3_30q": [
+    {
+      "id": "Q001_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 18,
+      "B_in": 2915,
+      "B_out": 99,
+      "B_ms": 1231.06,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_18_74a14d",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 18,
+          "char_start": 0,
+          "char_end": 306
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_18_6e7b48",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 18,
+          "char_start": 0,
+          "char_end": 306
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_32_c71b93",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 32,
+          "char_start": 0,
+          "char_end": 173
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_32_ab9530",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 32,
+          "char_start": 0,
+          "char_end": 173
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_40_9b1f6a",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 40,
+          "char_start": 0,
+          "char_end": 153
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_40_f8b23a",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 40,
+          "char_start": 0,
+          "char_end": 153
+        }
+      ],
+      "B_resp_preview": "Redis Top-K structures are designed to estimate the ranking of a data point within a stream of values. They provide an efficient way to approximate the top-k elements in a dataset, which is particularly useful for scenar"
+    },
+    {
+      "id": "Q002_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 92,
+      "B_in": 2296,
+      "B_out": 125,
+      "B_ms": 1558.82,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_10_cef51c",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 10,
+          "char_start": 0,
+          "char_end": 460
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_10_0a0120",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 10,
+          "char_start": 0,
+          "char_end": 460
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_77_6aa681",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 77,
+          "char_start": 0,
+          "char_end": 97
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_77_e1a312",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 77,
+          "char_start": 0,
+          "char_end": 97
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_75_07ae42",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 75,
+          "char_start": 0,
+          "char_end": 355
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_75_594859",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 75,
+          "char_start": 0,
+          "char_end": 355
+        }
+      ],
+      "B_resp_preview": "Based on the provided context, there isn't a specific JSON document example mentioned for the Redis JSON tutorial. The documentation references the ability to import JSON text into Redis objects and manipulate individual"
+    },
+    {
+      "id": "Q003_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 57,
+      "B_in": 2613,
+      "B_out": 424,
+      "B_ms": 3553.31,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_691_d25346",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 668,
+          "char_start": 0,
+          "char_end": 3344
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_691_2b702c",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 668,
+          "char_start": 0,
+          "char_end": 3344
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_68_03de28",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 68,
+          "char_start": 0,
+          "char_end": 297
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_68_c13a78",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 68,
+          "char_start": 0,
+          "char_end": 297
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_692_c3c707",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 669,
+          "char_start": 0,
+          "char_end": 2367
+        }
+      ],
+      "B_resp_preview": "To increment the value of a specific field in a Redis hash, creating the field if it does not exist and initializing it to 0, you should use the `HINCRBY` command. However, based on the provided context, there is no dire"
+    },
+    {
+      "id": "Q004_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 33,
+      "B_in": 2346,
+      "B_out": 343,
+      "B_ms": 3000.65,
+      "citation_grounding": {
+        "grounded_pages": 1,
+        "cited_pages": 1,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_519_4a3cc7",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 502,
+          "char_start": 0,
+          "char_end": 392
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_519_c33b65",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 502,
+          "char_start": 0,
+          "char_end": 392
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_134_bdef78",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 128,
+          "char_start": 0,
+          "char_end": 3020
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_134_35af5b",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 128,
+          "char_start": 0,
+          "char_end": 3020
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_645_a08d81",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 624,
+          "char_start": 0,
+          "char_end": 390
+        },
+        {
+          "chunk_id": "dd53fdc3-8f0d-519e-941f-349a385d7d1f_645_5b9006",
+          "book_title": "Redis Core Architecture And Data Types",
+          "page_start": 624,
+          "char_start": 0,
+          "char_end": 390
+        }
+      ],
+      "B_resp_preview": "When the last element in a Redis key is deleted, the key is automatically destroyed if it is an aggregate data type (such as a list, set, sorted set, or hash). This behavior is summarized in the third rule of automatic c"
+    },
+    {
+      "id": "Q005_factual",
+      "category": "factual",
+      "is_answerable": true,
+      "expected_book": "Redis Core Architecture And Data Types",
+      "expected_page": 9,
+      "B_in": 2622,
+      "B_out": 109,
+      "B_ms": 1228.81,
+      "citation_grounding": {
+        "grounded_pages": 1,
+        "cited_pages": 1,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_760_9adb9d",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 742,
+          "char_start": 0,
+          "char_end": 556
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_1364_117a0b",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 1329,
+          "char_start": 0,
+          "char_end": 556
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_2014_d1cd0e",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 1962,
+          "char_start": 0,
+          "char_end": 556
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_2674_f7d169",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 2605,
+          "char_start": 0,
+          "char_end": 556
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_760_1cdf39",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 742,
+          "char_start": 0,
+          "char_end": 556
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_1364_457058",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 1329,
+          "char_start": 0,
+          "char_end": 556
+        }
+      ],
+      "B_resp_preview": "The data structure in Python that is similar to Redis hashes is the **dictionary**. Redis hashes are collections of field-value pairs, which can be directly mapped to Python dictionaries. According to the documentation f"
+    },
+    {
+      "id": "Q026_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 36,
+      "B_in": 2020,
+      "B_out": 190,
+      "B_ms": 1832.82,
+      "citation_grounding": {
+        "grounded_pages": 1,
+        "cited_pages": 1,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_32_f94b7e",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 36,
+          "char_start": 0,
+          "char_end": 1701
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_32_85f337",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 36,
+          "char_start": 0,
+          "char_end": 1717
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_118_fc9ff9",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 123,
+          "char_start": 0,
+          "char_end": 2116
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_118_e49ff7",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 123,
+          "char_start": 0,
+          "char_end": 2117
+        }
+      ],
+      "B_resp_preview": "If an order line is allocated to the same batch twice in the allocation process, the available quantity of the batch should not be reduced further. According to the business rules described in \"Architecture Patterns with"
+    },
+    {
+      "id": "Q027_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 88,
+      "B_in": 1549,
+      "B_out": 176,
+      "B_ms": 1656.45,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "94c95272-44a4-50ba-a629-64406185a39a_521_1c4f18",
+          "book_title": "Pythoninanutshell4Thedition",
+          "page_start": 533,
+          "char_start": 0,
+          "char_end": 3077
+        },
+        {
+          "chunk_id": "94c95272-44a4-50ba-a629-64406185a39a_521_0215dc",
+          "book_title": "Pythoninanutshell4Thedition",
+          "page_start": 533,
+          "char_start": 0,
+          "char_end": 3077
+        }
+      ],
+      "B_resp_preview": "The excerpt does not specifically mention the use of \"fakes\" at the service layer in unit testing. However, it discusses the use of stubs, also known as mocks, which are fake implementations of various units' interfaces "
+    },
+    {
+      "id": "Q028_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 54,
+      "B_in": 2059,
+      "B_out": 157,
+      "B_ms": 1760.61,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_50_05479f",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 54,
+          "char_start": 0,
+          "char_end": 1576
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_49_268b91",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 53,
+          "char_start": 0,
+          "char_end": 1442
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_5_6bfdc2",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 6,
+          "char_start": 0,
+          "char_end": 1873
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_26_a163f2",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 29,
+          "char_start": 0,
+          "char_end": 617
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_50_2a1e1a",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 54,
+          "char_start": 0,
+          "char_end": 1617
+        }
+      ],
+      "B_resp_preview": "Coupling model properties directly to database columns in SQLAlchemy leads to a model that is tightly coupled with the ORM (Object-Relational Mapping) layer. This coupling violates the principle of persistence ignorance,"
+    },
+    {
+      "id": "Q029_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Programmingrust2Ndedition",
+      "expected_page": 55,
+      "B_in": 2380,
+      "B_out": 360,
+      "B_ms": 3271.9,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "1d50f892-ee6a-5883-b06d-4fd76f20d546_137_f39146",
+          "book_title": "Designingdistributedsystems2Ndedition",
+          "page_start": 145,
+          "char_start": 0,
+          "char_end": 2687
+        },
+        {
+          "chunk_id": "0099e689-3cb3-582b-a8a6-a09edc8c3e11_334_fbdcbb",
+          "book_title": "Introducingpython3Rdedition",
+          "page_start": 345,
+          "char_start": 0,
+          "char_end": 1191
+        },
+        {
+          "chunk_id": "0099e689-3cb3-582b-a8a6-a09edc8c3e11_335_097dd7",
+          "book_title": "Introducingpython3Rdedition",
+          "page_start": 346,
+          "char_start": 0,
+          "char_end": 1256
+        },
+        {
+          "chunk_id": "0099e689-3cb3-582b-a8a6-a09edc8c3e11_338_cbe5fc",
+          "book_title": "Introducingpython3Rdedition",
+          "page_start": 349,
+          "char_start": 0,
+          "char_end": 1547
+        },
+        {
+          "chunk_id": "66891c0e-a5ce-5b02-b284-186ef73388e8_3_d11cae",
+          "book_title": "Nightly Release Notes",
+          "page_start": 3,
+          "char_start": 0,
+          "char_end": 472
+        },
+        {
+          "chunk_id": "66891c0e-a5ce-5b02-b284-186ef73388e8_3_e81af9",
+          "book_title": "Nightly Release Notes",
+          "page_start": 3,
+          "char_start": 0,
+          "char_end": 472
+        }
+      ],
+      "B_resp_preview": "Para escrever arquivos PNG usando Rust, você deve adicionar a dependência do crate `image` ao seu `Cargo.toml`. Infelizmente, o contexto fornecido não especifica uma versão específica para o crate `image`. No entanto, vo"
+    },
+    {
+      "id": "Q030_code",
+      "category": "code",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 50,
+      "B_in": 1645,
+      "B_out": 124,
+      "B_ms": 1456.39,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_46_c65057",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 50,
+          "char_start": 0,
+          "char_end": 1956
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_14_256dc4",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 16,
+          "char_start": 0,
+          "char_end": 2149
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_13_e11a0c",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 15,
+          "char_start": 0,
+          "char_end": 2124
+        }
+      ],
+      "B_resp_preview": "To clone the GitHub repository containing the code for the chapters on architecture patterns with Python, you should use the following command:\n\n```bash\ngit clone https://github.com/cosmicpython/code.git\n```\n\nAfter cloni"
+    },
+    {
+      "id": "Q046_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 11,
+      "B_in": 1867,
+      "B_out": 245,
+      "B_ms": 2083.47,
+      "citation_grounding": {
+        "grounded_pages": 3,
+        "cited_pages": 3,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "bd3ab6b3-85a7-57cf-910a-3760c237008c_68_2194e0",
+          "book_title": "Facilitatingsoftwarearchitecture",
+          "page_start": 69,
+          "char_start": 0,
+          "char_end": 1872
+        },
+        {
+          "chunk_id": "bd3ab6b3-85a7-57cf-910a-3760c237008c_68_37c5cc",
+          "book_title": "Facilitatingsoftwarearchitecture",
+          "page_start": 69,
+          "char_start": 0,
+          "char_end": 1873
+        },
+        {
+          "chunk_id": "398ba0ca-32b7-58bf-84d0-3fee53657fbd_183_59a59f",
+          "book_title": "Learningdomain Drivendesign",
+          "page_start": 192,
+          "char_start": 0,
+          "char_end": 374
+        },
+        {
+          "chunk_id": "398ba0ca-32b7-58bf-84d0-3fee53657fbd_183_a81495",
+          "book_title": "Learningdomain Drivendesign",
+          "page_start": 192,
+          "char_start": 0,
+          "char_end": 374
+        },
+        {
+          "chunk_id": "e2773c1a-b4ba-5e2e-8bff-2a91ebb7cbf5_142_5a8749",
+          "book_title": "Softwarearchitecturemetrics",
+          "page_start": 146,
+          "char_start": 0,
+          "char_end": 1382
+        },
+        {
+          "chunk_id": "e2773c1a-b4ba-5e2e-8bff-2a91ebb7cbf5_142_7c07a6",
+          "book_title": "Softwarearchitecturemetrics",
+          "page_start": 146,
+          "char_start": 0,
+          "char_end": 1384
+        }
+      ],
+      "B_resp_preview": "The excerpt mentions several architectural approaches that aim to make applications easier to test:\n\n1. **Layered Architecture**: This common architecture style ensures separation of concerns, making it easier to test in"
+    },
+    {
+      "id": "Q047_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 6,
+      "B_in": 2333,
+      "B_out": 48,
+      "B_ms": 810.4,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_5_6d5cc2",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 6,
+          "char_start": 0,
+          "char_end": 2113
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_5_be425e",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 6,
+          "char_start": 0,
+          "char_end": 2114
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_2_cec636",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 3,
+          "char_start": 0,
+          "char_end": 1342
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_12_f71366",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 13,
+          "char_start": 0,
+          "char_end": 1775
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_2_3ca528",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 3,
+          "char_start": 0,
+          "char_end": 1342
+        }
+      ],
+      "B_resp_preview": "The book \"Software Architecture: The Hard Parts\" has a copyright year of 2022. The copyright holders are Neal Ford, Mark Richards, Pramod Sadalage, and Zhamak Dehghani."
+    },
+    {
+      "id": "Q048_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 67,
+      "B_in": 1845,
+      "B_out": 478,
+      "B_ms": 3993.1,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_27_24177e",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 31,
+          "char_start": 0,
+          "char_end": 613
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_5_6bfdc2",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 6,
+          "char_start": 0,
+          "char_end": 1873
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_11_a5fc4b",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 13,
+          "char_start": 0,
+          "char_end": 2224
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_24_9d6493",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 27,
+          "char_start": 0,
+          "char_end": 1439
+        }
+      ],
+      "B_resp_preview": "A pergunta do usuário sobre \"code kata\" não está diretamente relacionada ao contexto técnico fornecido nos livros e capítulos indexados. No entanto, posso fornecer uma explicação geral sobre o conceito de code kata e com"
+    },
+    {
+      "id": "Q049_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 107,
+      "B_in": 2165,
+      "B_out": 285,
+      "B_ms": 2464.46,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_102_817145",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 107,
+          "char_start": 0,
+          "char_end": 967
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_102_9522d4",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 107,
+          "char_start": 0,
+          "char_end": 967
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_115_f6bba3",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 120,
+          "char_start": 0,
+          "char_end": 1637
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_115_1ad0dd",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 120,
+          "char_start": 0,
+          "char_end": 1637
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_104_e8b1c1",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 109,
+          "char_start": 0,
+          "char_end": 600
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_104_2f2691",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 109,
+          "char_start": 0,
+          "char_end": 656
+        }
+      ],
+      "B_resp_preview": "The Unit of Work (UoW) pattern serves as an abstraction over the idea of atomic operations, complementing the Repository and Service Layer patterns by ensuring data integrity and consistency. Its primary purposes are:\n\n1"
+    },
+    {
+      "id": "Q050_architecture",
+      "category": "architecture",
+      "is_answerable": true,
+      "expected_book": "Architecturepatternswithpython",
+      "expected_page": 31,
+      "B_in": 1748,
+      "B_out": 71,
+      "B_ms": 831.25,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_27_24177e",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 31,
+          "char_start": 0,
+          "char_end": 613
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_27_205c6a",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 31,
+          "char_start": 0,
+          "char_end": 613
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_28_ae7ae2",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 32,
+          "char_start": 0,
+          "char_end": 2691
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_28_be6a50",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 32,
+          "char_start": 0,
+          "char_end": 2692
+        }
+      ],
+      "B_resp_preview": "According to the excerpt from \"Architecture Patterns with Python,\" the key patterns discussed for modeling domains in the context of domain modeling are:\n\n1. **Entity**\n2. **Value Object**\n3. **Domain Service**\n\nThese pa"
+    },
+    {
+      "id": "Q066_contradiction",
+      "category": "contradiction",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 81,
+      "B_in": 4129,
+      "B_out": 508,
+      "B_ms": 4533.69,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_76_2413db",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 79,
+          "char_start": 0,
+          "char_end": 2682
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_76_3c0c53",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 79,
+          "char_start": 0,
+          "char_end": 2682
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_125_7c1ab0",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 129,
+          "char_start": 0,
+          "char_end": 1184
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_125_ffb321",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 129,
+          "char_start": 0,
+          "char_end": 1184
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_144_a690ae",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 148,
+          "char_start": 0,
+          "char_end": 625
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_34_1bf6ee",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 36,
+          "char_start": 0,
+          "char_end": 887
+        }
+      ],
+      "B_resp_preview": "To effectively decompose a large monolithic application like the Sysops Squad application into a distributed architecture, starting with the reporting module, follow these steps based on the patterns and principles descr"
+    },
+    {
+      "id": "Q067_contradiction",
+      "category": "contradiction",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 42,
+      "B_in": 1743,
+      "B_out": 236,
+      "B_ms": 2082.72,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_202_04006a",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 206,
+          "char_start": 0,
+          "char_end": 942
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_202_9343f6",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 206,
+          "char_start": 0,
+          "char_end": 942
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_203_cee49a",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 207,
+          "char_start": 0,
+          "char_end": 1555
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_203_6fda66",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 207,
+          "char_start": 0,
+          "char_end": 1555
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_199_c09908",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 203,
+          "char_start": 0,
+          "char_end": 1667
+        }
+      ],
+      "B_resp_preview": "According to Chapter 7 of \"Software Architecture: The Hard Parts,\" the forces that encourage a larger or smaller service size and boundary are referred to as granularity disintegrators and integrators. The six main drive"
+    },
+    {
+      "id": "Q068_contradiction",
+      "category": "contradiction",
+      "is_answerable": true,
+      "expected_book": "Softwarearchitecture Thehardparts",
+      "expected_page": 99,
+      "B_in": 2005,
+      "B_out": 537,
+      "B_ms": 4295.32,
+      "citation_grounding": {
+        "grounded_pages": 1,
+        "cited_pages": 6,
+        "ungrounded_pages": [
+          84,
+          94,
+          111,
+          120,
+          126
+        ],
+        "grounding_ratio": 0.1667
+      },
+      "B_sources": [
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_95_2df2cf",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 99,
+          "char_start": 0,
+          "char_end": 1904
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_95_9f4f1a",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 99,
+          "char_start": 0,
+          "char_end": 1904
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_97_89818e",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 101,
+          "char_start": 0,
+          "char_end": 876
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_97_1bab88",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 101,
+          "char_start": 0,
+          "char_end": 876
+        },
+        {
+          "chunk_id": "f0f4e976-06e7-57f6-9005-0f77979907c5_96_c0de26",
+          "book_title": "Softwarearchitecture Thehardparts",
+          "page_start": 100,
+          "char_start": 0,
+          "char_end": 2376
+        }
+      ],
+      "B_resp_preview": "According to Logan's advice, component-based decomposition patterns are a set of techniques used to refactor monolithic applications into well-defined components that can eventually become services in a distributed archi"
+    },
+    {
+      "id": "Q081_structure",
+      "category": "structure",
+      "is_answerable": true,
+      "expected_book": "Buildingmicroservices2Ndedition",
+      "expected_page": 8,
+      "B_in": 1719,
+      "B_out": 397,
+      "B_ms": 3387.33,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "b6b98f0b-10f7-5e80-86c5-4d425bda58cc_393_f476db",
+          "book_title": "Learningapistyles",
+          "page_start": 401,
+          "char_start": 0,
+          "char_end": 2230
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_87_2adf0a",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 92,
+          "char_start": 0,
+          "char_end": 2120
+        },
+        {
+          "chunk_id": "b6b98f0b-10f7-5e80-86c5-4d425bda58cc_393_156240",
+          "book_title": "Learningapistyles",
+          "page_start": 401,
+          "char_start": 0,
+          "char_end": 2230
+        }
+      ],
+      "B_resp_preview": "Based on the provided context, the advantages of using REST for microservice communication are not explicitly detailed, but REST is commonly used for its simplicity and statelessness. However, the context emphasizes the "
+    },
+    {
+      "id": "Q082_structure",
+      "category": "structure",
+      "is_answerable": true,
+      "expected_book": "Buildingmicroservices2Ndedition",
+      "expected_page": 40,
+      "B_in": 1799,
+      "B_out": 149,
+      "B_ms": 1402.71,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_36_3484f0",
+          "book_title": "Buildingmicroservices2Ndedition",
+          "page_start": 40,
+          "char_start": 0,
+          "char_end": 2403
+        },
+        {
+          "chunk_id": "5a0f906b-be78-5cee-839a-d4fd69b60a2d_36_5ca38a",
+          "book_title": "Buildingmicroservices2Ndedition",
+          "page_start": 40,
+          "char_start": 0,
+          "char_end": 2404
+        },
+        {
+          "chunk_id": "f8d9ae0b-dae7-503e-8752-0beceaa23ea6_215_68b06f",
+          "book_title": "Buildingevolutionaryarchitectures2Ndedition",
+          "page_start": 223,
+          "char_start": 0,
+          "char_end": 2229
+        }
+      ],
+      "B_resp_preview": "A stream-aligned team, conforme introduzido no livro \"Team Topologies\" por Matthew Skelton e Manuel Pais, é uma equipe alinhada a um único fluxo de trabalho valioso, geralmente de uma parte do domínio de negócios. A equi"
+    },
+    {
+      "id": "Q091_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 2264,
+      "B_out": 79,
+      "B_ms": 1109.46,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "005981ce-5a62-5bbd-9e72-4587e1b42566_649_6e876b",
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "page_start": 629,
+          "char_start": 0,
+          "char_end": 974
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_5_6bfdc2",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 6,
+          "char_start": 0,
+          "char_end": 1873
+        },
+        {
+          "chunk_id": "005981ce-5a62-5bbd-9e72-4587e1b42566_1664_11b4ec",
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "page_start": 1628,
+          "char_start": 0,
+          "char_end": 974
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_7_cc19df",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 8,
+          "char_start": 0,
+          "char_end": 1813
+        },
+        {
+          "chunk_id": "005981ce-5a62-5bbd-9e72-4587e1b42566_649_389757",
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "page_start": 629,
+          "char_start": 0,
+          "char_end": 974
+        }
+      ],
+      "B_resp_preview": "Based on the provided context, there is no information about the secret API password and Slack channel used by the Komtek K-Monitor team in 2026. The context only provides details on how to retrieve Redis Enterprise cred"
+    },
+    {
+      "id": "Q092_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 1881,
+      "B_out": 150,
+      "B_ms": 1583.81,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "b6b98f0b-10f7-5e80-86c5-4d425bda58cc_162_eea841",
+          "book_title": "Learningapistyles",
+          "page_start": 166,
+          "char_start": 0,
+          "char_end": 1652
+        },
+        {
+          "chunk_id": "b6b98f0b-10f7-5e80-86c5-4d425bda58cc_162_2e14e5",
+          "book_title": "Learningapistyles",
+          "page_start": 166,
+          "char_start": 0,
+          "char_end": 1715
+        },
+        {
+          "chunk_id": "94c95272-44a4-50ba-a629-64406185a39a_570_3356db",
+          "book_title": "Pythoninanutshell4Thedition",
+          "page_start": 582,
+          "char_start": 0,
+          "char_end": 3021
+        }
+      ],
+      "B_resp_preview": "O contexto fornecido não contém informações sobre o protocolo HydraX-999 ou qualquer outro protocolo quantum inventado em 2027. As informações disponíveis se concentram principalmente em HTTP/2 e TCP, bem como em uma bre"
+    },
+    {
+      "id": "Q093_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 2460,
+      "B_out": 99,
+      "B_ms": 1440.37,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "2b39028a-07df-5c42-a9ba-b35679d99b3b_94_8ff81d",
+          "book_title": "Causalinferenceinpython",
+          "page_start": 100,
+          "char_start": 0,
+          "char_end": 1828
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_107_d6c603",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 112,
+          "char_start": 0,
+          "char_end": 1398
+        },
+        {
+          "chunk_id": "2b39028a-07df-5c42-a9ba-b35679d99b3b_95_696615",
+          "book_title": "Causalinferenceinpython",
+          "page_start": 101,
+          "char_start": 0,
+          "char_end": 2156
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_131_b5a952",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 136,
+          "char_start": 0,
+          "char_end": 1547
+        },
+        {
+          "chunk_id": "2b39028a-07df-5c42-a9ba-b35679d99b3b_116_187901",
+          "book_title": "Causalinferenceinpython",
+          "page_start": 123,
+          "char_start": 0,
+          "char_end": 1328
+        }
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre a remuneração salarial do CTO da Acme Robotics Corp para o ano de 2025. Os trechos apresentados abordam temas relacionados a inferência causal, arquitetura de sof"
+    },
+    {
+      "id": "Q094_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 1902,
+      "B_out": 471,
+      "B_ms": 3966.44,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "74a8fcb7-f275-5c85-be9e-d06f958e596c_398_7b8148",
+          "book_title": "Buildingmulti Tenantsaasarchitectures",
+          "page_start": 404,
+          "char_start": 0,
+          "char_end": 77
+        },
+        {
+          "chunk_id": "74a8fcb7-f275-5c85-be9e-d06f958e596c_398_b31d39",
+          "book_title": "Buildingmulti Tenantsaasarchitectures",
+          "page_start": 404,
+          "char_start": 0,
+          "char_end": 77
+        },
+        {
+          "chunk_id": "b9ea888f-1f5c-55f3-abc7-d09e49f7acd4_287_0fa59d",
+          "book_title": "Buildingmedallionarchitectures",
+          "page_start": 295,
+          "char_start": 0,
+          "char_end": 1312
+        },
+        {
+          "chunk_id": "b9ea888f-1f5c-55f3-abc7-d09e49f7acd4_287_e57cf0",
+          "book_title": "Buildingmedallionarchitectures",
+          "page_start": 295,
+          "char_start": 0,
+          "char_end": 1312
+        },
+        {
+          "chunk_id": "bb49f75b-d11a-5d0d-a2f1-b41b608850ed_238_859ae9",
+          "book_title": "Pythonfordevops",
+          "page_start": 243,
+          "char_start": 0,
+          "char_end": 1132
+        },
+        {
+          "chunk_id": "bb49f75b-d11a-5d0d-a2f1-b41b608850ed_238_baff31",
+          "book_title": "Pythonfordevops",
+          "page_start": 243,
+          "char_start": 0,
+          "char_end": 1132
+        }
+      ],
+      "B_resp_preview": "Com base no contexto fornecido, não há detalhes específicos sobre o \"StarlightDB 2028 cloud tier\" ou sua fórmula interna de precificação. Os capítulos e figuras mencionados nos livros indexados não fornecem informações d"
+    },
+    {
+      "id": "Q095_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 2471,
+      "B_out": 143,
+      "B_ms": 1767.84,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "895a9790-0c83-5cfa-b095-593ab41560c7_35_0de19d",
+          "book_title": "Php 8 4 Complete Reference And Migration Manual",
+          "page_start": 11,
+          "char_start": 0,
+          "char_end": 5029
+        },
+        {
+          "chunk_id": "a2fdc16b-2599-5635-b7db-95bd8635b22b_132_e4eab2",
+          "book_title": "Architecturepatternswithpython",
+          "page_start": 137,
+          "char_start": 0,
+          "char_end": 2079
+        }
+      ],
+      "B_resp_preview": "O contexto fornecido não contém informações sobre o PostgreSQL 19.4, Solaris SPARC ou o CVE-2029-88123. Portanto, não é possível fornecer detalhes específicos sobre qual patch do kernel do PostgreSQL 19.4 corrigiu esse C"
+    },
+    {
+      "id": "Q096_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 3197,
+      "B_out": 87,
+      "B_ms": 1483.28,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_393_0ea75c",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 392,
+          "char_start": 0,
+          "char_end": 1194
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_393_0fd3a5",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 392,
+          "char_start": 0,
+          "char_end": 1194
+        },
+        {
+          "chunk_id": "bf0ae654-893b-56ab-bccf-d3d343e5b312_1055_b84f33",
+          "book_title": "Laravel 12 Concurrency Queues Octane And Ai",
+          "page_start": 984,
+          "char_start": 0,
+          "char_end": 1108
+        },
+        {
+          "chunk_id": "bf0ae654-893b-56ab-bccf-d3d343e5b312_1055_849718",
+          "book_title": "Laravel 12 Concurrency Queues Octane And Ai",
+          "page_start": 984,
+          "char_start": 0,
+          "char_end": 1108
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_154_0b4424",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 153,
+          "char_start": 0,
+          "char_end": 452
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_154_1ba1ab",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 153,
+          "char_start": 0,
+          "char_end": 452
+        }
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre o Wi-Fi SSID e WPA3 passphrase do Komtek Data Center, floor 3. Os detalhes fornecidos estão relacionados a configurações de armazenamento S3, Kubernetes secrets, "
+    },
+    {
+      "id": "Q097_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 2070,
+      "B_out": 78,
+      "B_ms": 1285.23,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "bd3ab6b3-85a7-57cf-910a-3760c237008c_89_c32fdc",
+          "book_title": "Facilitatingsoftwarearchitecture",
+          "page_start": 91,
+          "char_start": 0,
+          "char_end": 2964
+        },
+        {
+          "chunk_id": "3ea39462-b286-5baf-93b3-24ac999345ea_117_706acf",
+          "book_title": "Buildinggreensoftware",
+          "page_start": 122,
+          "char_start": 0,
+          "char_end": 3086
+        },
+        {
+          "chunk_id": "94c95272-44a4-50ba-a629-64406185a39a_227_c72bb1",
+          "book_title": "Pythoninanutshell4Thedition",
+          "page_start": 232,
+          "char_start": 0,
+          "char_end": 1959
+        }
+      ],
+      "B_resp_preview": "I'm sorry, but there is no information available regarding Chapter 14 of the unreleased book 'Quantum COBOL for Serverless GPUs' (2029) in the provided context. The context given includes excerpts from three different bo"
+    },
+    {
+      "id": "Q098_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 852,
+      "B_out": 75,
+      "B_ms": 703.39,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "aece442e-31f3-55de-8c8f-7fe5ec06e71c_48_3f15b8",
+          "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+          "page_start": 47,
+          "char_start": 0,
+          "char_end": 1
+        },
+        {
+          "chunk_id": "aece442e-31f3-55de-8c8f-7fe5ec06e71c_90_96936d",
+          "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+          "page_start": 89,
+          "char_start": 0,
+          "char_end": 1
+        },
+        {
+          "chunk_id": "aece442e-31f3-55de-8c8f-7fe5ec06e71c_92_d2cb55",
+          "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+          "page_start": 91,
+          "char_start": 0,
+          "char_end": 1
+        },
+        {
+          "chunk_id": "aece442e-31f3-55de-8c8f-7fe5ec06e71c_108_8bba76",
+          "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+          "page_start": 107,
+          "char_start": 0,
+          "char_end": 1
+        },
+        {
+          "chunk_id": "aece442e-31f3-55de-8c8f-7fe5ec06e71c_115_0433aa",
+          "book_title": "Elasticsearch Text Analysis Mapping And Plugins",
+          "page_start": 114,
+          "char_start": 0,
+          "char_end": 1
+        },
+        {
+          "chunk_id": "ac160ffd-e500-525e-ae1c-9651f552599e_49_774254",
+          "book_title": "Triton Conceptual Guides And Optimization Tutorials",
+          "page_start": 49,
+          "char_start": 0,
+          "char_end": 1
+        }
+      ],
+      "B_resp_preview": "The provided context does not contain any information related to the blood pressure measurements of the author of \"Building Microservices\" or any medical data. The context is focused on Elasticsearch and Triton Inference"
+    },
+    {
+      "id": "Q099_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 2676,
+      "B_out": 60,
+      "B_ms": 1177.68,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "74a8fcb7-f275-5c85-be9e-d06f958e596c_287_681296",
+          "book_title": "Buildingmulti Tenantsaasarchitectures",
+          "page_start": 293,
+          "char_start": 0,
+          "char_end": 2120
+        },
+        {
+          "chunk_id": "74a8fcb7-f275-5c85-be9e-d06f958e596c_288_098687",
+          "book_title": "Buildingmulti Tenantsaasarchitectures",
+          "page_start": 294,
+          "char_start": 0,
+          "char_end": 1684
+        },
+        {
+          "chunk_id": "74a8fcb7-f275-5c85-be9e-d06f958e596c_289_ac2d20",
+          "book_title": "Buildingmulti Tenantsaasarchitectures",
+          "page_start": 295,
+          "char_start": 0,
+          "char_end": 1476
+        },
+        {
+          "chunk_id": "74a8fcb7-f275-5c85-be9e-d06f958e596c_472_d29589",
+          "book_title": "Buildingmulti Tenantsaasarchitectures",
+          "page_start": 479,
+          "char_start": 0,
+          "char_end": 2386
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_161_06ce94",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 160,
+          "char_start": 0,
+          "char_end": 452
+        },
+        {
+          "chunk_id": "68a0a2f0-29e8-5a07-b3ec-264806599055_161_3c2c7b",
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "page_start": 160,
+          "char_start": 0,
+          "char_end": 452
+        }
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre o ReductorPrompt CI runner ou sobre a impressão digital de uma chave privada RSA-4096. Portanto, não é possível fornecer a impressão digital da chave privada soli"
+    },
+    {
+      "id": "Q100_no_evidence",
+      "category": "no_evidence",
+      "is_answerable": false,
+      "expected_book": null,
+      "expected_page": null,
+      "B_in": 2294,
+      "B_out": 104,
+      "B_ms": 1320.23,
+      "citation_grounding": {
+        "grounded_pages": 0,
+        "cited_pages": 0,
+        "ungrounded_pages": [],
+        "grounding_ratio": 1.0
+      },
+      "B_sources": [
+        {
+          "chunk_id": "1bf298a5-e34b-5121-a9b4-919dd4c114f9_219_0d0e9e",
+          "book_title": "Buildingevent Drivenmicroservices2Ndedition",
+          "page_start": 226,
+          "char_start": 0,
+          "char_end": 2934
+        },
+        {
+          "chunk_id": "1bf298a5-e34b-5121-a9b4-919dd4c114f9_465_c95732",
+          "book_title": "Buildingevent Drivenmicroservices2Ndedition",
+          "page_start": 476,
+          "char_start": 0,
+          "char_end": 2675
+        },
+        {
+          "chunk_id": "2b39028a-07df-5c42-a9ba-b35679d99b3b_187_d51541",
+          "book_title": "Causalinferenceinpython",
+          "page_start": 194,
+          "char_start": 0,
+          "char_end": 1818
+        }
+      ],
+      "B_resp_preview": "O contexto técnico fornecido não contém informações sobre as coordenadas GPS de um cofre subterrâneo secreto da Acme Bank. Os trechos apresentados tratam de sincronização de relógios, processamento de eventos em tempo re"
+    }
+  ]
+}

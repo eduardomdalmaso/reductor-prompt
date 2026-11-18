@@ -111,4 +111,8 @@ class IngestBooksUseCase(IIngestBooksUseCase):
             self.book_repo.save_book_metadata(book)
             processed_books.append(book)
 
+        if processed_books:
+            from src.application.use_cases.query_books_use_case import invalidate_query_cache
+            invalidate_query_cache()
+
         return processed_books

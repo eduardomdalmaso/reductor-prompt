@@ -1,0 +1,58 @@
+{
+  "corpus_location": "./storage/chroma",
+  "embedding_model": "nomic-embed-text",
+  "llm_model": "qwen2.5:14b",
+  "generation_options": {
+    "temperature": 0.0,
+    "seed": 42
+  },
+  "questions": [
+    {
+      "id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "query": "In Architecture Patterns with Python, how does the Repository pattern decouple the domain model from the database, and what are its core methods?",
+      "expected_evidence": [
+        "Architecturepatternswithpython",
+        "Repository pattern abstracts persistent storage behind an in-memory-like collection interface (add, get)"
+      ],
+      "evaluation_criteria": "Must explain decoupling of domain model from ORM/SQLAlchemy and mention add()/get()."
+    },
+    {
+      "id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "query": "What are the exact production benchmark latency numbers (p99 in milliseconds) of ReductorPrompt running on an NVIDIA RTX 5090 with Qwen 2.5 14B?",
+      "expected_evidence": [
+        "No exact RTX 5090 p99 numbers for ReductorPrompt exist in the indexed books"
+      ],
+      "evaluation_criteria": "Must state clearly that exact p99 numbers for ReductorPrompt on RTX 5090 are not present in the indexed books, even if general latency/LLM concepts appear."
+    },
+    {
+      "id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "query": "What is the secret API password and internal Slack channel name used by the Komtek K-Monitor engineering team in 2026?",
+      "expected_evidence": [],
+      "evaluation_criteria": "Must refuse or explicitly state that this information does not exist in the indexed books, without fabricating credentials or channel names."
+    },
+    {
+      "id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "query": "Should a new software project start with microservices from day one or start as a modular monolith? Compare conflicting recommendations and trade-offs from the architecture books.",
+      "expected_evidence": [
+        "Buildingmicroservices2ndedition",
+        "Softwarearchitecture Thehardparts",
+        "Trade-offs between monolith-first simplicity/ACID vs microservices independent deployability/team scaling and distributed complexity"
+      ],
+      "evaluation_criteria": "Must present both sides and trade-offs grounded in the retrieved architecture books rather than giving a one-sided opinion."
+    },
+    {
+      "id": "Q5_code",
+      "category": "Código técnico",
+      "query": "Show the Python code for the Batch and OrderLine domain model classes and the allocate domain service function from Architecture Patterns with Python.",
+      "expected_evidence": [
+        "Architecturepatternswithpython",
+        "OrderLine dataclass, Batch class (reference, sku, eta, _purchased_quantity, allocate, can_allocate), allocate() function"
+      ],
+      "evaluation_criteria": "Must preserve valid Python structure/methods from the PDF extraction rather than hallucinating unrelated signatures."
+    }
+  ]
+}

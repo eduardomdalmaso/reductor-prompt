@@ -1,0 +1,123 @@
+{
+  "test": "code_fidelity_tests",
+  "results": [
+    {
+      "question_id": "CODE1_batch_allocate",
+      "query": "Show the exact Python code for OrderLine, Batch, and the allocate function from Architecture Patterns with Python, including parameters and page number.",
+      "prompt_eval_count": 2689,
+      "eval_count": 322,
+      "latency_ms": 2693.65,
+      "retrieved_context_preserves_indentation": true,
+      "expected_tokens": [
+        "class Batch",
+        "def allocate",
+        "OrderLine",
+        "can_allocate",
+        "eta"
+      ],
+      "matched_in_response": [
+        "class Batch",
+        "def allocate",
+        "OrderLine",
+        "can_allocate",
+        "eta"
+      ],
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 266",
+          "page": 266,
+          "score": 0.94,
+          "tokens": 185
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 292",
+          "page": 292,
+          "score": 0.931,
+          "tokens": 474
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 126",
+          "page": 126,
+          "score": 0.93,
+          "tokens": 109
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 266",
+          "page": 266,
+          "score": 0.926,
+          "tokens": 185
+        }
+      ],
+      "response": "Aqui está o código Python exato para `OrderLine`, `Batch`, e a função `allocate` conforme apresentado no livro \"Architecture Patterns with Python\":\n\n### OrderLine\nO código para `OrderLine` não é fornecido diretamente no contexto dado, mas é usado na função `allocate`. A classe `OrderLine` é usada para representar uma linha de pedido e é passada como parâmetro para a função `allocate`.\n\n### Batch\nO código para `Batch` é fornecido na página 46 do livro:\n\n```python\nclass Batch:\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n```\n\n### allocate\nO código para a função `allocate` é fornecido na página 46 do livro:\n\n```python\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    batch = next(\n        b for b in sorted(batches) if b.can_allocate(line)\n    )\n    batch.allocate(line)\n    return batch.reference\n```\n\n### Referências\n- `OrderLine` é usado na função `allocate`, mas o código completo não é fornecido no contexto dado.\n- `Batch` é definido na página 46.\n- `allocate` é definido na página 46.\n\nPara obter o código completo de `OrderLine`, você precisaria consultar o livro ou o código-fonte associado."
+    },
+    {
+      "question_id": "CODE2_sqlalchemy_repo",
+      "query": "Show the Python code for SqlAlchemyRepository (add and get methods) from Architecture Patterns with Python, including parameters and page number.",
+      "prompt_eval_count": 1806,
+      "eval_count": 597,
+      "latency_ms": 4546.9,
+      "retrieved_context_preserves_indentation": false,
+      "expected_tokens": [
+        "class SqlAlchemyRepository",
+        "def add",
+        "def get",
+        "session"
+      ],
+      "matched_in_response": [
+        "class SqlAlchemyRepository",
+        "def add",
+        "def get",
+        "session"
+      ],
+      "sources": [
+        {
+          "book_title": "Introducingpython3Rdedition",
+          "chapter": "Página 465",
+          "page": 465,
+          "score": 1.0,
+          "tokens": 435
+        },
+        {
+          "book_title": "Introducingpython3Rdedition",
+          "chapter": "Página 465",
+          "page": 465,
+          "score": 0.984,
+          "tokens": 435
+        },
+        {
+          "book_title": "Introducingpython3Rdedition",
+          "chapter": "Página 469",
+          "page": 469,
+          "score": 0.968,
+          "tokens": 274
+        },
+        {
+          "book_title": "Introducingpython3Rdedition",
+          "chapter": "Página 469",
+          "page": 469,
+          "score": 0.953,
+          "tokens": 274
+        }
+      ],
+      "response": "A pergunta do usuário pede o código Python para os métodos `add` e `get` da classe `SqlAlchemyRepository` do livro \"Architecture Patterns with Python\". No entanto, o contexto fornecido não contém informações específicas sobre essa classe ou esses métodos. O contexto fornece detalhes sobre o uso de SQLite e SQLAlchemy em Python, mas não inclui o código da classe `SqlAlchemyRepository`.\n\nPara fornecer a resposta mais precisa possível com base no contexto disponível, aqui está o que foi possível encontrar nos livros indexados:\n\n1. **Conexão com o Banco de Dados usando SQLAlchemy:**\n   - A string de conexão para SQLAlchemy é fornecida no formato:\n     ```python\n     dialect+driver://user:password@host:port/dbname\n     ```\n   - Exemplos de dialects e drivers:\n     ```plaintext\n     sqlite: pysqlite (ou omitir)\n     mysql: mysqlconnector, pymysql, oursql\n     postgresql: psycopg2, pypostgresql\n     ```\n\n2. **Operações básicas com SQLAlchemy:**\n   - Exemplos de operações SQL usando SQLAlchemy:\n     ```python\n     session.execute(\"SELECT id, count FROM t WHERE count > 5 AND id = 9\")\n     session.execute(\"UPDATE t SET count=3 WHERE id=5\")\n     session.execute(\"DELETE FROM t WHERE count <= 10 OR id = 16\")\n     ```\n\n3. **Criação de uma sessão e execução de comandos:**\n   - Exemplo de criação de uma sessão e execução de comandos:\n     ```python\n     from sqlalchemy import create_engine\n     engine = create_engine('sqlite:///example.db')\n     connection = engine.connect()\n     result = connection.execute(\"SELECT * FROM t\")\n     ```\n\nSe você tiver acesso ao livro \"Architecture Patterns with Python\", você pode encontrar a implementação da classe `SqlAlchemyRepository` e os métodos `add` e `get` especificamente nesse livro. Caso contrário, aqui está um exemplo genérico de como esses métodos podem ser implementados usando SQLAlchemy:\n\n```python\nfrom sqlalchemy.orm import sessionmaker\nfrom sqlalchemy import create_engine\n\nclass SqlAlchemyRepository:\n    def __init__(self, db_url):\n        self.engine = create_engine(db_url)\n        self.Session = sessionmaker(bind=self.engine)\n\n    def add(self, entity):\n        session = self.Session()\n        session.add(entity)\n        session.commit()\n        session.close()\n\n    def get(self, entity_id):\n        session = self.Session()\n        entity = session.query(Entity).get(entity_id)\n        session.close()\n        return entity\n```\n\nEste exemplo é uma implementação genérica e pode precisar ser adaptado conforme a estrutura do seu projeto e as necessidades específicas."
+    }
+  ]
+}

@@ -1,0 +1,3154 @@
+{
+  "metadata": {
+    "model": "qwen2.5:14b",
+    "embedding_model": "nomic-embed-text",
+    "generation_options": {
+      "temperature": 0.0,
+      "seed": 42
+    },
+    "runs_per_scenario": 3
+  },
+  "pdf_comparison": {
+    "pdf": "database/architecturepatternswithpython.pdf",
+    "page_number": 39,
+    "before_line_count": 1,
+    "after_line_count": 34,
+    "before_sample": "This test is going to require a smarter model (test_batches.py) def test_can_only_deallocate_allocated_lines(): batch, unallocated_line = make_batch_and_line(\"DECORATIVE-TRINKET\", 20, 2) batch.deallocate(unallocated_line) assert batch.available_quantity == 20 In this test, we’re asserting that deallocating a line from a batch has no effect unless the batch previously allocated the line. For this to work, our Batch needs to under‐ stand which lines have been allocated. Let’s look at the implementation: The domain model now tracks allocations (model.py) class Batch: def __init__( self, ref: str, sku: str, qty: int, eta: Optional[date] ): self.reference = ref self.sku = sku self.eta = eta self.",
+    "after_sample": "This test is going to require a smarter model (test_batches.py)\ndef test_can_only_deallocate_allocated_lines():\n    batch, unallocated_line = make_batch_and_line(\"DECORATIVE-TRINKET\", 20, 2)\n    batch.deallocate(unallocated_line)\n    assert batch.available_quantity == 20\nIn this test, we’re asserting that deallocating a line from a batch has no effect unless\nthe batch previously allocated the line. For this to work, our Batch needs to under‐\nstand which lines have been allocated. Let’s look at the implementation:\nThe domain model now tracks allocations (model.py)\nclass Batch:\n    def __init__(\n        self, ref: str, sku: str, qty: int, eta: Optional[date]\n    ):\n        self.reference = ref"
+  },
+  "cache_validation": {
+    "r1_cache_hit": false,
+    "r2_same_params_cache_hit": true,
+    "r3_diff_rewriting_cache_hit": false,
+    "epoch_after_invalidation": 3,
+    "r4_after_invalidation_cache_hit": false
+  },
+  "runs": [
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "A_conventional_topk12",
+      "run": 1,
+      "response": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Este padrão ajuda a tornar o sistema mais testável ao esconder as complexidades do banco de dados.\n\nO padrão Repository é implementado através de uma classe abstrata que define dois métodos principais:\n\n1. **add()**: Este método é usado para adicionar um novo item ao repositório.\n2. **get()**: Este método é usado para recuperar um item previamente adicionado ao repositório.\n\nEsses métodos são usados para acesso aos dados tanto no domínio quanto na camada de serviço, mantendo a simplicidade e evitando a acoplamento do modelo de domínio ao banco de dados.\n\nAqui está um exemplo de como a classe abstrata Repository é definida:\n\n```python\nfrom abc import ABC, abstractmethod\n\nclass AbstractRepository(ABC):\n    @abstractmethod\n    def add(self, batch: model.Batch):\n        raise NotImplementedError\n\n    @abstractmethod\n    def get(self, reference) -> model.Batch:\n        raise NotImplementedError\n```\n\nEssa abstração permite que você faça alterações fundamentais na maneira como os dados são armazenados e facilita a criação de mocks para testes unitários.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.783
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.783
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.768
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.768
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.746
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.746
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 59",
+          "page": 59,
+          "score": 0.735
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 59",
+          "page": 59,
+          "score": 0.735
+        }
+      ],
+      "prompt_eval_count": 3620,
+      "eval_count": 306,
+      "llm_latency_ms": 2998.35,
+      "total_latency_ms": 3021.08,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "A_conventional_topk12",
+      "run": 2,
+      "response": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Este padrão é implementado através de uma classe Repository que se posiciona entre o modelo de domínio e o banco de dados.\n\nOs métodos principais da classe Repository são:\n\n1. **add()**: Este método é usado para adicionar um novo item ao repositório.\n2. **get()**: Este método é usado para recuperar um item previamente adicionado ao repositório.\n\nEsses métodos são usados para acesso a dados tanto no domínio quanto na camada de serviço, mantendo a simplicidade e evitando a acoplamento do modelo de domínio ao banco de dados.\n\nA classe Repository é definida como uma classe abstrata (ABC) com métodos abstratos que precisam ser implementados por subclasses concretas. Isso garante que a interface do repositório seja mantida e que a camada de modelo de domínio não seja acoplada diretamente à camada de armazenamento de dados.\n\nA implementação do padrão Repository facilita a realização de alterações fundamentais na forma como os dados são armazenados e torna mais fácil a criação de mocks para testes unitários.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.783
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.783
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.768
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.768
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.746
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.746
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 59",
+          "page": 59,
+          "score": 0.735
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 59",
+          "page": 59,
+          "score": 0.735
+        }
+      ],
+      "prompt_eval_count": 3620,
+      "eval_count": 303,
+      "llm_latency_ms": 2433.79,
+      "total_latency_ms": 2455.58,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "A_conventional_topk12",
+      "run": 3,
+      "response": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Este padrão é implementado através de uma classe Repository que se posiciona entre o modelo de domínio e o banco de dados.\n\nOs métodos principais da classe Repository são:\n\n1. **add()**: Este método é usado para adicionar um novo item ao repositório.\n2. **get()**: Este método é usado para recuperar um item previamente adicionado ao repositório.\n\nEsses métodos são usados para acesso a dados tanto no domínio quanto na camada de serviço, mantendo a simplicidade e evitando a acoplamento do modelo de domínio ao banco de dados.\n\nA classe Repository é definida como uma classe abstrata (ABC) com métodos abstratos que precisam ser implementados por subclasses concretas. Isso garante que a interface do repositório seja mantida e que a camada de modelo de domínio não seja acoplada diretamente à camada de armazenamento de dados.\n\nA implementação do padrão Repository facilita a realização de alterações fundamentais na forma como os dados são armazenados e torna mais fácil a criação de mocks para testes unitários.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.783
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.783
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.768
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.768
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.746
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.746
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.736
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 59",
+          "page": 59,
+          "score": 0.735
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 59",
+          "page": 59,
+          "score": 0.735
+        }
+      ],
+      "prompt_eval_count": 3620,
+      "eval_count": 303,
+      "llm_latency_ms": 2442.15,
+      "total_latency_ms": 2460.28,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "B_reductor_standard",
+      "run": 1,
+      "response": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Esse padrão é crucial para a implementação do princípio de inversão de dependência, que visa separar a lógica de negócios do domínio das preocupações infraestruturais.\n\nO Repository pattern cria uma camada de abstração entre o modelo de domínio e o banco de dados, ocultando as complexidades do banco de dados e tornando o sistema mais testável. A Figura 2-1 no capítulo 2 do livro ilustra essa estruturação antes e depois da aplicação do padrão Repository.\n\nOs métodos principais do Repository padrão geralmente incluem:\n\n1. **`add`**: Adiciona um novo objeto ao repositório.\n2. **`remove`**: Remove um objeto do repositório.\n3. **`get`**: Recupera um objeto do repositório com base em um critério específico.\n4. **`list`**: Lista objetos do repositório com base em critérios de consulta.\n5. **`update`**: Atualiza um objeto existente no repositório.\n\nEsses métodos fornecem uma interface consistente para operações de armazenamento e recuperação de dados, independentemente da implementação subjacente do banco de dados. Isso permite que o código do domínio seja escrito de forma independente do mecanismo de armazenamento, facilitando a manutenção e a testabilidade do código.\n\nReferência: Percival, H. J. W., & Gregory, B. (2018). *Architecture Patterns with Python: Enabling Test-Driven Development, Domain-Driven Design, and Event-Driven Microservices*. O'Reilly Media, Inc. (Capítulo 2, Página 49)",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 1.0,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.989,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.984,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.974,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.948,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.934,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        }
+      ],
+      "prompt_eval_count": 1964,
+      "eval_count": 427,
+      "llm_latency_ms": 3646.8,
+      "total_latency_ms": 3708.21,
+      "retrieved_context_reduction_pct": 69.07,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "B_reductor_standard",
+      "run": 2,
+      "response": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Esse padrão é crucial para a implementação do princípio de inversão de dependência, que visa separar a lógica de negócios do domínio das preocupações infraestruturais.\n\nO Repository pattern cria um objeto que atua como intermediário entre o modelo de domínio e o banco de dados, ocultando as complexidades do banco de dados e tornando o sistema mais testável. Os métodos principais do Repository padrão geralmente incluem:\n\n1. **`add`**: Adiciona um novo objeto ao repositório.\n2. **`remove`**: Remove um objeto do repositório.\n3. **`get`**: Recupera um objeto do repositório, geralmente por um identificador.\n4. **`query`**: Executa uma consulta mais complexa no repositório, retornando uma coleção de objetos.\n\nEsses métodos permitem que a lógica de negócios interaja com o repositório de maneira abstrata, sem conhecer os detalhes específicos da implementação do banco de dados. Isso facilita a troca de diferentes mecanismos de armazenamento de dados sem afetar a lógica de negócios.\n\nReferência: \n- **\"Architecture Patterns with Python\"** - Capítulo 2: Repository Pattern, Página 49.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 1.0,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.989,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.984,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.974,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.948,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.934,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        }
+      ],
+      "prompt_eval_count": 1964,
+      "eval_count": 345,
+      "llm_latency_ms": 2701.3,
+      "total_latency_ms": 2763.67,
+      "retrieved_context_reduction_pct": 69.07,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "B_reductor_standard",
+      "run": 3,
+      "response": "No livro \"Architecture Patterns with Python\", o padrão Repository é introduzido como uma abstração simplificadora sobre o armazenamento de dados, permitindo a desconexão da camada de modelo do domínio da camada de dados. Esse padrão é crucial para a implementação do princípio de inversão de dependência, que visa separar a lógica de negócios do domínio das preocupações infraestruturais.\n\nO Repository pattern cria um objeto que atua como intermediário entre o modelo de domínio e o banco de dados, ocultando as complexidades do banco de dados e tornando o sistema mais testável. Os métodos principais do Repository padrão geralmente incluem:\n\n1. **`add`**: Adiciona um novo objeto ao repositório.\n2. **`remove`**: Remove um objeto do repositório.\n3. **`get`**: Recupera um objeto do repositório, geralmente por um identificador.\n4. **`query`**: Executa uma consulta mais complexa no repositório, retornando uma coleção de objetos.\n\nEsses métodos permitem que a lógica de negócios interaja com o repositório de maneira abstrata, sem conhecer os detalhes específicos da implementação do banco de dados. Isso facilita a troca de diferentes mecanismos de armazenamento de dados sem afetar a lógica de negócios.\n\nReferência: \n- **\"Architecture Patterns with Python\"** - Capítulo 2: Repository Pattern, Página 49.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 1.0,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.989,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.984,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.974,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.948,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.934,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        }
+      ],
+      "prompt_eval_count": 1964,
+      "eval_count": 345,
+      "llm_latency_ms": 2669.88,
+      "total_latency_ms": 2733.89,
+      "retrieved_context_reduction_pct": 69.07,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "C_reductor_deep",
+      "run": 1,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nO padrão Repository (Repositório) é uma abstração simplificadora sobre o armazenamento de dados que permite decoupar a camada de modelo (domain model) da camada de dados (data layer). Este padrão é crucial para a implementação do princípio de inversão de dependência, que visa separar a lógica de negócios (core logic) das preocupações infraestruturais (infrastructural concerns). A ideia principal é criar um objeto Repository que atua como intermediário entre o modelo de domínio e o banco de dados, ocultando as complexidades do banco de dados e tornando o sistema mais testável.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\nO Repository pattern é implementado criando uma interface ou classe abstrata que define métodos para operações CRUD (Create, Read, Update, Delete) e outras operações específicas do domínio. Essa interface é então implementada por classes concretas que interagem diretamente com o banco de dados. A camada de modelo do domínio interage com o Repository abstrato, sem conhecer os detalhes de implementação do banco de dados.\n\n**Exemplo de código:**\n\n```python\nfrom abc import ABC, abstractmethod\n\nclass AbstractRepository(ABC):\n    @abstractmethod\n    def add(self, entity):\n        pass\n\n    @abstractmethod\n    def get(self, entity_id):\n        pass\n\n    @abstractmethod\n    def list(self):\n        pass\n\nclass SqlAlchemyRepository(AbstractRepository):\n    def __init__(self, session):\n        self.session = session\n\n    def add(self, entity):\n        self.session.add(entity)\n\n    def get(self, entity_id):\n        return self.session.query(Entity).filter(Entity.id == entity_id).first()\n\n    def list(self):\n        return self.session.query(Entity).all()\n```\n\n### 🔍 Auto-Validação e Integridade\n\nA resposta é consistente com a fundamentação teórica fornecida, pois o Repository pattern é descrito como uma abstração que decupla o modelo de domínio do banco de dados, permitindo que a lógica de negócios seja testada independentemente das preocupações de infraestrutura. Os métodos core mencionados (add, get, list) são exemplos de operações CRUD que são comumente implementadas no padrão Repository.\n\n### 📖 Citações Exatas\n\n- **[Livro: Architecture Patterns with Python (Página 49, Pág 49)]**:\n  > \"We’ll introduce the Repository pattern, a simplifying abstraction over data storage, allowing us to decouple our model layer from the data layer.\"\n\n  > \"Figure 2-1 shows a little preview of what we’re going to build: a Repository object that sits between our domain model and the database.\"\n\n- **[Livro: Architecture Patterns with Python (Página 1, Pág 1)]**:\n  > \"Enabling Test-Driven Development, Domain-Driven Design, and Event-Driven Microservices\" (Contexto geral do livro)",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 1.0,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.989,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.984,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.974,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.948,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.934,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        }
+      ],
+      "prompt_eval_count": 2028,
+      "eval_count": 680,
+      "llm_latency_ms": 5733.6,
+      "total_latency_ms": 5797.15,
+      "retrieved_context_reduction_pct": 69.07,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "C_reductor_deep",
+      "run": 2,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nO padrão Repository (Repositório) é uma abstração simplificadora sobre o armazenamento de dados que permite decoupar a camada de modelo (domain model) da camada de dados (data layer). Este padrão é crucial para a implementação do princípio de inversão de dependência, que visa separar a lógica de negócios (core logic) das preocupações infraestruturais (infrastructural concerns). A ideia principal é criar uma interface que encapsula a lógica de acesso e manipulação de dados, permitindo que a camada de modelo interaja com a camada de dados através desta interface abstrata.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\nNo contexto do livro \"Architecture Patterns with Python\", o padrão Repository é apresentado como uma maneira de tornar o sistema mais testável ao esconder as complexidades do banco de dados. A figura 2-1 do livro ilustra a aplicação deste padrão, mostrando como um objeto Repository é colocado entre o modelo de domínio e o banco de dados.\n\nOs métodos core do padrão Repository geralmente incluem:\n\n1. **`add`**: Adiciona um novo objeto ao repositório.\n2. **`remove`**: Remove um objeto do repositório.\n3. **`get`**: Recupera um objeto do repositório com base em um identificador.\n4. **`query`**: Executa uma consulta mais complexa no repositório, retornando uma coleção de objetos.\n\n### 🔍 Auto-Validação e Integridade\n\nA resposta é consistente com a fundamentação teórica fornecida, pois o padrão Repository é descrito como uma abstração que decoupa a camada de modelo do banco de dados, permitindo que a lógica de negócios seja testada de forma isolada. A figura 2-1 mencionada no livro ilustra a aplicação deste padrão, mostrando a camada de repositório como uma camada intermediária entre o modelo de domínio e o banco de dados.\n\n### 📖 Citações Exatas\n\n- **[Livro: Architecture Patterns with Python (Página 49, Pág 49)]**:\n  > \"We’ll introduce the Repository pattern, a simplifying abstraction over data storage, allowing us to decouple our model layer from the data layer.\"\n\n  > \"Figure 2-1 shows a little preview of what we’re going to build: a Repository object that sits between our domain model and the database.\"\n\n- **[Livro: Architecture Patterns with Python (Página 1, Pág 1)]**:\n  > \"Architecture Patterns with Python Enabling Test-Driven Development, Domain-Driven Design, and Event-Driven Microservices\"",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 1.0,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.989,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.984,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.974,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.948,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.934,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        }
+      ],
+      "prompt_eval_count": 2028,
+      "eval_count": 626,
+      "llm_latency_ms": 4804.11,
+      "total_latency_ms": 4864.34,
+      "retrieved_context_reduction_pct": 69.07,
+      "error": null
+    },
+    {
+      "question_id": "Q1_answerable",
+      "category": "Pergunta respondível",
+      "scenario": "C_reductor_deep",
+      "run": 3,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nO padrão Repository (Repositório) é uma abstração simplificadora sobre o armazenamento de dados que permite decoupar a camada de modelo (domain model) da camada de dados (data layer). Este padrão é crucial para a implementação do princípio de inversão de dependência, que visa separar a lógica de negócios (core logic) das preocupações infraestruturais (infrastructural concerns). A ideia principal é criar uma interface que encapsula a lógica de acesso e manipulação de dados, permitindo que a camada de modelo interaja com a camada de dados através desta interface abstrata.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\nNo contexto do livro \"Architecture Patterns with Python\", o padrão Repository é apresentado como uma maneira de tornar o sistema mais testável ao esconder as complexidades do banco de dados. A figura 2-1 do livro ilustra a aplicação deste padrão, mostrando como um objeto Repository é colocado entre o modelo de domínio e o banco de dados.\n\nOs métodos core do padrão Repository geralmente incluem:\n\n1. **`add`**: Adiciona um novo objeto ao repositório.\n2. **`remove`**: Remove um objeto do repositório.\n3. **`get`**: Recupera um objeto do repositório com base em um identificador.\n4. **`query`**: Executa uma consulta mais complexa no repositório, retornando uma coleção de objetos.\n\n### 🔍 Auto-Validação e Integridade\n\nA resposta é consistente com a fundamentação teórica fornecida, pois o padrão Repository é descrito como uma abstração que decoupa a camada de modelo do banco de dados, permitindo que a lógica de negócios seja testada de forma isolada. A figura 2-1 mencionada no livro ilustra a aplicação deste padrão, mostrando a camada de repositório como uma camada intermediária entre o modelo de domínio e o banco de dados.\n\n### 📖 Citações Exatas\n\n- **[Livro: Architecture Patterns with Python (Página 49, Pág 49)]**:\n  > \"We’ll introduce the Repository pattern, a simplifying abstraction over data storage, allowing us to decouple our model layer from the data layer.\"\n\n  > \"Figure 2-1 shows a little preview of what we’re going to build: a Repository object that sits between our domain model and the database.\"\n\n- **[Livro: Architecture Patterns with Python (Página 1, Pág 1)]**:\n  > \"Architecture Patterns with Python Enabling Test-Driven Development, Domain-Driven Design, and Event-Driven Microservices\"",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 1.0,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.989,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 49",
+          "page": 49,
+          "score": 0.984,
+          "tokens": 139
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.974,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.948,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 14",
+          "page": 14,
+          "score": 0.934,
+          "tokens": 534
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.745,
+          "tokens": 32
+        }
+      ],
+      "prompt_eval_count": 2028,
+      "eval_count": 626,
+      "llm_latency_ms": 4937.74,
+      "total_latency_ms": 4996.2,
+      "retrieved_context_reduction_pct": 69.07,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "A_conventional_topk12",
+      "run": 1,
+      "response": "O contexto fornecido não contém informações específicas sobre os números de latência de benchmark de produção (p99 em milissegundos) do ReductorPrompt executando em uma NVIDIA RTX 5090 com Qwen 2.5 14B. Portanto, não é possível fornecer esses dados com base no contexto dado.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.68
+        },
+        {
+          "book_title": "Pythonpolars Thedefinitiveguide",
+          "chapter": "Página 481",
+          "page": 481,
+          "score": 0.667
+        },
+        {
+          "book_title": "Pythonpolars Thedefinitiveguide",
+          "chapter": "Página 481",
+          "page": 481,
+          "score": 0.667
+        },
+        {
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "chapter": "Seção 14",
+          "page": 14,
+          "score": 0.658
+        },
+        {
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "chapter": "Seção 14",
+          "page": 14,
+          "score": 0.658
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 106",
+          "page": 106,
+          "score": 0.656
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 106",
+          "page": 106,
+          "score": 0.656
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1614",
+          "page": 1614,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1675",
+          "page": 1675,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1707",
+          "page": 1707,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1772",
+          "page": 1772,
+          "score": 0.655
+        }
+      ],
+      "prompt_eval_count": 2404,
+      "eval_count": 77,
+      "llm_latency_ms": 976.21,
+      "total_latency_ms": 997.6,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "A_conventional_topk12",
+      "run": 2,
+      "response": "O contexto fornecido não contém informações específicas sobre os números de latência de benchmark de produção (p99 em milissegundos) do ReductorPrompt executando em uma NVIDIA RTX 5090 com Qwen 2.5 14B. Portanto, não é possível fornecer esses dados com base no contexto dado.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.68
+        },
+        {
+          "book_title": "Pythonpolars Thedefinitiveguide",
+          "chapter": "Página 481",
+          "page": 481,
+          "score": 0.667
+        },
+        {
+          "book_title": "Pythonpolars Thedefinitiveguide",
+          "chapter": "Página 481",
+          "page": 481,
+          "score": 0.667
+        },
+        {
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "chapter": "Seção 14",
+          "page": 14,
+          "score": 0.658
+        },
+        {
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "chapter": "Seção 14",
+          "page": 14,
+          "score": 0.658
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 106",
+          "page": 106,
+          "score": 0.656
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 106",
+          "page": 106,
+          "score": 0.656
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1614",
+          "page": 1614,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1675",
+          "page": 1675,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1707",
+          "page": 1707,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1772",
+          "page": 1772,
+          "score": 0.655
+        }
+      ],
+      "prompt_eval_count": 2404,
+      "eval_count": 77,
+      "llm_latency_ms": 645.03,
+      "total_latency_ms": 665.47,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "A_conventional_topk12",
+      "run": 3,
+      "response": "O contexto fornecido não contém informações específicas sobre os números de latência de benchmark de produção (p99 em milissegundos) do ReductorPrompt executando em uma NVIDIA RTX 5090 com Qwen 2.5 14B. Portanto, não é possível fornecer esses dados com base no contexto dado.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.68
+        },
+        {
+          "book_title": "Pythonpolars Thedefinitiveguide",
+          "chapter": "Página 481",
+          "page": 481,
+          "score": 0.667
+        },
+        {
+          "book_title": "Pythonpolars Thedefinitiveguide",
+          "chapter": "Página 481",
+          "page": 481,
+          "score": 0.667
+        },
+        {
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "chapter": "Seção 14",
+          "page": 14,
+          "score": 0.658
+        },
+        {
+          "book_title": "Redis Ai Vector Search And Semantic Caching",
+          "chapter": "Seção 14",
+          "page": 14,
+          "score": 0.658
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 106",
+          "page": 106,
+          "score": 0.656
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 106",
+          "page": 106,
+          "score": 0.656
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1614",
+          "page": 1614,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1675",
+          "page": 1675,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1707",
+          "page": 1707,
+          "score": 0.655
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 1772",
+          "page": 1772,
+          "score": 0.655
+        }
+      ],
+      "prompt_eval_count": 2404,
+      "eval_count": 77,
+      "llm_latency_ms": 616.2,
+      "total_latency_ms": 639.81,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "B_reductor_standard",
+      "run": 1,
+      "response": "The provided context does not contain any information about production benchmark latency numbers for a system named \"ReductorPrompt\" running on an NVIDIA RTX 5090 with Qwen 2.5 14B. The context only provides latency test results for Redis, which indicate that 99.9% of requests have a latency of <= 2 milliseconds. \n\nSince the context does not match the specific system and hardware configuration you asked about, I cannot provide the exact p99 latency numbers for ReductorPrompt under the specified conditions. The Redis latency test results are not applicable to the ReductorPrompt system running on the mentioned hardware and software configuration.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 1.0,
+          "tokens": 305
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.984,
+          "tokens": 305
+        }
+      ],
+      "prompt_eval_count": 955,
+      "eval_count": 135,
+      "llm_latency_ms": 1198.94,
+      "total_latency_ms": 1256.95,
+      "retrieved_context_reduction_pct": 76.74,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "B_reductor_standard",
+      "run": 2,
+      "response": "The provided context does not contain any information about production benchmark latency numbers for a system named \"ReductorPrompt\" running on an NVIDIA RTX 5090 with Qwen 2.5 14B. The context only provides latency test results for Redis, which indicate that 99.9% of requests have a latency of <= 2 milliseconds. \n\nSince the context does not match the specific system and hardware configuration mentioned in the question, I cannot provide the exact p99 latency numbers for ReductorPrompt. The Redis latency test results are not applicable to the ReductorPrompt system running on the specified hardware.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 1.0,
+          "tokens": 305
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.984,
+          "tokens": 305
+        }
+      ],
+      "prompt_eval_count": 955,
+      "eval_count": 129,
+      "llm_latency_ms": 1014.76,
+      "total_latency_ms": 1073.69,
+      "retrieved_context_reduction_pct": 76.74,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "B_reductor_standard",
+      "run": 3,
+      "response": "The provided context does not contain any information about production benchmark latency numbers for a system named \"ReductorPrompt\" running on an NVIDIA RTX 5090 with Qwen 2.5 14B. The context only provides latency test results for Redis, which indicate that 99.9% of requests have a latency of <= 2 milliseconds. \n\nSince the context does not match the specific system and hardware configuration mentioned in the question, I cannot provide the exact p99 latency numbers for ReductorPrompt. The Redis latency test results are not applicable to the ReductorPrompt system running on the specified hardware.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 1.0,
+          "tokens": 305
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.984,
+          "tokens": 305
+        }
+      ],
+      "prompt_eval_count": 955,
+      "eval_count": 129,
+      "llm_latency_ms": 1030.52,
+      "total_latency_ms": 1092.81,
+      "retrieved_context_reduction_pct": 76.74,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "C_reductor_deep",
+      "run": 1,
+      "response": "It seems there might be a misunderstanding or a mix-up in the context of the question and the provided technical documentation. The documentation you've shared pertains to Redis, a high-performance in-memory data structure store, and does not mention any specific benchmarks for a system called \"ReductorPrompt\" or any hardware like an NVIDIA RTX 5090, nor does it reference Qwen 2.5 14B.\n\nGiven the context provided, here's a structured response based on the Redis latency benchmark data:\n\n1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   - A análise dos resultados de latência do Redis indica que a maioria das requisições (99.9%) tem uma latência inferior a 2 milissegundos.\n   - A distribuição da latência é bastante concentrada, com 74.11% das requisições sendo processadas em menos de 1 ms e 25.80% entre 1 e 2 ms.\n   - A adição de milhões de mensagens não afeta significativamente a latência, mantendo a maioria das requisições com baixa latência.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   - A configuração do teste envolve a utilização de múltiplas instâncias de programas Ruby para enviar e processar mensagens.\n   - O teste utiliza o comando `XREADGROUP` com o parâmetro `COUNT` definido como 10000, o que adiciona latência mas é necessário para permitir que consumidores lentos acompanhem o fluxo de mensagens.\n   - A latência real pode ser menor do que os resultados do teste, devido à configuração do teste que adiciona latência adicional.\n\n3. 🔍 Auto-Validação e Integridade:\n   - A resposta é estritamente baseada nos resultados de latência do Redis fornecidos no documento.\n   - Não há menção a ReductorPrompt, NVIDIA RTX 5090, ou Qwen 2.5 14B no documento fornecido.\n\n4. 📖 Citações Exatas:\n   - \"Processed between 0 and 1 ms -> 74.11%\"\n   - \"Processed between 1 and 2 ms -> 25.80%\"\n   - \"Processed between 2 and 3 ms -> 0.06%\"\n   - \"Processed between 3 and 4 ms -> 0.01%\"\n   - \"Processed between 4 and 5 ms -> 0.02%\"\n   - [Livro: Redis Core Architecture And Data Types (Seção 240, Pág 240)]\n\nPara responder à pergunta original sobre ReductorPrompt, NVIDIA RTX 5090, e Qwen 2.5 14B, seria necessário ter benchmarks específicos para essa configuração. Como não há informações sobre esses elementos no contexto fornecido, não é possível fornecer números de latência precisos para essa configuração específica.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 1.0,
+          "tokens": 305
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.984,
+          "tokens": 305
+        }
+      ],
+      "prompt_eval_count": 1019,
+      "eval_count": 668,
+      "llm_latency_ms": 5296.52,
+      "total_latency_ms": 5360.06,
+      "retrieved_context_reduction_pct": 76.74,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "C_reductor_deep",
+      "run": 2,
+      "response": "It seems there might be a misunderstanding or a mix-up in the context of the question and the provided technical documentation. The documentation you've shared pertains to Redis, a high-performance in-memory data structure store, and does not mention any specific benchmarks for a system called \"ReductorPrompt\" or any hardware like an NVIDIA RTX 5090, nor does it reference Qwen 2.5 14B.\n\nGiven the context provided, here's a structured response based on the Redis latency benchmark data:\n\n1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   - A análise dos dados de latência do Redis indica que 99.9% das requisições têm uma latência inferior ou igual a 2 milissegundos.\n   - A distribuição da latência é bastante concentrada entre 0 e 2 milissegundos, com apenas 0.1% das requisições tendo uma latência superior a 2 milissegundos.\n   - A configuração do teste incluiu a leitura de até 10.000 mensagens por iteração, o que adiciona latência, mas é necessário para permitir que consumidores mais lentos acompanhem o fluxo de mensagens.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   - A latência observada no teste é significativamente menor do que a esperada em um ambiente de produção real, devido à configuração do teste que adiciona latência artificial.\n   - A latência real pode ser menor em um ambiente de produção, pois os consumidores podem ser mais eficientes em processar as mensagens.\n\n3. 🔍 Auto-Validação e Integridade:\n   - A afirmação de que 99.9% das requisições têm uma latência inferior ou igual a 2 milissegundos é baseada nos resultados do teste fornecidos.\n   - A distribuição da latência é consistente com os dados fornecidos, onde a maioria das requisições é processada em menos de 2 milissegundos.\n\n4. 📖 Citações Exatas:\n   - \"Processed between 0 and 1 ms -> 74.11%\"\n   - \"Processed between 1 and 2 ms -> 25.80%\"\n   - \"Processed between 2 and 3 ms -> 0.06%\"\n   - \"Processed between 3 and 4 ms -> 0.01%\"\n   - \"Processed between 4 and 5 ms -> 0.02%\"\n   - [Livro: Redis Core Architecture And Data Types (Seção 240, Pág 240)]\n\nPara responder à pergunta específica sobre \"ReductorPrompt\" e a configuração de hardware mencionada (NVIDIA RTX 5090 com Qwen 2.5 14B), seria necessário ter benchmarks específicos para essa configuração e sistema. Como não há informações sobre esses detalhes no contexto fornecido, não é possível fornecer números de latência precisos para essa configuração específica.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 1.0,
+          "tokens": 305
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.984,
+          "tokens": 305
+        }
+      ],
+      "prompt_eval_count": 1019,
+      "eval_count": 677,
+      "llm_latency_ms": 5177.18,
+      "total_latency_ms": 5240.95,
+      "retrieved_context_reduction_pct": 76.74,
+      "error": null
+    },
+    {
+      "question_id": "Q2_partial",
+      "category": "Pergunta parcialmente respondível",
+      "scenario": "C_reductor_deep",
+      "run": 3,
+      "response": "It seems there might be a misunderstanding or a mix-up in the context of the question and the provided technical documentation. The documentation you've shared pertains to Redis, a high-performance in-memory data structure store, and does not mention any specific benchmarks for a system called \"ReductorPrompt\" or any hardware like an NVIDIA RTX 5090, nor does it reference Qwen 2.5 14B.\n\nGiven the context provided, here's a structured response based on the Redis latency benchmark data:\n\n1. 🧠 Análise dos Fundamentos e Conceitos-Chave:\n   - A análise dos dados de latência do Redis indica que 99.9% das requisições têm uma latência inferior ou igual a 2 milissegundos.\n   - A distribuição da latência é bastante concentrada entre 0 e 2 milissegundos, com apenas 0.1% das requisições tendo uma latência superior a 2 milissegundos.\n   - A configuração do teste incluiu a leitura de até 10.000 mensagens por iteração, o que adiciona latência, mas é necessário para permitir que consumidores mais lentos acompanhem o fluxo de mensagens.\n\n2. ⚙️ Aplicação Prática, Padrões e Arquitetura:\n   - A latência observada no teste é significativamente menor do que a esperada em um ambiente de produção real, devido à configuração do teste que adiciona latência artificial.\n   - A latência real pode ser menor em um ambiente de produção, pois os consumidores podem ser mais eficientes em processar as mensagens.\n\n3. 🔍 Auto-Validação e Integridade:\n   - A afirmação de que 99.9% das requisições têm uma latência inferior ou igual a 2 milissegundos é baseada nos resultados do teste fornecidos.\n   - A distribuição da latência é consistente com os dados fornecidos, onde a maioria das requisições é processada em menos de 2 milissegundos.\n\n4. 📖 Citações Exatas:\n   - \"Processed between 0 and 1 ms -> 74.11%\"\n   - \"Processed between 1 and 2 ms -> 25.80%\"\n   - \"Processed between 2 and 3 ms -> 0.06%\"\n   - \"Processed between 3 and 4 ms -> 0.01%\"\n   - \"Processed between 4 and 5 ms -> 0.02%\"\n   - [Livro: Redis Core Architecture And Data Types (Seção 240, Pág 240)]\n\nPara responder à pergunta específica sobre \"ReductorPrompt\" e a configuração de hardware mencionada (NVIDIA RTX 5090 com Qwen 2.5 14B), seria necessário ter benchmarks específicos para essa configuração e sistema. Como não há informações sobre esses detalhes no contexto fornecido, não é possível fornecer números de latência precisos para essa configuração específica.",
+      "sources": [
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 1.0,
+          "tokens": 305
+        },
+        {
+          "book_title": "Redis Core Architecture And Data Types",
+          "chapter": "Seção 240",
+          "page": 240,
+          "score": 0.984,
+          "tokens": 305
+        }
+      ],
+      "prompt_eval_count": 1019,
+      "eval_count": 677,
+      "llm_latency_ms": 5166.17,
+      "total_latency_ms": 5229.29,
+      "retrieved_context_reduction_pct": 76.74,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "A_conventional_topk12",
+      "run": 1,
+      "response": "O contexto fornecido não contém informações sobre o segredo da API senha e o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. O contexto aborda principalmente como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes e não menciona detalhes específicos sobre a equipe do Komtek K-Monitor ou eventos futuros. Portanto, não é possível fornecer essas informações com base no contexto dado.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.688
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.688
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.672
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.672
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.671
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.671
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.67
+        }
+      ],
+      "prompt_eval_count": 3108,
+      "eval_count": 106,
+      "llm_latency_ms": 1317.2,
+      "total_latency_ms": 1339.22,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "A_conventional_topk12",
+      "run": 2,
+      "response": "O contexto fornecido não contém informações sobre o segredo da API senha e o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. O contexto aborda principalmente como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, mas não menciona nada específico sobre a equipe do Komtek K-Monitor ou eventos futuros em 2026. Portanto, não é possível fornecer a resposta solicitada com base no contexto fornecido.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.688
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.688
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.672
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.672
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.671
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.671
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.67
+        }
+      ],
+      "prompt_eval_count": 3108,
+      "eval_count": 114,
+      "llm_latency_ms": 928.66,
+      "total_latency_ms": 950.35,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "A_conventional_topk12",
+      "run": 3,
+      "response": "O contexto fornecido não contém informações sobre o segredo da API senha e o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. O contexto aborda principalmente como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, mas não menciona nada específico sobre a equipe do Komtek K-Monitor ou eventos futuros em 2026. Portanto, não é possível fornecer a resposta solicitada com base no contexto fornecido.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.688
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.688
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.68
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.672
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.672
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.671
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.671
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.67
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.67
+        }
+      ],
+      "prompt_eval_count": 3108,
+      "eval_count": 114,
+      "llm_latency_ms": 921.52,
+      "total_latency_ms": 941.58,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "B_reductor_standard",
+      "run": 1,
+      "response": "O contexto fornecido não contém informações sobre o segredo da API password ou o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. Os detalhes fornecidos estão relacionados a como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, mas não mencionam nada sobre o Komtek K-Monitor ou detalhes específicos de 2026. Portanto, não é possível fornecer a resposta solicitada com base nas informações disponíveis.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 1.0,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.984,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.968,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.953,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.938,
+          "tokens": 23
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.924,
+          "tokens": 23
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.91,
+          "tokens": 244
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.897,
+          "tokens": 244
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.884,
+          "tokens": 166
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.871,
+          "tokens": 166
+        }
+      ],
+      "prompt_eval_count": 2743,
+      "eval_count": 116,
+      "llm_latency_ms": 1336.64,
+      "total_latency_ms": 1356.31,
+      "retrieved_context_reduction_pct": 18.49,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "B_reductor_standard",
+      "run": 2,
+      "response": "O contexto fornecido não contém informações sobre o segredo da API password ou o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. Os detalhes fornecidos estão relacionados a como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, mas não mencionam nada sobre o Komtek K-Monitor ou detalhes específicos de 2026. Portanto, não é possível fornecer a resposta solicitada com base nas informações disponíveis.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 1.0,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.984,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.968,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.953,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.938,
+          "tokens": 23
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.924,
+          "tokens": 23
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.91,
+          "tokens": 244
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.897,
+          "tokens": 244
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.884,
+          "tokens": 166
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.871,
+          "tokens": 166
+        }
+      ],
+      "prompt_eval_count": 2743,
+      "eval_count": 116,
+      "llm_latency_ms": 939.71,
+      "total_latency_ms": 959.85,
+      "retrieved_context_reduction_pct": 18.49,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "B_reductor_standard",
+      "run": 3,
+      "response": "O contexto fornecido não contém informações sobre o segredo da API password ou o nome do canal interno do Slack usado pela equipe de engenharia do Komtek K-Monitor em 2026. Os detalhes fornecidos estão relacionados a como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, mas não mencionam nada sobre o Komtek K-Monitor ou detalhes específicos de 2026. Portanto, não é possível fornecer a resposta solicitada com base nas informações disponíveis.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 1.0,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.984,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.968,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.953,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.938,
+          "tokens": 23
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.924,
+          "tokens": 23
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.91,
+          "tokens": 244
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.897,
+          "tokens": 244
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.884,
+          "tokens": 166
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.871,
+          "tokens": 166
+        }
+      ],
+      "prompt_eval_count": 2743,
+      "eval_count": 116,
+      "llm_latency_ms": 943.3,
+      "total_latency_ms": 962.59,
+      "retrieved_context_reduction_pct": 18.49,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "C_reductor_deep",
+      "run": 1,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nA pergunta do usuário busca informações sobre um segredo específico (API password e nome do canal interno do Slack) usado pelo time de engenharia do Komtek K-Monitor em 2026. No entanto, as fontes fornecidas não contêm informações sobre o Komtek K-Monitor ou detalhes específicos sobre segredos de API ou canais do Slack para qualquer ano específico. As fontes fornecidas focam principalmente em como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\nPara recuperar as credenciais de um cluster Redis Enterprise em Kubernetes, os passos são:\n\n1. **Listar os segredos**:\n   ```sh\n   kubectl get secrets\n   ```\n   Isso lista todos os segredos no namespace atual.\n\n2. **Localizar o segredo específico**:\n   Identifique o segredo que contém as credenciais do Redis Enterprise. Por exemplo:\n   ```sh\n   kubectl get secret redis-enterprise-cluster -o yaml\n   ```\n\n3. **Decodificar as credenciais**:\n   Use o comando `base64 --decode` para decodificar os campos `username` e `password`:\n   ```sh\n   echo \"Q2h5N1BBY28=\" | base64 --decode\n   ```\n\n### 🔍 Auto-Validação e Integridade\n\nA pergunta do usuário não pode ser respondida com base nas informações fornecidas, pois não há detalhes sobre o Komtek K-Monitor ou sobre segredos específicos para 2026. As fontes fornecidas focam em como recuperar credenciais de um cluster Redis Enterprise em Kubernetes, mas não contêm informações sobre segredos de API ou canais do Slack específicos para o Komtek K-Monitor.\n\n### 📖 Citações Exatas\n\nAs fontes fornecidas não contêm informações sobre o Komtek K-Monitor ou detalhes específicos sobre segredos de API ou canais do Slack para qualquer ano específico. As informações relevantes são sobre como recuperar credenciais de um cluster Redis Enterprise em Kubernetes:\n\n- **[Livro: Redis Operations Clustering And Kubernetes (Seção 821, Pág 821)]**:\n  - Como recuperar o nome de usuário e senha para um cluster Redis Enterprise.\n  - Como listar e recuperar segredos em Kubernetes.\n\n- **[Livro: Redis Operations Clustering And Kubernetes (Seção 599, Pág 599)]**:\n  - Como os segredos e certificados PEM são usados em pods Redis Enterprise.\n\n- **[Livro: Redis Operations Clustering And Kubernetes (Seção 178, Pág 178)]**:\n  - Como ler segredos do Kubernetes (montados como variáveis de ambiente).\n\n- **[Livro: Redis Operations Clustering And Kubernetes (Seção 629, Pág 629)]**:\n  - Como recuperar o nome de usuário e senha atuais.\n\n- **[Livro: Redis Operations Clustering And Kubernetes (Seção 1628, Pág 1628)]**:\n  - Como recuperar o nome de usuário e senha atuais.\n\n### Conclusão\n\nNão é possível fornecer as informações solicitadas sobre o segredo API e o nome do canal interno do Slack usado pelo time de engenharia do Komtek K-Monitor em 2026, pois as fontes fornecidas não contêm esses detalhes. As fontes fornecidas focam em como recuperar credenciais de um cluster Redis Enterprise em Kubernetes.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 1.0,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.984,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.968,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.953,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.938,
+          "tokens": 23
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.924,
+          "tokens": 23
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.91,
+          "tokens": 244
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.897,
+          "tokens": 244
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.884,
+          "tokens": 166
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.871,
+          "tokens": 166
+        }
+      ],
+      "prompt_eval_count": 2807,
+      "eval_count": 823,
+      "llm_latency_ms": 6995.09,
+      "total_latency_ms": 7014.1,
+      "retrieved_context_reduction_pct": 18.49,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "C_reductor_deep",
+      "run": 2,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nA pergunta do usuário busca informações sobre um segredo específico (API password e nome do canal interno do Slack) usado pelo time de engenharia do Komtek K-Monitor em 2026. No entanto, as fontes fornecidas não contêm informações sobre o Komtek K-Monitor ou detalhes específicos sobre segredos de API e canais internos do Slack para qualquer ano específico. As fontes fornecidas focam principalmente em como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\nPara recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, os passos são:\n\n1. **Listar os segredos**:\n   ```sh\n   kubectl get secrets\n   ```\n   Isso lista todos os segredos no namespace atual. Você deve procurar um segredo com um nome que contenha o nome do seu cluster Redis Enterprise.\n\n2. **Recuperar o segredo específico**:\n   ```sh\n   kubectl get secret <nome-do-segredo> -o yaml\n   ```\n   Isso exibe o conteúdo do segredo em formato YAML.\n\n3. **Decodificar as credenciais**:\n   ```sh\n   echo \"<encoded-value>\" | base64 --decode\n   ```\n   Isso decodifica o valor codificado em base64 para obter a senha ou o nome de usuário em texto simples.\n\n### 🔍 Auto-Validação e Integridade\n\nA pergunta do usuário não pode ser respondida com base nas informações fornecidas, pois não há detalhes sobre o Komtek K-Monitor ou segredos específicos para 2026. As fontes fornecidas focam em como recuperar credenciais de um cluster Redis Enterprise em Kubernetes, não em detalhes específicos de um time de engenharia ou segredos de API e canais do Slack.\n\n### 📖 Citações Exatas\n\n- **Recuperando as credenciais de um cluster Redis Enterprise**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 821, Pág 821)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 1.00\n\n  ```sh\n  kubectl get secrets\n  kubectl get secret redis-enterprise-cluster -o yaml\n  echo \"Q2h5N1BBY28=\" | base64 --decode\n  ```\n\n- **Secrets e arquivos PEM em pods Redis Enterprise**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 599, Pág 599)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 0.97\n\n  Redis Enterprise pods usam Kubernetes Secrets e arquivos PEM codificados para formação de cluster, identidade de nó, comunicação criptografada e recuperação automatizada.\n\n- **Ler de Kubernetes secret (montado como variáveis de ambiente)**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 178, Pág 178)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 0.92\n\n  ```python\n  host = os.getenv('REDIS_HOST')\n  port = int(os.getenv('REDIS_PORT'))\n  password = os.getenv('REDIS_PASSWORD')\n  ```\n\n- **Recuperar o nome de usuário e senha atuais**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 629, Pág 629)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 0.88\n\n  ```sh\n  kubectl get secret rec -o jsonpath='{.data}'\n  echo MTIzNDU2NzgK | base64 --decode\n  ```\n\n### Conclusão\n\nNão há informações disponíveis nas fontes fornecidas sobre o segredo API password e o nome do canal interno do Slack usado pelo time de engenharia do Komtek K-Monitor em 2026. As fontes fornecidas focam em como recuperar credenciais de um cluster Redis Enterprise em Kubernetes.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 1.0,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.984,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.968,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.953,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.938,
+          "tokens": 23
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.924,
+          "tokens": 23
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.91,
+          "tokens": 244
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.897,
+          "tokens": 244
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.884,
+          "tokens": 166
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.871,
+          "tokens": 166
+        }
+      ],
+      "prompt_eval_count": 2807,
+      "eval_count": 974,
+      "llm_latency_ms": 7754.73,
+      "total_latency_ms": 7773.13,
+      "retrieved_context_reduction_pct": 18.49,
+      "error": null
+    },
+    {
+      "question_id": "Q3_nonexistent",
+      "category": "Pergunta inexistente",
+      "scenario": "C_reductor_deep",
+      "run": 3,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nA pergunta do usuário busca informações sobre um segredo específico (API password e nome do canal interno do Slack) usado pelo time de engenharia do Komtek K-Monitor em 2026. No entanto, as fontes fornecidas não contêm informações sobre o Komtek K-Monitor ou detalhes específicos sobre segredos de API e canais internos do Slack para qualquer ano específico. As fontes fornecidas focam principalmente em como recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\nPara recuperar as credenciais de um cluster Redis Enterprise em um ambiente Kubernetes, os passos são:\n\n1. **Listar os segredos**:\n   ```sh\n   kubectl get secrets\n   ```\n   Isso lista todos os segredos no namespace atual. Você deve procurar um segredo com um nome que contenha o nome do seu cluster Redis Enterprise.\n\n2. **Recuperar o segredo específico**:\n   ```sh\n   kubectl get secret <nome-do-segredo> -o yaml\n   ```\n   Isso exibe o conteúdo do segredo em formato YAML.\n\n3. **Decodificar as credenciais**:\n   ```sh\n   echo \"<encoded-value>\" | base64 --decode\n   ```\n   Isso decodifica o valor codificado em base64 para obter a senha ou o nome de usuário em texto simples.\n\n### 🔍 Auto-Validação e Integridade\n\nA pergunta do usuário não pode ser respondida com base nas informações fornecidas, pois não há detalhes sobre o Komtek K-Monitor ou segredos específicos para 2026. As fontes fornecidas focam em como recuperar credenciais de um cluster Redis Enterprise em Kubernetes, não em detalhes específicos de um time de engenharia ou segredos de API e canais do Slack.\n\n### 📖 Citações Exatas\n\n- **Recuperando as credenciais de um cluster Redis Enterprise**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 821, Pág 821)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 1.00\n\n  ```sh\n  kubectl get secrets\n  kubectl get secret redis-enterprise-cluster -o yaml\n  echo \"Q2h5N1BBY28=\" | base64 --decode\n  ```\n\n- **Secrets e arquivos PEM em pods Redis Enterprise**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 599, Pág 599)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 0.97\n\n  Redis Enterprise pods usam Kubernetes Secrets e arquivos PEM codificados para formação de cluster, identidade de nó, comunicação criptografada e recuperação automatizada.\n\n- **Ler de Kubernetes secret (montado como variáveis de ambiente)**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 178, Pág 178)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 0.92\n\n  ```python\n  host = os.getenv('REDIS_HOST')\n  port = int(os.getenv('REDIS_PORT'))\n  password = os.getenv('REDIS_PASSWORD')\n  ```\n\n- **Recuperar o nome de usuário e senha atuais**:\n  - **Fonte**: [Redis Operations Clustering And Kubernetes (Seção 629, Pág 629)](https://www.example.com/redis-operations-clustering-and-kubernetes)\n  - **Relevância**: 0.88\n\n  ```sh\n  kubectl get secret rec -o jsonpath='{.data}'\n  echo MTIzNDU2NzgK | base64 --decode\n  ```\n\n### Conclusão\n\nNão há informações disponíveis nas fontes fornecidas sobre o segredo API password e o nome do canal interno do Slack usado pelo time de engenharia do Komtek K-Monitor em 2026. As fontes fornecidas focam em como recuperar credenciais de um cluster Redis Enterprise em Kubernetes.",
+      "sources": [
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 1.0,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 821",
+          "page": 821,
+          "score": 0.984,
+          "tokens": 210
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.968,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 599",
+          "page": 599,
+          "score": 0.953,
+          "tokens": 89
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.938,
+          "tokens": 23
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 178",
+          "page": 178,
+          "score": 0.924,
+          "tokens": 23
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.91,
+          "tokens": 244
+        },
+        {
+          "book_title": "Practicalpythondatawranglinganddataquality",
+          "chapter": "Página 185",
+          "page": 185,
+          "score": 0.897,
+          "tokens": 244
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 629",
+          "page": 629,
+          "score": 0.884,
+          "tokens": 166
+        },
+        {
+          "book_title": "Redis Operations Clustering And Kubernetes",
+          "chapter": "Seção 1628",
+          "page": 1628,
+          "score": 0.871,
+          "tokens": 166
+        }
+      ],
+      "prompt_eval_count": 2807,
+      "eval_count": 974,
+      "llm_latency_ms": 7943.03,
+      "total_latency_ms": 7961.05,
+      "retrieved_context_reduction_pct": 18.49,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "A_conventional_topk12",
+      "run": 1,
+      "response": "When deciding whether a new software project should start with microservices from day one or as a modular monolith, it's important to weigh the benefits and drawbacks of each approach, as discussed in \"Building Microservices\" by Sam Newman.\n\n**Starting with Microservices from Day One:**\n\n- **Pros:**\n  - **Flexibility:** Microservices can provide flexibility in terms of scaling, organizational alignment, and technology choices. They allow teams to independently scale and evolve different parts of the system.\n  - **Ownership Clarity:** Microservices can help define clear ownership boundaries, reducing the risk of delivery contention, where multiple teams are responsible for the same codebase.\n\n- **Cons:**\n  - **Complexity:** Microservices introduce new sources of complexity, such as deployment and management overhead, which can be challenging for small teams.\n  - **Cost:** There is a \"microservice tax\" associated with the additional work required to manage and deploy microservices, which can be significant for small teams.\n  - **Uncertainty:** Startups often face uncertainty about the product-market fit and the final product requirements. Starting with microservices can be premature if the product requirements are likely to change significantly.\n\n**Starting as a Modular Monolith:**\n\n- **Pros:**\n  - **Simplicity:** A modular monolith can be simpler to develop and maintain, especially for small teams. It avoids the complexity of distributed systems and can simplify developer workflows.\n  - **Ease of Deployment:** Deployment is simpler with a monolith, as there are fewer moving parts to manage.\n  - **Code Reuse:** Code reuse within a monolith is straightforward, as all the code is in one place.\n\n- **Cons:**\n  - **Scalability:** As the system grows, a monolith can become harder to scale and maintain. It may not be as flexible in terms of scaling individual components independently.\n  - **Ownership Issues:** Without clear boundaries, it can be harder to define ownership and responsibility for different parts of the system.\n\n**Recommendations from \"Building Microservices\":**\n\n- **Incremental Approach:** Newman strongly advocates for an incremental approach to adopting microservices. This means starting with a monolith and gradually extracting microservices as needed, rather than starting with microservices from day one.\n- **Wait for Stability:** It's recommended to wait until the domain model has stabilized before defining service boundaries. This helps avoid premature decomposition and the associated complexity.\n- **Evaluate Needs:** Consider the specific needs and constraints of your project. If your team is small and resources are limited, starting with a modular monolith might be more practical. If you have a clear understanding of the domain and the need for flexibility, microservices might be more appropriate.\n\nIn summary, while microservices offer significant benefits in terms of flexibility and scalability, they also introduce complexity and overhead that can be challenging for new projects, especially those with small teams and uncertain requirements. Starting with a modular monolith can provide a simpler and more manageable starting point, allowing the project to evolve incrementally towards a microservice architecture as needed.",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.777
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.777
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 98",
+          "page": 98,
+          "score": 0.763
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 98",
+          "page": 98,
+          "score": 0.763
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 99",
+          "page": 99,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 99",
+          "page": 99,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.754
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.754
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.752
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.752
+        }
+      ],
+      "prompt_eval_count": 6704,
+      "eval_count": 622,
+      "llm_latency_ms": 6374.11,
+      "total_latency_ms": 6404.03,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "A_conventional_topk12",
+      "run": 2,
+      "response": "When deciding whether a new software project should start with microservices from day one or as a modular monolith, it's important to weigh the benefits and drawbacks of each approach, as discussed in \"Building Microservices\" by Sam Newman.\n\n**Starting with Microservices from Day One:**\n\n- **Pros:**\n  - **Flexibility:** Microservices can provide flexibility in terms of scaling, organizational alignment, and technology choices. They allow teams to independently scale and evolve different parts of the system.\n  - **Ownership Clarity:** Microservices can help define clear ownership boundaries, reducing the risk of delivery contention, where multiple teams are responsible for the same codebase.\n\n- **Cons:**\n  - **Complexity:** Microservices introduce new sources of complexity, such as deployment and management overhead, which can be challenging for small teams.\n  - **Uncertainty:** Starting with microservices when the domain model is not yet stable can lead to premature decomposition and a poorly defined architecture.\n  - **Resource Allocation:** For startups or small teams, the effort required to manage microservices can be significant, potentially diverting resources from product development.\n\n**Starting as a Modular Monolith:**\n\n- **Pros:**\n  - **Simplicity:** A modular monolith can be simpler to develop, test, and deploy, avoiding many of the pitfalls associated with distributed systems.\n  - **Code Reuse:** Code reuse within a monolith is straightforward, as all the code is in one place.\n  - **Lower Overhead:** There is less overhead in terms of deployment and management compared to microservices.\n\n- **Cons:**\n  - **Scalability:** As the system grows, a monolith can become harder to scale and maintain.\n  - **Tight Coupling:** A monolith can lead to tight coupling between different parts of the system, making it harder to evolve independently.\n\n**Recommendations from \"Building Microservices\":**\n\n- **Incremental Approach:** Newman advocates for an incremental approach to microservices, suggesting that teams should start small and gradually migrate to microservices as they understand their architecture better and identify pain points.\n- **Wait for Stability:** It's recommended to wait until the domain model has stabilized before defining service boundaries, to avoid premature decomposition.\n- **Evaluate Alternatives:** Before considering microservices, evaluate simpler alternatives that might achieve the same goals, such as scaling a monolithic system.\n\n**Conclusion:**\n\nGiven the trade-offs, it is generally advisable to start a new software project as a modular monolith and gradually transition to microservices as the system evolves and the need for microservices becomes clearer. This approach allows teams to focus on building a stable and scalable system without the initial complexity of microservices, while still having the flexibility to adopt microservices later if necessary.",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.777
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.777
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 98",
+          "page": 98,
+          "score": 0.763
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 98",
+          "page": 98,
+          "score": 0.763
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 99",
+          "page": 99,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 99",
+          "page": 99,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.754
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.754
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.752
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.752
+        }
+      ],
+      "prompt_eval_count": 6704,
+      "eval_count": 561,
+      "llm_latency_ms": 4808.6,
+      "total_latency_ms": 4833.37,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "A_conventional_topk12",
+      "run": 3,
+      "response": "When deciding whether a new software project should start with microservices from day one or as a modular monolith, it's important to weigh the benefits and drawbacks of each approach, as discussed in \"Building Microservices\" by Sam Newman.\n\n**Starting with Microservices from Day One:**\n\n- **Pros:**\n  - **Flexibility:** Microservices can provide flexibility in terms of scaling, organizational alignment, and technology choices. They allow teams to independently scale and evolve different parts of the system.\n  - **Ownership Clarity:** Microservices can help define clear ownership boundaries, reducing the risk of delivery contention, where multiple teams are responsible for the same codebase.\n\n- **Cons:**\n  - **Complexity:** Microservices introduce new sources of complexity, such as deployment and management overhead, which can be challenging for small teams.\n  - **Uncertainty:** Starting with microservices when the domain model is not yet stable can lead to premature decomposition and a poorly defined architecture.\n  - **Resource Allocation:** For startups or small teams, the effort required to manage microservices can be significant, potentially diverting resources from product development.\n\n**Starting as a Modular Monolith:**\n\n- **Pros:**\n  - **Simplicity:** A modular monolith can be simpler to develop, test, and deploy, avoiding many of the pitfalls associated with distributed systems.\n  - **Code Reuse:** Code reuse within a monolith is straightforward, as all the code is in one place.\n  - **Lower Overhead:** There is less overhead in terms of deployment and management compared to microservices.\n\n- **Cons:**\n  - **Scalability:** As the system grows, a monolith can become harder to scale and maintain.\n  - **Tight Coupling:** A monolith can lead to tight coupling between different parts of the system, making it harder to evolve independently.\n\n**Recommendations from \"Building Microservices\":**\n\n- **Incremental Approach:** Newman advocates for an incremental approach to microservices, suggesting that teams should start small and gradually migrate to microservices as they understand their architecture better and identify pain points.\n- **Wait for Stability:** It's recommended to wait until the domain model has stabilized before defining service boundaries, to avoid premature decomposition.\n- **Evaluate Alternatives:** Before considering microservices, evaluate simpler alternatives that might achieve the same goals, such as scaling a monolithic system.\n\n**Conclusion:**\n\nGiven the trade-offs, it is generally advisable to start a new software project as a modular monolith and gradually transition to microservices as the system evolves and the need for microservices becomes clearer. This approach allows teams to focus on building a stable and scalable system without the initial complexity of microservices, while still having the flexibility to adopt microservices later if necessary.",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.777
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.777
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 98",
+          "page": 98,
+          "score": 0.763
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 98",
+          "page": 98,
+          "score": 0.763
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 99",
+          "page": 99,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 99",
+          "page": 99,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.761
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.754
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.754
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.752
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.752
+        }
+      ],
+      "prompt_eval_count": 6704,
+      "eval_count": 561,
+      "llm_latency_ms": 4817.0,
+      "total_latency_ms": 4839.28,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "B_reductor_standard",
+      "run": 1,
+      "response": "When deciding whether a new software project should start with microservices from day one or as a modular monolith, it's important to weigh the trade-offs and consider the context of the project. According to the literature provided, there are several key points to consider:\n\n### Starting with Microservices from Day One\n\n**Pros:**\n- **Flexibility:** Microservices can provide flexibility in terms of organizational, technical, and scaling aspects. They allow for independent deployment and scaling of services, which can be beneficial for future growth and changes in requirements.\n- **Ownership Clarity:** Microservices can help define clear ownership boundaries, reducing the risk of delivery contention, where multiple teams are responsible for the same codebase.\n\n**Cons:**\n- **Complexity:** Microservices introduce new sources of complexity, such as deployment and management overhead. This can be particularly challenging for small teams with limited resources.\n- **Initial Overhead:** There is an initial overhead associated with setting up and managing microservices, often referred to as the \"microservice tax.\" This can tie up valuable development time that could be better spent on building the core product.\n- **Uncertainty:** For startups, there is often uncertainty about the product-market fit. The product you end up delivering might be very different from what you initially envisioned, making the initial investment in microservices potentially wasteful.\n\n### Starting with a Modular Monolith\n\n**Pros:**\n- **Simplicity:** A modular monolith can simplify deployment and developer workflows. It avoids many of the pitfalls associated with distributed systems, such as network latency and distributed transactions.\n- **Code Reuse:** Code reuse within a monolith is straightforward, as all the code is in one place. This can be more efficient than managing shared libraries or services in a microservice architecture.\n- **Lower Initial Overhead:** Starting with a modular monolith can reduce the initial overhead associated with setting up and managing microservices, allowing the team to focus on building the core product.\n\n**Cons:**\n- **Scalability:** As the system grows, a monolith can become harder to scale and maintain. The complexity of managing a large monolith can increase significantly, leading to potential performance bottlenecks and maintenance issues.\n- **Flexibility:** A monolith may limit the flexibility to independently scale and evolve different parts of the system, which can be a disadvantage as the project matures and requirements change.\n\n### Recommendations from Literature\n\n- **Incremental Adoption:** The literature strongly advocates for an incremental approach to adopting microservices. This means starting with a modular monolith and gradually transitioning to microservices as the system grows and the need for more flexibility and scalability becomes apparent.\n- **Context-Driven Decision:** The decision should be driven by the specific context of the project, including the size of the team, the product-market fit, and the long-term goals of the project. There is no one-size-fits-all solution.\n\n### Conclusion\n\nGiven the trade-offs and recommendations from the literature, it is generally advisable to start a new software project as a modular monolith and gradually transition to microservices as the project evolves. This approach allows the team to focus on building the core product without the initial overhead of microservices, while still providing a path to more flexible and scalable architecture as needed.",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 1.0,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.984,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.95,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.936,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.912,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.899,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.894,
+          "tokens": 542
+        }
+      ],
+      "prompt_eval_count": 4167,
+      "eval_count": 660,
+      "llm_latency_ms": 6185.67,
+      "total_latency_ms": 6248.43,
+      "retrieved_context_reduction_pct": 46.67,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "B_reductor_standard",
+      "run": 2,
+      "response": "Based on the provided context from \"Building Microservices, 2nd Edition,\" there are several key points to consider when deciding whether a new software project should start with microservices from day one or as a modular monolith:\n\n### Starting with Microservices from Day One\n**Pros:**\n- **Flexibility:** Microservices can provide flexibility in terms of organizational, technical, and scaling aspects. They allow for easier scaling and can be more adaptable to changing requirements.\n- **Decoupling:** They offer clear boundaries and ownership, which can reduce delivery contention and improve code quality.\n\n**Cons:**\n- **Complexity:** Microservices introduce new sources of complexity, including deployment and management overhead. This can be particularly challenging for small teams.\n- **Cost:** There is a \"microservice tax\" associated with the additional work required for deployment and management, which can be significant for small teams.\n- **Uncertainty:** For startups, there is uncertainty about whether the product will be successful and whether the architecture will need to scale. The product might evolve significantly, making initial microservice design obsolete.\n- **Customer Expectations:** If the software is to be deployed and managed by customers, the complexity of microservices can be a barrier, as customers may not have the necessary skills or infrastructure.\n\n### Starting with a Modular Monolith\n**Pros:**\n- **Simplicity:** A modular monolith can simplify deployment, developer workflows, monitoring, troubleshooting, and end-to-end testing.\n- **Code Reuse:** It simplifies code reuse within the monolith itself, making it easier to share and maintain code.\n- **Lower Overhead:** It requires less overhead in terms of deployment and management, which can be beneficial for small teams.\n- **Default Choice:** The monolith can be a sensible default choice, especially if there is no immediate need for the benefits of microservices.\n\n**Cons:**\n- **Scalability:** As the system grows, a monolith can become harder to scale and maintain.\n- **Ownership Issues:** Without clear boundaries, ownership issues can arise, leading to delivery contention and reduced code quality.\n\n### Recommendations and Trade-offs\n- **Incremental Adoption:** The book strongly advocates for an incremental approach to adopting microservices. This allows teams to assess the impact and complexity gradually, and to stop if necessary.\n- **Understanding Constraints:** It is important to understand the constraints and pain points in the current architecture before moving to microservices.\n- **Focus on Goals:** Microservices should not be the goal in themselves. The decision to adopt microservices should be based on rational decision-making and a clear understanding of the end goal.\n- **Alternative Scaling Techniques:** Before moving to microservices, it is worth considering alternative scaling techniques, such as spinning up more copies of the existing monolithic system behind a load balancer.\n\n### Conclusion\nFor a new software project, starting with a modular monolith is often the more sensible choice, especially for small teams and startups. This approach allows for simpler development and deployment, and reduces the overhead associated with microservices. As the project evolves and the need for scalability and flexibility becomes clearer, teams can incrementally adopt microservices, focusing on defining clear service boundaries and addressing specific pain points.\n\n### References\n- \"Building Microservices, 2nd Edition,\" Chapter 1: What Are Microservices?\n- \"Building Microservices, 2nd Edition,\" Chapter 3: Splitting the Monolith",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 1.0,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.984,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.95,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.936,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.912,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.899,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.894,
+          "tokens": 542
+        }
+      ],
+      "prompt_eval_count": 4167,
+      "eval_count": 694,
+      "llm_latency_ms": 5646.02,
+      "total_latency_ms": 5711.71,
+      "retrieved_context_reduction_pct": 46.67,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "B_reductor_standard",
+      "run": 3,
+      "response": "Based on the provided context from \"Building Microservices, 2nd Edition,\" there are several key points to consider when deciding whether a new software project should start with microservices from day one or as a modular monolith:\n\n### Starting with Microservices from Day One\n**Pros:**\n- **Flexibility:** Microservices can provide flexibility in terms of organizational, technical, and scaling aspects. They allow for easier scaling and can be more adaptable to changing requirements.\n- **Decoupling:** They offer clear boundaries and ownership, which can reduce delivery contention and improve code quality.\n\n**Cons:**\n- **Complexity:** Microservices introduce new sources of complexity, including deployment and management overhead. This can be particularly challenging for small teams.\n- **Cost:** There is a \"microservice tax\" associated with the additional work required for deployment and management, which can be significant for small teams.\n- **Uncertainty:** For startups, there is uncertainty about whether the product will be successful and whether the architecture will need to scale. The product might evolve significantly, making initial microservice design obsolete.\n- **Customer Expectations:** If the software is to be deployed and managed by customers, the complexity of microservices can be a barrier, as customers may not have the necessary skills or infrastructure.\n\n### Starting with a Modular Monolith\n**Pros:**\n- **Simplicity:** A modular monolith can simplify deployment, developer workflows, monitoring, troubleshooting, and end-to-end testing.\n- **Code Reuse:** It simplifies code reuse within the monolith itself, making it easier to share and maintain code.\n- **Lower Overhead:** It requires less overhead in terms of deployment and management, which can be beneficial for small teams.\n- **Default Choice:** The monolith can be a sensible default choice, especially if there is no immediate need for the benefits of microservices.\n\n**Cons:**\n- **Scalability:** As the system grows, a monolith can become harder to scale and maintain.\n- **Ownership Issues:** Without clear boundaries, ownership issues can arise, leading to delivery contention and reduced code quality.\n\n### Recommendations and Trade-offs\n- **Incremental Adoption:** The book strongly advocates for an incremental approach to adopting microservices. This allows teams to assess the impact and complexity gradually, and to stop if necessary.\n- **Understanding Constraints:** It is important to understand the constraints and pain points in the current architecture before moving to microservices.\n- **Focus on Goals:** Microservices should not be the goal in themselves. The decision to adopt microservices should be based on rational decision-making and a clear understanding of the end goal.\n- **Alternative Scaling Techniques:** Before moving to microservices, it is worth considering alternative scaling techniques, such as spinning up more copies of the existing monolithic system behind a load balancer.\n\n### Conclusion\nFor a new software project, starting with a modular monolith is often the more sensible choice, especially for small teams and startups. This approach allows for simpler development and deployment, and reduces the overhead associated with microservices. As the project evolves and the need for scalability and flexibility becomes clearer, teams can incrementally adopt microservices, focusing on defining clear service boundaries and addressing specific pain points.\n\n### References\n- \"Building Microservices, 2nd Edition,\" Chapter 1: What Are Microservices?\n- \"Building Microservices, 2nd Edition,\" Chapter 3: Splitting the Monolith",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 1.0,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.984,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.95,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.936,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.912,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.899,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.894,
+          "tokens": 542
+        }
+      ],
+      "prompt_eval_count": 4167,
+      "eval_count": 694,
+      "llm_latency_ms": 5650.1,
+      "total_latency_ms": 5717.69,
+      "retrieved_context_reduction_pct": 46.67,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "C_reductor_deep",
+      "run": 1,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nA decisão de iniciar um novo projeto de software com microserviços ou com uma arquitetura modular monolítica é uma questão complexa que envolve considerações sobre escalabilidade, complexidade, flexibilidade e recursos disponíveis. Segundo o livro \"Building Microservices\" (2ª edição), a escolha deve ser baseada em uma avaliação cuidadosa dos objetivos do projeto e das condições atuais do sistema.\n\n**Microserviços:**\n- **Flexibilidade:** Microserviços oferecem maior flexibilidade em termos de escalabilidade, organização e robustez. Eles permitem que diferentes partes do sistema evoluam independentemente, o que pode ser benéfico para projetos que precisam se adaptar rapidamente a mudanças de requisitos.\n- **Complexidade:** A adoção de microserviços introduz novas fontes de complexidade, como a necessidade de gerenciamento e orquestração de múltiplos serviços. Isso pode ser um desafio para equipes menores ou startups.\n- **Custo:** Existe um \"custo\" associado à adoção de microserviços, que pode ser descrito como a necessidade de investir tempo e recursos em infraestrutura e práticas de gerenciamento de microserviços.\n\n**Monolitos Modulares:**\n- **Simplicidade:** Monolitos modulares oferecem uma arquitetura mais simples e direta, facilitando a implementação inicial e a manutenção do código.\n- **Escalabilidade:** Embora possam ser escaláveis, monolitos podem não ser tão flexíveis quanto microserviços em termos de evolução e adaptação a novos requisitos.\n- **Reutilização de Código:** A reutilização de código é mais direta e simples em monolitos, pois todos os componentes estão no mesmo processo.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\n**Microserviços:**\n- **Padrões de Design:** A adoção de microserviços implica em seguir padrões de design específicos, como comunicação assíncrona, isolamento de dados e gerenciamento de serviços.\n- **Estrutura de Projeto:** A estrutura de projeto é mais complexa, com múltiplos repositórios e serviços que precisam ser coordenados e orquestrados.\n\n**Monolitos Modulares:**\n- **Padrões de Design:** A arquitetura modular dentro de um monolito pode seguir padrões de design como camadas e componentes, mas a integração e comunicação são mais diretas.\n- **Estrutura de Projeto:** A estrutura de projeto é mais simples, com um único repositório e um fluxo de trabalho de desenvolvimento mais direto.\n\n### 🔍 Auto-Validação e Integridade\n\nA decisão entre microserviços e monolitos modulares deve ser baseada em uma avaliação cuidadosa dos objetivos do projeto e das condições atuais do sistema. A adoção de microserviços pode ser justificada se o projeto enfrenta desafios de escalabilidade e necessita de maior flexibilidade e isolamento entre componentes. Por outro lado, a escolha de um monolito modular pode ser mais apropriada para projetos menores ou em estágios iniciais, onde a simplicidade e a facilidade de implementação são prioridades.\n\n### 📖 Citações Exatas\n\n**Microserviços:**\n- \"Microservices are not the goal. You don’t “win” by having microservices. Adopting a microservice architecture should be a conscious decision, one based on rational decision making.\" (Building Microservices, 2ª edição, Página 97)\n- \"Microservices bring with them sources of new work and complexity, and this can tie up valuable bandwidth. The smaller the team, the more pronounced this cost will be.\" (Building Microservices, 2ª edição, Página 58)\n\n**Monolitos Modulares:**\n- \"Their much simpler deployment topology can avoid many of the pitfalls associated with distributed systems. This can result in much simpler developer workflows, and monitoring, troubleshooting, and activities like end-to-end testing can be greatly simplified as well.\" (Building Microservices, 2ª edição, Página 44)",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 1.0,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.984,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.95,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.936,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.912,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.899,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.894,
+          "tokens": 542
+        }
+      ],
+      "prompt_eval_count": 4231,
+      "eval_count": 958,
+      "llm_latency_ms": 8617.12,
+      "total_latency_ms": 8683.5,
+      "retrieved_context_reduction_pct": 46.67,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "C_reductor_deep",
+      "run": 2,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nA decisão de iniciar um novo projeto de software com microserviços ou com uma monolítica modular depende de vários fatores, incluindo o tamanho da equipe, a estabilidade do modelo de domínio, a necessidade de escalabilidade e a complexidade de gerenciamento. Segundo o livro \"Building Microservices\" (2ª edição), a escolha deve ser baseada em uma análise racional e não em uma decisão precipitada.\n\n#### Microserviços\n- **Flexibilidade**: Microserviços oferecem flexibilidade em vários aspectos, como organizacional, técnico, escala e robustez. Eles permitem que você resolva problemas futuros de maneira mais eficaz.\n- **Complexidade**: A adoção de microserviços introduz novas fontes de complexidade, como a necessidade de gerenciamento e deploy de múltiplos serviços.\n- **Custo**: Existe um custo associado à adoção de microserviços, que deve ser justificado pelo benefício que eles trazem.\n\n#### Monolíticos Modulares\n- **Simplicidade**: Monolíticos modulares têm uma topologia de deploy mais simples, evitando muitos dos problemas associados a sistemas distribuídos.\n- **Reutilização de Código**: A reutilização de código é mais simples em monolíticos, pois todos os componentes estão no mesmo processo.\n- **Manutenção**: Monolíticos podem ser mais fáceis de monitorar, depurar e testar em comparação com sistemas distribuídos.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\n#### Microserviços\n- **Exemplo de Código**: Em um sistema microserviço, cada serviço pode ser um projeto separado com sua própria estrutura de build e deploy. Por exemplo, um serviço de usuário pode ter um arquivo `Dockerfile` e um script de deploy separado.\n- **Trade-offs**: A complexidade de gerenciamento e deploy de múltiplos serviços pode ser significativa, especialmente para equipes pequenas. Além disso, a integração entre serviços pode ser mais difícil de gerenciar.\n\n#### Monolíticos Modulares\n- **Exemplo de Código**: Em um monolítico modular, diferentes módulos do sistema podem ser agrupados em pacotes separados dentro do mesmo projeto. Por exemplo, um módulo de usuário pode ser um pacote dentro do projeto principal.\n- **Trade-offs**: A reutilização de código é mais fácil, mas a escalabilidade pode ser limitada em comparação com microserviços. Além disso, a manutenção de um único grande projeto pode ser mais desafiadora.\n\n### 🔍 Auto-Validação e Integridade\n\nA decisão entre microserviços e monolíticos modulares deve ser baseada em uma análise cuidadosa dos requisitos do projeto e das capacidades da equipe. A adoção de microserviços deve ser incremental e justificada pelo benefício que eles trazem, enquanto a escolha de um monolítico modular pode ser mais apropriada para equipes menores ou projetos com requisitos de escalabilidade menos rigorosos.\n\n### 📖 Citações Exatas\n\n- **Microservices are not the goal. You don’t “win” by having microservices.** (Building Microservices, Capítulo 3, Página 97)\n- **I urge people not to worry about size. When you are first starting out, it’s much more important that you focus on two key things.** (Building Microservices, Capítulo 1, Página 36)\n- **A move to microservices will introduce new sources of complexity, with all the challenges this can bring.** (Building Microservices, Capítulo 1, Página 36)\n- **Monoliths can also simplify code reuse within the monolith itself.** (Building Microservices, Capítulo 1, Página 44)",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 1.0,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.984,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.95,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.936,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.912,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.899,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.894,
+          "tokens": 542
+        }
+      ],
+      "prompt_eval_count": 4231,
+      "eval_count": 884,
+      "llm_latency_ms": 7299.02,
+      "total_latency_ms": 7363.5,
+      "retrieved_context_reduction_pct": 46.67,
+      "error": null
+    },
+    {
+      "question_id": "Q4_contradictory",
+      "category": "Informações contraditórias",
+      "scenario": "C_reductor_deep",
+      "run": 3,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\n\nA decisão de iniciar um novo projeto de software com microserviços ou com uma monolítica modular depende de vários fatores, incluindo o tamanho da equipe, a estabilidade do modelo de domínio, a necessidade de escalabilidade e a complexidade de gerenciamento. Segundo o livro \"Building Microservices\" (2ª edição), a escolha deve ser baseada em uma análise racional e não em uma decisão precipitada.\n\n#### Microserviços\n- **Flexibilidade**: Microserviços oferecem flexibilidade em vários aspectos, como organizacional, técnico, escala e robustez. Eles permitem que você resolva problemas futuros de maneira mais eficaz.\n- **Complexidade**: A adoção de microserviços introduz novas fontes de complexidade, como a necessidade de gerenciamento e deploy de múltiplos serviços.\n- **Custo**: Existe um custo associado à adoção de microserviços, que deve ser justificado pelo benefício que eles trazem.\n\n#### Monolíticos Modulares\n- **Simplicidade**: Monolíticos modulares têm uma topologia de deploy mais simples, evitando muitos dos problemas associados a sistemas distribuídos.\n- **Reutilização de Código**: A reutilização de código é mais simples em monolíticos, pois todos os componentes estão no mesmo processo.\n- **Manutenção**: Monolíticos podem ser mais fáceis de monitorar, depurar e testar em comparação com sistemas distribuídos.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\n\n#### Microserviços\n- **Exemplo de Código**: Em um sistema microserviço, cada serviço pode ser um projeto separado com sua própria estrutura de build e deploy. Por exemplo, um serviço de usuário pode ter um arquivo `Dockerfile` e um script de deploy separado.\n- **Trade-offs**: A complexidade de gerenciamento e deploy de múltiplos serviços pode ser significativa, especialmente para equipes pequenas. Além disso, a integração entre serviços pode ser mais difícil de gerenciar.\n\n#### Monolíticos Modulares\n- **Exemplo de Código**: Em um monolítico modular, diferentes módulos do sistema podem ser agrupados em pacotes separados dentro do mesmo projeto. Por exemplo, um módulo de usuário pode ser um pacote dentro do projeto principal.\n- **Trade-offs**: A reutilização de código é mais fácil, mas a escalabilidade pode ser limitada em comparação com microserviços. Além disso, a manutenção de um único grande projeto pode ser mais desafiadora.\n\n### 🔍 Auto-Validação e Integridade\n\nA decisão entre microserviços e monolíticos modulares deve ser baseada em uma análise cuidadosa dos requisitos do projeto e das capacidades da equipe. A adoção de microserviços deve ser incremental e justificada pelo benefício que eles trazem, enquanto a escolha de um monolítico modular pode ser mais apropriada para equipes menores ou projetos com requisitos de escalabilidade menos rigorosos.\n\n### 📖 Citações Exatas\n\n- **Microservices are not the goal. You don’t “win” by having microservices.** (Building Microservices, Capítulo 3, Página 97)\n- **I urge people not to worry about size. When you are first starting out, it’s much more important that you focus on two key things.** (Building Microservices, Capítulo 1, Página 36)\n- **A move to microservices will introduce new sources of complexity, with all the challenges this can bring.** (Building Microservices, Capítulo 1, Página 36)\n- **Monoliths can also simplify code reuse within the monolith itself.** (Building Microservices, Capítulo 1, Página 44)",
+      "sources": [
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 1.0,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 97",
+          "page": 97,
+          "score": 0.984,
+          "tokens": 380
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.95,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 58",
+          "page": 58,
+          "score": 0.936,
+          "tokens": 635
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.912,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 36",
+          "page": 36,
+          "score": 0.899,
+          "tokens": 627
+        },
+        {
+          "book_title": "Buildingmicroservices2Ndedition",
+          "chapter": "Página 44",
+          "page": 44,
+          "score": 0.894,
+          "tokens": 542
+        }
+      ],
+      "prompt_eval_count": 4231,
+      "eval_count": 884,
+      "llm_latency_ms": 7398.79,
+      "total_latency_ms": 7465.76,
+      "retrieved_context_reduction_pct": 46.67,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "A_conventional_topk12",
+      "run": 1,
+      "response": "Based on the context provided from \"Architecture Patterns with Python,\" here are the Python code snippets for the `Batch` and `OrderLine` domain model classes and the `allocate` domain service function:\n\n### Batch Class\n```python\nclass Batch:\n    def __init__(self, ref: str, sku: str, quantity: int, eta):\n        self.reference = ref\n        self.sku = sku\n        self.eta = eta\n        self._purchased_quantity = quantity\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def __eq__(self, other):\n        if not isinstance(other, Batch):\n            return False\n        return self.reference == other.reference\n\n    def __hash__(self):\n        return hash(self.reference)\n\n    def allocate(self, line: 'OrderLine'):\n        if self.can_allocate(line):\n            self._allocations.add(line)\n            return True\n        return False\n\n    def deallocate(self, line: 'OrderLine'):\n        if line in self._allocations:\n            self._allocations.remove(line)\n            return True\n        return False\n\n    @property\n    def allocated_quantity(self):\n        return sum(line.quantity for line in self._allocations)\n\n    @property\n    def available_quantity(self):\n        return self._purchased_quantity - self.allocated_quantity\n\n    def can_allocate(self, line: 'OrderLine'):\n        return self.sku == line.sku and self.available_quantity >= line.quantity\n```\n\n### OrderLine Class\n```python\nclass OrderLine:\n    def __init__(self, order_id: str, sku: str, quantity: int):\n        self.id = order_id\n        self.sku = sku\n        self.quantity = quantity\n```\n\n### Allocate Function\n```python\nfrom typing import List\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    try:\n        batch = next(b for b in sorted(batches) if b.can_allocate(line))\n        batch.allocate(line)\n        return batch.reference\n    except StopIteration:\n        raise OutOfStock(line.sku)\n```\n\n### OutOfStock Exception\n```python\nclass OutOfStock(Exception):\n    pass\n```\n\nThese snippets provide the core functionality for managing inventory batches and allocating order lines against them, as described in the book. The `allocate` function is a domain service that takes an `OrderLine` and a list of `Batch` objects, and returns the reference of the batch that was allocated to the order line. If no batch can be allocated, it raises an `OutOfStock` exception.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.766
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.766
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.758
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.758
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.749
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.749
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 31",
+          "page": 31,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 31",
+          "page": 31,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 47",
+          "page": 47,
+          "score": 0.718
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 47",
+          "page": 47,
+          "score": 0.718
+        }
+      ],
+      "prompt_eval_count": 3669,
+      "eval_count": 570,
+      "llm_latency_ms": 5240.25,
+      "total_latency_ms": 5265.87,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "A_conventional_topk12",
+      "run": 2,
+      "response": "Based on the context provided from \"Architecture Patterns with Python,\" here are the Python code snippets for the `Batch` and `OrderLine` domain model classes and the `allocate` domain service function:\n\n### Batch Class\n```python\nclass Batch:\n    def __init__(self, ref: str, sku: str, quantity: int, eta):\n        self.reference = ref\n        self.sku = sku\n        self.eta = eta\n        self._purchased_quantity = quantity\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def __eq__(self, other):\n        if not isinstance(other, Batch):\n            return False\n        return self.reference == other.reference\n\n    def __hash__(self):\n        return hash(self.reference)\n\n    def allocate(self, line: 'OrderLine'):\n        if self.can_allocate(line):\n            self._allocations.add(line)\n            return True\n        return False\n\n    def deallocate(self, line: 'OrderLine'):\n        if line in self._allocations:\n            self._allocations.remove(line)\n            return True\n        return False\n\n    @property\n    def allocated_quantity(self):\n        return sum(line.quantity for line in self._allocations)\n\n    @property\n    def available_quantity(self):\n        return self._purchased_quantity - self.allocated_quantity\n\n    def can_allocate(self, line: 'OrderLine'):\n        return self.sku == line.sku and self.available_quantity >= line.quantity\n```\n\n### OrderLine Class\n```python\nclass OrderLine:\n    def __init__(self, order_id: str, sku: str, quantity: int):\n        self.id = order_id\n        self.sku = sku\n        self.quantity = quantity\n```\n\n### Allocate Function\n```python\nfrom typing import List\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    try:\n        batch = next(b for b in sorted(batches) if b.can_allocate(line))\n        batch.allocate(line)\n        return batch.reference\n    except StopIteration:\n        raise OutOfStock(line.sku)\n```\n\n### OutOfStock Exception\n```python\nclass OutOfStock(Exception):\n    pass\n```\n\nThese snippets provide the core functionality for managing inventory batches and allocating order lines against them, as described in the book. The `allocate` function is a domain service that takes an `OrderLine` and a list of `Batch` objects, and returns the reference of the batch that was allocated to the order line. If no batch can be allocated, it raises an `OutOfStock` exception.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.766
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.766
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.758
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.758
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.749
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.749
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 31",
+          "page": 31,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 31",
+          "page": 31,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 47",
+          "page": 47,
+          "score": 0.718
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 47",
+          "page": 47,
+          "score": 0.718
+        }
+      ],
+      "prompt_eval_count": 3669,
+      "eval_count": 570,
+      "llm_latency_ms": 4663.6,
+      "total_latency_ms": 4685.39,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "A_conventional_topk12",
+      "run": 3,
+      "response": "Based on the context provided from \"Architecture Patterns with Python,\" here are the Python code snippets for the `Batch` and `OrderLine` domain model classes and the `allocate` domain service function:\n\n### Batch Class\n```python\nclass Batch:\n    def __init__(self, ref: str, sku: str, quantity: int, eta):\n        self.reference = ref\n        self.sku = sku\n        self.eta = eta\n        self._purchased_quantity = quantity\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def __eq__(self, other):\n        if not isinstance(other, Batch):\n            return False\n        return self.reference == other.reference\n\n    def __hash__(self):\n        return hash(self.reference)\n\n    def allocate(self, line: 'OrderLine'):\n        if self.can_allocate(line):\n            self._allocations.add(line)\n            return True\n        return False\n\n    def deallocate(self, line: 'OrderLine'):\n        if line in self._allocations:\n            self._allocations.remove(line)\n            return True\n        return False\n\n    @property\n    def allocated_quantity(self):\n        return sum(line.quantity for line in self._allocations)\n\n    @property\n    def available_quantity(self):\n        return self._purchased_quantity - self.allocated_quantity\n\n    def can_allocate(self, line: 'OrderLine'):\n        return self.sku == line.sku and self.available_quantity >= line.quantity\n```\n\n### OrderLine Class\n```python\nclass OrderLine:\n    def __init__(self, order_id: str, sku: str, quantity: int):\n        self.id = order_id\n        self.sku = sku\n        self.quantity = quantity\n```\n\n### Allocate Function\n```python\nfrom typing import List\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    try:\n        batch = next(b for b in sorted(batches) if b.can_allocate(line))\n        batch.allocate(line)\n        return batch.reference\n    except StopIteration:\n        raise OutOfStock(line.sku)\n```\n\n### OutOfStock Exception\n```python\nclass OutOfStock(Exception):\n    pass\n```\n\nThese snippets provide the core functionality for managing inventory batches and allocating order lines against them, as described in the book. The `allocate` function is a domain service that takes an `OrderLine` and a list of `Batch` objects, and returns the reference of the batch that was allocated to the order line. If no batch can be allocated, it raises an `OutOfStock` exception.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.766
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.766
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.758
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.758
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.749
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.749
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 3",
+          "page": 3,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 31",
+          "page": 31,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 31",
+          "page": 31,
+          "score": 0.722
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 47",
+          "page": 47,
+          "score": 0.718
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 47",
+          "page": 47,
+          "score": 0.718
+        }
+      ],
+      "prompt_eval_count": 3669,
+      "eval_count": 570,
+      "llm_latency_ms": 4641.65,
+      "total_latency_ms": 4662.23,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "B_reductor_standard",
+      "run": 1,
+      "response": "Aqui está a implementação dos modelos `Batch` e `OrderLine` e a função `allocate` conforme descrito no livro \"Architecture Patterns with Python\":\n\n### Modelos `Batch` e `OrderLine`\n\n```python\nfrom datetime import datetime, timedelta\n\nclass Batch:\n    def __init__(self, ref, sku, quantity, eta):\n        self.reference = ref\n        self.sku = sku\n        self._purchased_quantity = quantity\n        self.eta = eta\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def allocate(self, line):\n        if self.can_allocate(line):\n            self._purchased_quantity -= line.quantity\n            return True\n        return False\n\n    def can_allocate(self, line):\n        return self.sku == line.sku and self._purchased_quantity >= line.quantity\n\nclass OrderLine:\n    def __init__(self, order_id, sku, quantity):\n        self.id = order_id\n        self.sku = sku\n        self.quantity = quantity\n```\n\n### Função `allocate`\n\n```python\nfrom typing import List\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    try:\n        batch = next(b for b in sorted(batches) if b.can_allocate(line))\n        batch.allocate(line)\n        return batch.reference\n    except StopIteration:\n        raise OutOfStock(line.sku)\n```\n\n### Exceção `OutOfStock`\n\n```python\nclass OutOfStock(Exception):\n    pass\n```\n\n### Testes\n\n```python\nfrom datetime import datetime, timedelta\n\ntoday = datetime.today()\ntomorrow = today + timedelta(days=1)\nlater = today + timedelta(days=2)\n\ndef test_prefers_current_stock_batches_to_shipments():\n    in_stock_batch = Batch(\"in-stock-batch-ref\", \"RETRO-CLOCK\", 100, eta=None)\n    shipment_batch = Batch(\"shipment-batch-ref\", \"RETRO-CLOCK\", 100, eta=tomorrow)\n    line = OrderLine(\"oref\", \"RETRO-CLOCK\", 10)\n    allocate(line, [in_stock_batch, shipment_batch])\n    assert in_stock_batch.available_quantity == 90\n    assert shipment_batch.available_quantity == 100\n\ndef test_prefers_earlier_batches():\n    earliest = Batch(\"speedy-batch\", \"MINIMALIST-SPOON\", 100, eta=today)\n    medium = Batch(\"normal-batch\", \"MINIMALIST-SPOON\", 100, eta=tomorrow)\n    latest = Batch(\"slow-batch\", \"MINIMALIST-SPOON\", 100, eta=later)\n    line = OrderLine(\"oref\", \"MINIMALIST-SPOON\", 10)\n    allocate(line, [medium, earliest, latest])\n    assert earliest.available_quantity == 90\n```\n\nEssa implementação segue as diretrizes do livro \"Architecture Patterns with Python\" para criar um serviço de domínio que lida com a alocação de pedidos contra um conjunto específico de lotes que representam o estoque.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.969,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.969,
+          "tokens": 373
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.954,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.954,
+          "tokens": 373
+        }
+      ],
+      "prompt_eval_count": 2335,
+      "eval_count": 681,
+      "llm_latency_ms": 5751.37,
+      "total_latency_ms": 5815.98,
+      "retrieved_context_reduction_pct": 69.56,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "B_reductor_standard",
+      "run": 2,
+      "response": "Aqui está a implementação dos modelos `Batch` e `OrderLine`, bem como a função `allocate` conforme descrito no livro \"Architecture Patterns with Python\":\n\n### Classe `Batch`\n```python\nclass Batch:\n    def __init__(self, ref, sku, quantity, eta):\n        self.reference = ref\n        self.sku = sku\n        self.eta = eta\n        self._purchased_quantity = quantity\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def __eq__(self, other):\n        if not isinstance(other, Batch):\n            return False\n        return self.reference == other.reference\n\n    def __hash__(self):\n        return hash(self.reference)\n\n    @property\n    def allocated_quantity(self):\n        return sum(line.quantity for line in self._allocations)\n\n    @property\n    def available_quantity(self):\n        return self._purchased_quantity - self.allocated_quantity\n\n    def can_allocate(self, line):\n        return self.sku == line.sku and self.available_quantity >= line.quantity\n\n    def allocate(self, line):\n        if self.can_allocate(line):\n            self._allocations.add(line)\n```\n\n### Classe `OrderLine`\n```python\nclass OrderLine:\n    def __init__(self, order_id, sku, quantity):\n        self.order_id = order_id\n        self.sku = sku\n        self.quantity = quantity\n```\n\n### Função `allocate`\n```python\nfrom typing import List\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    batch = next(\n        b for b in sorted(batches) if b.can_allocate(line)\n    )\n    batch.allocate(line)\n    return batch.reference\n```\n\n### Testes\nAqui estão alguns exemplos de testes para a função `allocate`:\n\n```python\ndef test_prefers_current_stock_batches_to_shipments():\n    in_stock_batch = Batch(\"in-stock-batch-ref\", \"RETRO-CLOCK\", 100, eta=None)\n    shipment_batch = Batch(\"shipment-batch-ref\", \"RETRO-CLOCK\", 100, eta=tomorrow)\n    line = OrderLine(\"oref\", \"RETRO-CLOCK\", 10)\n    allocate(line, [in_stock_batch, shipment_batch])\n    assert in_stock_batch.available_quantity == 90\n    assert shipment_batch.available_quantity == 100\n\ndef test_prefers_earlier_batches():\n    earliest = Batch(\"speedy-batch\", \"MINIMALIST-SPOON\", 100, eta=today)\n    medium = Batch(\"normal-batch\", \"MINIMALIST-SPOON\", 100, eta=tomorrow)\n    latest = Batch(\"slow-batch\", \"MINIMALIST-SPOON\", 100, eta=later)\n    line = OrderLine(\"order1\", \"MINIMALIST-SPOON\", 10)\n    allocate(line, [medium, earliest, latest])\n    assert earliest.available_quantity == 90\n```\n\nEstas implementações e testes seguem as diretrizes fornecidas no livro \"Architecture Patterns with Python\" para criar um serviço de domínio em Python.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.969,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.969,
+          "tokens": 373
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.954,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.954,
+          "tokens": 373
+        }
+      ],
+      "prompt_eval_count": 2335,
+      "eval_count": 702,
+      "llm_latency_ms": 5450.95,
+      "total_latency_ms": 5510.44,
+      "retrieved_context_reduction_pct": 69.56,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "B_reductor_standard",
+      "run": 3,
+      "response": "Aqui está a implementação dos modelos `Batch` e `OrderLine`, bem como a função `allocate` conforme descrito no livro \"Architecture Patterns with Python\":\n\n### Classe `Batch`\n```python\nclass Batch:\n    def __init__(self, ref, sku, quantity, eta):\n        self.reference = ref\n        self.sku = sku\n        self.eta = eta\n        self._purchased_quantity = quantity\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def __eq__(self, other):\n        if not isinstance(other, Batch):\n            return False\n        return self.reference == other.reference\n\n    def __hash__(self):\n        return hash(self.reference)\n\n    @property\n    def allocated_quantity(self):\n        return sum(line.quantity for line in self._allocations)\n\n    @property\n    def available_quantity(self):\n        return self._purchased_quantity - self.allocated_quantity\n\n    def can_allocate(self, line):\n        return self.sku == line.sku and self.available_quantity >= line.quantity\n\n    def allocate(self, line):\n        if self.can_allocate(line):\n            self._allocations.add(line)\n```\n\n### Classe `OrderLine`\n```python\nclass OrderLine:\n    def __init__(self, order_id, sku, quantity):\n        self.order_id = order_id\n        self.sku = sku\n        self.quantity = quantity\n```\n\n### Função `allocate`\n```python\nfrom typing import List\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    batch = next(\n        b for b in sorted(batches) if b.can_allocate(line)\n    )\n    batch.allocate(line)\n    return batch.reference\n```\n\n### Testes\nAqui estão alguns exemplos de testes para a função `allocate`:\n\n```python\ndef test_prefers_current_stock_batches_to_shipments():\n    in_stock_batch = Batch(\"in-stock-batch-ref\", \"RETRO-CLOCK\", 100, eta=None)\n    shipment_batch = Batch(\"shipment-batch-ref\", \"RETRO-CLOCK\", 100, eta=tomorrow)\n    line = OrderLine(\"oref\", \"RETRO-CLOCK\", 10)\n    allocate(line, [in_stock_batch, shipment_batch])\n    assert in_stock_batch.available_quantity == 90\n    assert shipment_batch.available_quantity == 100\n\ndef test_prefers_earlier_batches():\n    earliest = Batch(\"speedy-batch\", \"MINIMALIST-SPOON\", 100, eta=today)\n    medium = Batch(\"normal-batch\", \"MINIMALIST-SPOON\", 100, eta=tomorrow)\n    latest = Batch(\"slow-batch\", \"MINIMALIST-SPOON\", 100, eta=later)\n    line = OrderLine(\"order1\", \"MINIMALIST-SPOON\", 10)\n    allocate(line, [medium, earliest, latest])\n    assert earliest.available_quantity == 90\n```\n\nEstas implementações e testes seguem as diretrizes fornecidas no livro \"Architecture Patterns with Python\" para criar um serviço de domínio em Python.",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.969,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.969,
+          "tokens": 373
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.954,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.954,
+          "tokens": 373
+        }
+      ],
+      "prompt_eval_count": 2335,
+      "eval_count": 702,
+      "llm_latency_ms": 5516.06,
+      "total_latency_ms": 5577.99,
+      "retrieved_context_reduction_pct": 69.56,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "C_reductor_deep",
+      "run": 1,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\nO livro \"Architecture Patterns with Python\" discute a implementação de um modelo de domínio para a gestão de estoque e pedidos. As classes `Batch` e `OrderLine` são componentes fundamentais desse modelo, representando lotes de estoque e linhas de pedido, respectivamente. A função `allocate` é um serviço de domínio que lida com a alocação de linhas de pedido para lotes de estoque, seguindo regras específicas de negócio.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\nAqui está a implementação das classes `Batch` e `OrderLine`, bem como a função `allocate` conforme descrito no livro \"Architecture Patterns with Python\":\n\n```python\nfrom datetime import datetime, timedelta\nfrom typing import List\n\nclass Batch:\n    def __init__(self, ref: str, sku: str, quantity: int, eta: datetime | None):\n        self.ref = ref\n        self.sku = sku\n        self._purchased_quantity = quantity\n        self.eta = eta\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def allocate(self, line: 'OrderLine'):\n        if self.can_allocate(line):\n            self._purchased_quantity -= line.quantity\n            return True\n        return False\n\n    def can_allocate(self, line: 'OrderLine'):\n        return self.sku == line.sku and self._purchased_quantity >= line.quantity\n\n    @property\n    def available_quantity(self):\n        return self._purchased_quantity\n\nclass OrderLine:\n    def __init__(self, order_id: str, sku: str, quantity: int):\n        self.id = order_id\n        self.sku = sku\n        self.quantity = quantity\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    batch = next(b for b in sorted(batches) if b.can_allocate(line))\n    batch.allocate(line)\n    return batch.ref\n```\n\n### 🔍 Auto-Validação e Integridade\nA implementação acima segue estritamente os conceitos e exemplos fornecidos no livro \"Architecture Patterns with Python\". As classes `Batch` e `OrderLine` são definidas com os atributos e métodos necessários para representar lotes de estoque e linhas de pedido, respectivamente. A função `allocate` utiliza a função `sorted` para ordenar os lotes de acordo com a regra definida no método `__gt__` e, em seguida, aloca a linha de pedido ao lote mais apropriado.\n\n### 📖 Citações Exatas\n- **Página 46**: \"A standalone function for our domain service (model.py)\"\n- **Página 46**: \"Python’s Magic Methods Let Us Use Our Models with Idiomatic Python\"\n- **Página 45**: \"Not Everything Has to Be an Object: A Domain Service Function\"",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.969,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.969,
+          "tokens": 373
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.954,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.954,
+          "tokens": 373
+        }
+      ],
+      "prompt_eval_count": 2399,
+      "eval_count": 673,
+      "llm_latency_ms": 5664.36,
+      "total_latency_ms": 5725.44,
+      "retrieved_context_reduction_pct": 69.56,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "C_reductor_deep",
+      "run": 2,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\nO livro \"Architecture Patterns with Python\" discute a implementação de um modelo de domínio para gerenciamento de estoque, onde a classe `Batch` representa um lote de estoque e a classe `OrderLine` representa uma linha de pedido. A função `allocate` é um serviço de domínio que aloca uma linha de pedido em um lote específico de estoque. A implementação dessas classes e funções é crucial para entender como o domínio de gerenciamento de estoque é modelado em Python.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\nAqui está a implementação das classes `Batch` e `OrderLine`, bem como a função `allocate`:\n\n```python\nfrom datetime import datetime, timedelta\nfrom typing import List\n\nclass OrderLine:\n    def __init__(self, order_id: str, sku: str, quantity: int):\n        self.order_id = order_id\n        self.sku = sku\n        self.quantity = quantity\n\nclass Batch:\n    def __init__(self, batch_id: str, sku: str, quantity: int, eta: datetime):\n        self.batch_id = batch_id\n        self.sku = sku\n        self.quantity = quantity\n        self.eta = eta\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def allocate(self, line: OrderLine):\n        if self.can_allocate(line):\n            self._allocations.add(line.order_id)\n            self.quantity -= line.quantity\n\n    def deallocate(self, line: OrderLine):\n        if line.order_id in self._allocations:\n            self._allocations.remove(line.order_id)\n            self.quantity += line.quantity\n\n    def can_allocate(self, line: OrderLine) -> bool:\n        return self.sku == line.sku and self.quantity >= line.quantity and line.order_id not in self._allocations\n\n    @property\n    def available_quantity(self) -> int:\n        return self.quantity - sum(line.quantity for line in self._allocations)\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    batch = next(b for b in sorted(batches) if b.can_allocate(line))\n    batch.allocate(line)\n    return batch.batch_id\n```\n\n### 🔍 Auto-Validação e Integridade\nA implementação acima segue estritamente os conceitos discutidos no livro \"Architecture Patterns with Python\". A classe `Batch` implementa o método mágico `__gt__` para permitir a ordenação por data de chegada (`eta`). A função `allocate` utiliza a função `next` para encontrar o primeiro lote que pode ser alocado, garantindo que a alocação seja feita de maneira eficiente e conforme as regras de negócio.\n\n### 📖 Citações Exatas\n- **Página 46**: \"A standalone function for our domain service (model.py)\"\n- **Página 46**: \"Python’s Magic Methods Let Us Use Our Models with Idiomatic Python\"\n- **Página 45**: \"Not Everything Has to Be an Object: A Domain Service Function\"",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.969,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.969,
+          "tokens": 373
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.954,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.954,
+          "tokens": 373
+        }
+      ],
+      "prompt_eval_count": 2399,
+      "eval_count": 719,
+      "llm_latency_ms": 5736.3,
+      "total_latency_ms": 5796.47,
+      "retrieved_context_reduction_pct": 69.56,
+      "error": null
+    },
+    {
+      "question_id": "Q5_code",
+      "category": "Código técnico",
+      "scenario": "C_reductor_deep",
+      "run": 3,
+      "response": "### 🧠 Análise dos Fundamentos e Conceitos-Chave\nO livro \"Architecture Patterns with Python\" discute a implementação de um modelo de domínio para gerenciamento de estoque, onde a classe `Batch` representa um lote de estoque e a classe `OrderLine` representa uma linha de pedido. A função `allocate` é um serviço de domínio que aloca uma linha de pedido em um lote específico de estoque. A implementação dessas classes e funções é crucial para entender como o domínio de gerenciamento de estoque é modelado em Python.\n\n### ⚙️ Aplicação Prática, Padrões e Arquitetura\nAqui está a implementação das classes `Batch` e `OrderLine`, bem como a função `allocate`:\n\n```python\nfrom datetime import datetime, timedelta\nfrom typing import List\n\nclass OrderLine:\n    def __init__(self, order_id: str, sku: str, quantity: int):\n        self.order_id = order_id\n        self.sku = sku\n        self.quantity = quantity\n\nclass Batch:\n    def __init__(self, batch_id: str, sku: str, quantity: int, eta: datetime):\n        self.batch_id = batch_id\n        self.sku = sku\n        self.quantity = quantity\n        self.eta = eta\n        self._allocations = set()\n\n    def __gt__(self, other):\n        if self.eta is None:\n            return False\n        if other.eta is None:\n            return True\n        return self.eta > other.eta\n\n    def allocate(self, line: OrderLine):\n        if self.can_allocate(line):\n            self._allocations.add(line.order_id)\n            self.quantity -= line.quantity\n\n    def deallocate(self, line: OrderLine):\n        if line.order_id in self._allocations:\n            self._allocations.remove(line.order_id)\n            self.quantity += line.quantity\n\n    def can_allocate(self, line: OrderLine) -> bool:\n        return self.sku == line.sku and self.quantity >= line.quantity and line.order_id not in self._allocations\n\n    @property\n    def available_quantity(self) -> int:\n        return self.quantity - sum(line.quantity for line in self._allocations)\n\ndef allocate(line: OrderLine, batches: List[Batch]) -> str:\n    batch = next(b for b in sorted(batches) if b.can_allocate(line))\n    batch.allocate(line)\n    return batch.batch_id\n```\n\n### 🔍 Auto-Validação e Integridade\nA implementação acima segue estritamente os conceitos discutidos no livro \"Architecture Patterns with Python\". A classe `Batch` implementa o método mágico `__gt__` para permitir a ordenação por data de chegada (`eta`). A função `allocate` utiliza a função `next` para encontrar o primeiro lote que pode ser alocado, garantindo que a alocação seja feita de maneira eficiente e conforme as regras de negócio.\n\n### 📖 Citações Exatas\n- **Página 46**: \"A standalone function for our domain service (model.py)\"\n- **Página 46**: \"Python’s Magic Methods Let Us Use Our Models with Idiomatic Python\"\n- **Página 45**: \"Not Everything Has to Be an Object: A Domain Service Function\"",
+      "sources": [
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 1.0,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 46",
+          "page": 46,
+          "score": 0.984,
+          "tokens": 291
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.969,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.969,
+          "tokens": 373
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 1",
+          "page": 1,
+          "score": 0.954,
+          "tokens": 23
+        },
+        {
+          "book_title": "Architecturepatternswithpython",
+          "chapter": "Página 45",
+          "page": 45,
+          "score": 0.954,
+          "tokens": 373
+        }
+      ],
+      "prompt_eval_count": 2399,
+      "eval_count": 719,
+      "llm_latency_ms": 5602.13,
+      "total_latency_ms": 5664.6,
+      "retrieved_context_reduction_pct": 69.56,
+      "error": null
+    }
+  ]
+}
