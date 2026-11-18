@@ -75,6 +75,29 @@ async def get_metrics():
     return telemetry_service.get_metrics()
 
 
+@router.get("/metrics", include_in_schema=False)
+async def prometheus_metrics():
+    q = generation_queue.get_metrics()
+    mem = get_process_memory_mb()
+    try:
+        from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+        in_sync = 1 if BM25SqliteIndex().verify_consistency(ChromaVectorStoreAdapter().collection.count()).get("in_sync") else 0
+    except Exception:
+        in_sync = 0
+    lines = [
+        f"reductor_generation_active {q['generation_active']}",
+        f"reductor_generation_pending {q['generation_pending']}",
+        f"reductor_generation_rejected_total {q['generation_rejected_total']}",
+        f"reductor_generation_timeout_total {q['generation_timeout_total']}",
+        f"reductor_generation_cancelled_total {q['generation_cancelled_total']}",
+        f"reductor_generation_queue_wait_seconds_avg {q['generation_queue_wait_seconds']['avg']}",
+        f"reductor_generation_duration_seconds_avg {q['generation_duration_seconds']['avg']}",
+        f"reductor_index_in_sync {in_sync}",
+        f"reductor_process_rss_bytes {int(mem['rss_mb'] * 1024 * 1024)}",
+    ]
+    return Response(content="\n".join(lines) + "\n", media_type="text/plain; version=0.0.4")
+
+
 @router.get("/api/v1/queries/export", dependencies=[Depends(verify_auth)])
 async def export_queries(
     format: str = Query(default="json", pattern="^(json|csv)$"),

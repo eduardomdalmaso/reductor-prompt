@@ -15,61 +15,8 @@ class HardwareBudgetAdvisorService:
 
     def detect_hardware(self) -> Dict[str, Any]:
         """Detecta GPUs NVIDIA disponíveis ou faz fallback para CPU."""
-        gpu_info = {
-            "has_gpu": False,
-            "device_name": "CPU",
-            "total_vram_gb": 0.0,
-            "free_vram_gb": 0.0,
-            "vram_tier": "NONE"
-        }
-
-        # 1. Tenta via PyTorch CUDA se instalado
-        try:
-            import torch
-            if torch.cuda.is_available():
-                device_idx = 0
-                dev_name = torch.cuda.get_device_name(device_idx)
-                total_mem = torch.cuda.get_device_properties(device_idx).total_memory / (1024 ** 3)
-                free_mem = (torch.cuda.mem_get_info()[0] / (1024 ** 3)) if hasattr(torch.cuda, "mem_get_info") else total_mem * 0.8
-                
-                gpu_info["has_gpu"] = True
-                gpu_info["device_name"] = dev_name
-                gpu_info["total_vram_gb"] = round(total_mem, 1)
-                gpu_info["free_vram_gb"] = round(free_mem, 1)
-        except Exception:
-            pass
-
-        # 2. Fallback via nvidia-smi se torch não detectou
-        if not gpu_info["has_gpu"] and shutil.which("nvidia-smi"):
-            try:
-                import subprocess
-                cmd = ["nvidia-smi", "--query-gpu=name,memory.total,memory.free", "--format=csv,noheader,nounits"]
-                out = subprocess.check_output(cmd, encoding="utf-8").strip()
-                if out:
-                    first_gpu = out.split("\n")[0].split(",")
-                    name = first_gpu[0].strip()
-                    total_mb = float(first_gpu[1].strip())
-                    free_mb = float(first_gpu[2].strip())
-                    
-                    gpu_info["has_gpu"] = True
-                    gpu_info["device_name"] = name
-                    gpu_info["total_vram_gb"] = round(total_mb / 1024, 1)
-                    gpu_info["free_vram_gb"] = round(free_mb / 1024, 1)
-            except Exception:
-                pass
-
-        # Classificação por faixa de VRAM (Tier)
-        vram = gpu_info["total_vram_gb"]
-        if vram >= 24.0:
-            gpu_info["vram_tier"] = "ULTRA"  # RTX 5090, 4090, 3090, A6000 (24GB a 48GB)
-        elif vram >= 12.0:
-            gpu_info["vram_tier"] = "MID"    # RTX 4070, 3060 12GB (12GB a 16GB)
-        elif vram >= 6.0:
-            gpu_info["vram_tier"] = "ENTRY"  # RTX 3060 6GB, 4050/4060 8GB
-        else:
-            gpu_info["vram_tier"] = "CPU"
-
-        return gpu_info
+        from src.application.services.hardware_detector import detect_gpu_hardware
+        return detect_gpu_hardware()
 
     def get_runtime_advice(self, provider_override: Optional[str] = None) -> Dict[str, Any]:
         """

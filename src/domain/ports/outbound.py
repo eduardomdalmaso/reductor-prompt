@@ -138,3 +138,36 @@ class IEpisodicMemoryPort(ABC):
         """Limpa toda a memória episódica do cérebro."""
         pass
 
+
+class ILexicalIndexPort(ABC):
+    """Porta para índice lexical (BM25/FTS5) sincronizado com o repositório vetorial."""
+
+    @abstractmethod
+    def count(self) -> int:
+        pass
+
+    @abstractmethod
+    def upsert_chunks(self, book_id: str, book_title: str, chunks: List[BookChunk]) -> int:
+        pass
+
+    @abstractmethod
+    def delete_book(self, book_id: str) -> None:
+        pass
+
+    @abstractmethod
+    def verify_consistency(self, chroma_count: int) -> Dict[str, Any]:
+        pass
+
+    @abstractmethod
+    def rebuild_from_chroma(self, collection: Any, batch_size: int = 2000) -> int:
+        pass
+
+    @abstractmethod
+    def search(
+        self,
+        query: str,
+        top_k: int = 16,
+        book_title_filter: Optional[str] = None,
+    ) -> List[ScoredChunk]:
+        pass
+

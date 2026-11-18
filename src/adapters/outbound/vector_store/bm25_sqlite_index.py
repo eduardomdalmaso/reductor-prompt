@@ -4,9 +4,10 @@ import sqlite3
 from typing import List, Optional
 
 from src.domain.entities.book import BookChunk, ScoredChunk
+from src.domain.ports.outbound import ILexicalIndexPort
 
 
-class BM25SqliteIndex:
+class BM25SqliteIndex(ILexicalIndexPort):
     """Índice lexical BM25 experimental sobre os mesmos chunks do ChromaDB via SQLite FTS5."""
 
     def __init__(self, db_path: str = "./storage/bm25_fts5.db"):

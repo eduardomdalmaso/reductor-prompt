@@ -315,3 +315,18 @@ def test_generation_queue_cooperative_cancellation():
     assert m["generation_active"] == 0
     assert m["generation_pending"] == 0
 
+
+def test_lexical_port_contract_and_prometheus_metrics():
+    from fastapi.testclient import TestClient
+    from src.adapters.inbound.api.fastapi_app import app
+    from src.adapters.outbound.vector_store.bm25_sqlite_index import BM25SqliteIndex
+    from src.domain.ports.outbound import ILexicalIndexPort
+
+    assert issubclass(BM25SqliteIndex, ILexicalIndexPort)
+    client = TestClient(app)
+    resp = client.get("/metrics")
+    assert resp.status_code == 200
+    assert "text/plain" in resp.headers.get("content-type", "")
+    assert "reductor_generation_active" in resp.text
+    assert "reductor_process_rss_bytes" in resp.text
+
